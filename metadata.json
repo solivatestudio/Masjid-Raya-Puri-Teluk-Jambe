@@ -1,0 +1,6 @@
+{
+  "name": "Mosque Information System & Multipurpose Hall Booking",
+  "description": "An interactive landing page, financial transparency hub, and multi-purpose hall booking applet for Mosque Board of Trustees (DKM).",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
