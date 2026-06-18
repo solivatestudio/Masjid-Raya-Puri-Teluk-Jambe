@@ -1,7 +1,7 @@
 import { motion } from 'motion/react';
 import { Landmark, ArrowRight, HeartHandshake, CalendarClock, Compass } from 'lucide-react';
 
-const heroImage = "/src/assets/images/mosque_hero_bg_1780566419443.png";
+const heroImage = "/src/assets/images/header.webp";
 
 interface HeroSectionProps {
   onDonateClick: () => void;
@@ -11,17 +11,17 @@ interface HeroSectionProps {
 
 export default function HeroSection({ onDonateClick, onSermonClick, onBookingClick }: HeroSectionProps) {
   return (
-    <section id="hero" className="relative min-h-[580px] lg:min-h-[640px] flex items-center justify-center emerald-gradient overflow-hidden">
+    <section id="hero" className="relative min-h-[580px] lg:min-h-[640px] flex items-center justify-center overflow-hidden">
       {/* Background Image with Layer Mask Overlay */}
       <div className="absolute inset-0 z-0">
         <img
           src={heroImage}
           alt="Masjid Al-Muttaqin"
-          className="w-full h-full object-cover object-center opacity-40 scale-105 transform transition duration-10000 hover:scale-100"
+          className="w-full h-full object-cover object-bottom transform transition duration-10000 hover:scale-100"
           referrerPolicy="no-referrer"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-emerald-950 via-emerald-950/70 to-emerald-900/40 z-10" />
-        <div className="absolute inset-0 bg-gradient-to-r from-emerald-950/90 via-transparent to-emerald-950/20 z-10" />
+        <div className="absolute inset-0 bg-gradient-to-t from-emerald-950 via-emerald-950/50 to-emerald-900/10 z-10" />
+        <div className="absolute inset-0 bg-gradient-to-r from-emerald-950/50 via-transparent to-emerald-950/10 z-10" />
       </div>
 
       {/* Decorative Floating Elements */}
@@ -34,15 +34,15 @@ export default function HeroSection({ onDonateClick, onSermonClick, onBookingCli
           {/* Badge Tag */}
           <div className="inline-flex items-center gap-2 bg-emerald-900/80 border border-emerald-700/50 backdrop-blur px-4 py-1.5 rounded-full text-xs font-semibold text-amber-400 tracking-wide">
             <Landmark className="w-3.5 h-3.5" />
-            <span>Dewan Kemakmuran Masjid (DKM) Pasifik</span>
+            <span>Dewan Kemakmuran Masjid (DKM)</span>
           </div>
 
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-white tracking-tight leading-tight">
-            Masjid <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-400 via-amber-300 to-emerald-300">Al-Muttaqin</span>
+            Masjid <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-400 via-amber-300 to-emerald-300">Raya Puri Telukjambe</span>
           </h1>
 
           <p className="text-lg text-emerald-100 max-w-2xl leading-relaxed font-light mx-auto lg:mx-0">
-            Membangun oase kedamaian spiritual, menguatkan ukhuwah islamiyah, dan melayani umat secara profesional, transparan, dan amanah di pusat administrasi DKI Jakarta.
+            Membangun lingkungan yang nyaman dalam menjalankan ibadah, menguatkan ukhuwah islamiyah, dan melayani umat secara profesional, transparan, dan amanah di Karawang.
           </p>
 
           <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 pt-4">
@@ -78,7 +78,7 @@ export default function HeroSection({ onDonateClick, onSermonClick, onBookingCli
           {/* Quick Statistics Counters */}
           <div className="grid grid-cols-2 md:grid-cols-3 gap-4 pt-6 max-w-md mx-auto lg:mx-0 border-t border-emerald-900">
             <div>
-              <div className="text-2xl font-bold font-mono text-amber-400">10,000+</div>
+              <div className="text-2xl font-bold font-mono text-amber-400">6000+</div>
               <div className="text-xs text-emerald-300/80">Jamaah Aktif Bulanan</div>
             </div>
             <div>
@@ -96,15 +96,15 @@ export default function HeroSection({ onDonateClick, onSermonClick, onBookingCli
         <div className="flex-1 w-full max-w-md hidden md:block">
           <div className="bg-emerald-950/40 border border-emerald-800/60 backdrop-blur-md rounded-2xl p-6 card-shadow space-y-4">
             <h3 className="text-xs font-bold uppercase tracking-widest text-amber-400">Layanan Unggulan Masjid</h3>
-            
+
             <div className="space-y-3.5">
               <div className="flex gap-4 p-3 bg-emerald-900/60 rounded-xl border border-emerald-800/50">
                 <div className="w-10 h-10 rounded-lg bg-emerald-800 flex items-center justify-center shrink-0">
                   <span className="text-base">🕌</span>
                 </div>
                 <div>
-                  <h4 className="font-semibold text-white text-sm">Pesantren & Kajian Dakwah Syar'i</h4>
-                  <p className="text-xs text-emerald-200/70">Program pendidikan tahsin & bedah kitab hadrawi terstruktur.</p>
+                  <h4 className="font-semibold text-white text-sm">Kajian Dakwah Syar'i & Kegiatan Sosial</h4>
+                  <p className="text-xs text-emerald-200/70">bedah ilmu islamiyah terstruktur & kegiatan sosial rutin.</p>
                 </div>
               </div>
 

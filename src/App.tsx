@@ -95,7 +95,7 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col font-sans select-none antialiased">
-      
+
       {/* Dynamic Back to top button */}
       {showBackToTop && (
         <button
@@ -112,7 +112,7 @@ export default function App() {
         <div className="max-w-7xl mx-auto flex items-center justify-center gap-1.5 flex-wrap">
           <span className="bg-amber-400 text-emerald-950 px-1.5 py-0.5 rounded text-[10px] uppercase font-bold tracking-widest mr-1.5 animate-pulse">Pemberitahuan</span>
           <span>Yayasan Masjid Al-Muttaqin membuka pendaftaran Kelas Tahsin Al-Quran Semester Ganjil 2026.</span>
-          <button 
+          <button
             onClick={() => scrollToSection('kegiatan')}
             className="underline hover:text-white font-bold ml-1 cursor-pointer"
           >
@@ -124,9 +124,9 @@ export default function App() {
       {/* Main navigation header */}
       <header className="sticky top-0 z-40 bg-emerald-950/90 border-b border-emerald-900/60 backdrop-blur-sm text-white card-shadow">
         <div className="max-w-7xl mx-auto px-4 md:px-6 h-18 flex items-center justify-between">
-          
+
           {/* Logo Brand Emblem */}
-          <div 
+          <div
             onClick={() => scrollToSection('hero')}
             className="flex items-center gap-2.5 cursor-pointer group"
           >
@@ -145,37 +145,37 @@ export default function App() {
 
           {/* Desktop Sitemap Menu links */}
           <nav className="hidden lg:flex items-center gap-6.5">
-            <button 
+            <button
               onClick={() => scrollToSection('hero')}
               className="text-xs uppercase font-extrabold tracking-wider text-emerald-100 hover:text-amber-400 transition cursor-pointer"
             >
               Beranda
             </button>
-            <button 
+            <button
               onClick={() => scrollToSection('kegiatan')}
               className="text-xs uppercase font-extrabold tracking-wider text-emerald-100 hover:text-amber-400 transition cursor-pointer"
             >
               Program Masjid
             </button>
-            <button 
+            <button
               onClick={() => scrollToSection('transparansi')}
               className="text-xs uppercase font-extrabold tracking-wider text-emerald-100 hover:text-amber-400 transition cursor-pointer"
             >
               Transparansi Kas
             </button>
-            <button 
+            <button
               onClick={() => scrollToSection('khutbah')}
               className="text-xs uppercase font-extrabold tracking-wider text-emerald-100 hover:text-amber-400 transition cursor-pointer"
             >
               Khatib Jumat
             </button>
-            <button 
+            <button
               onClick={() => scrollToSection('audio-visual-hall')}
               className="text-xs uppercase font-extrabold tracking-wider text-emerald-100 hover:text-amber-400 transition cursor-pointer"
             >
               Sewa Aula
             </button>
-            <button 
+            <button
               onClick={() => scrollToSection('galeri')}
               className="text-xs uppercase font-extrabold tracking-wider text-emerald-100 hover:text-amber-400 transition cursor-pointer"
             >
@@ -185,7 +185,7 @@ export default function App() {
 
           {/* CTA Header Actions */}
           <div className="hidden lg:flex items-center gap-4">
-            
+
             {/* Share Page Button */}
             <button
               onClick={handleShareWebsite}
@@ -222,7 +222,7 @@ export default function App() {
           <div className="space-y-6">
             <div className="flex items-center justify-between pb-4 border-b border-emerald-900">
               <span className="font-extrabold text-sm tracking-wider text-amber-300 uppercase">Navigasi DKM</span>
-              <button 
+              <button
                 onClick={() => setMobileMenuOpen(false)}
                 className="text-gray-400 hover:text-white font-extrabold text-lg cursor-pointer"
               >
@@ -231,37 +231,37 @@ export default function App() {
             </div>
 
             <div className="flex flex-col gap-4">
-              <button 
+              <button
                 onClick={() => scrollToSection('hero')}
                 className="text-left py-2 text-sm font-bold text-emerald-100 hover:text-amber-400"
               >
                 Beranda
               </button>
-              <button 
+              <button
                 onClick={() => scrollToSection('kegiatan')}
                 className="text-left py-2 text-sm font-bold text-emerald-100 hover:text-amber-400"
               >
                 Program Dakwah & Sosial
               </button>
-              <button 
+              <button
                 onClick={() => scrollToSection('transparansi')}
                 className="text-left py-2 text-sm font-bold text-emerald-100 hover:text-amber-400"
               >
                 Transparansi Arus Kas
               </button>
-              <button 
+              <button
                 onClick={() => scrollToSection('khutbah')}
                 className="text-left py-2 text-sm font-bold text-emerald-100 hover:text-amber-400"
               >
                 Jadwal Khatib Jumat
               </button>
-              <button 
+              <button
                 onClick={() => scrollToSection('audio-visual-hall')}
                 className="text-left py-2 text-sm font-bold text-emerald-100 hover:text-amber-400"
               >
                 Booking Aula Serbaguna
               </button>
-              <button 
+              <button
                 onClick={() => scrollToSection('galeri')}
                 className="text-left py-2 text-sm font-bold text-emerald-100 hover:text-amber-400"
               >
@@ -291,9 +291,9 @@ export default function App() {
 
       {/* Main Page Sections Container */}
       <main className="flex-1">
-        
+
         {/* H. Hero Banner with background */}
-        <HeroSection 
+        <HeroSection
           onDonateClick={() => scrollToSection('donasi')}
           onSermonClick={() => scrollToSection('khutbah')}
           onBookingClick={() => scrollToSection('audio-visual-hall')}
@@ -303,16 +303,16 @@ export default function App() {
         <PrayerTimes />
 
         {/* B. Informational activities (Dakwah & Sosial grid logs) */}
-        <EventSection 
+        <EventSection
           events={events}
           onRegisterEvent={handleRegisterEvent}
         />
 
         {/* C. Transparansi Kas (financial report simulated journal ledgers) */}
-        <TransparencySection 
+        {/* <TransparencySection 
           ledger={ledger}
           onAddRecord={handleAddRecord}
-        />
+        /> */}
 
         {/* D. Friday Pulpit Sermon bulletin tables */}
         <FridaySermonSection />
@@ -321,7 +321,7 @@ export default function App() {
         <BookingSection />
 
         {/* F. QRIS Donation calculator interface */}
-        <DonationSection 
+        <DonationSection
           onSimulateDonation={handleSimulateDonation}
         />
 
@@ -333,9 +333,9 @@ export default function App() {
       {/* Footer Branding, sitemaps and legal credits */}
       <footer className="bg-emerald-950 text-white border-t border-emerald-900">
         <div className="max-w-7xl mx-auto px-4 md:px-6 py-12">
-          
+
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-8.5">
-            
+
             {/* Footer Column 1: Brand & Contact Info */}
             <div className="space-y-4">
               <div className="flex items-center gap-2">
@@ -344,7 +344,7 @@ export default function App() {
                 </div>
                 <span className="font-extrabold text-sm tracking-wider">MASJID AL-MUTTAQIN</span>
               </div>
-              
+
               <p className="text-xs text-emerald-200/80 leading-relaxed max-w-sm">
                 Masjid Al-Muttaqin di bawah pengelolaan Yayasan Dewan Kemakmuran Masjid (DKM). Kompleks terintegrasi Dakwah, Sosial, Pendidikan, & Pemberdayaan Ekonomi Syariah.
               </p>
@@ -407,20 +407,20 @@ export default function App() {
                   </button>
                 </li>
                 <li>
-                  <a 
-                    href="https://wa.me/6281234567890?text=Assalamualaikum...%20Saya%20memerlukan%20informasi%20bantuan%20ambulans%20Masjid." 
-                    target="_blank" 
-                    rel="noopener noreferrer" 
+                  <a
+                    href="https://wa.me/6281234567890?text=Assalamualaikum...%20Saya%20memerlukan%20informasi%20bantuan%20ambulans%20Masjid."
+                    target="_blank"
+                    rel="noopener noreferrer"
                     className="hover:text-amber-400 transition"
                   >
                     Pelayanan Ambulans Gratis
                   </a>
                 </li>
                 <li>
-                  <a 
-                    href="https://wa.me/6281234567890?text=Assalamualaikum...%20Saya%20ingin%20berkonsultasi%20syariah." 
-                    target="_blank" 
-                    rel="noopener noreferrer" 
+                  <a
+                    href="https://wa.me/6281234567890?text=Assalamualaikum...%20Saya%20ingin%20berkonsultasi%20syariah."
+                    target="_blank"
+                    rel="noopener noreferrer"
                     className="hover:text-amber-400 transition"
                   >
                     Konseling & Konsultasi Syari'ah
@@ -447,7 +447,7 @@ export default function App() {
             <div>
               &copy; {new Date().getFullYear()} DKM Al-Muttaqin DKI Jakarta. All Rights Reserved.
             </div>
-            
+
             <div className="flex items-center gap-1.5 text-[10px]">
               <span>Masyarakat Transparansi Syari'ah Indonesia</span>
               <span>•</span>

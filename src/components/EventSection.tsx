@@ -40,10 +40,17 @@ export default function EventSection({ events, onRegisterEvent }: EventSectionPr
     }
   };
 
+  const handleRegisterWhatsApp = (evt: EventActivity) => {
+    const waNumber = "6281219118993"; // dari 081219118993
+    const message = `Assalamualaikum Admin, saya ingin mendaftar untuk mengikuti kegiatan:\n\n*${evt.title}*\nTanggal: ${evt.date}\nWaktu: ${evt.time}\n\nMohon informasi selanjutnya.`;
+    const waUrl = `https://wa.me/${waNumber}?text=${encodeURIComponent(message)}`;
+    window.open(waUrl, '_blank', 'noopener,noreferrer');
+  };
+
   return (
     <section id="kegiatan" className="py-20 bg-slate-50">
       <div className="max-w-7xl mx-auto px-4 md:px-6">
-        
+
         {/* Section Header */}
         <div className="text-center max-w-3xl mx-auto mb-12">
           <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-emerald-100 text-emerald-800 rounded-full text-xs font-bold uppercase tracking-wider mb-3">
@@ -60,18 +67,17 @@ export default function EventSection({ events, onRegisterEvent }: EventSectionPr
 
         {/* Filters and Search Bar Container */}
         <div className="flex flex-col md:flex-row gap-4 items-center justify-between mb-8 pb-4 border-b border-gray-200">
-          
+
           {/* Tabs */}
           <div className="flex bg-gray-100 p-1.5 rounded-xl w-full md:w-auto">
             {['Semua', 'Dakwah', 'Sosial'].map((cat) => (
               <button
                 key={cat}
                 onClick={() => setSelectedCategory(cat as any)}
-                className={`px-5 py-2 rounded-lg text-sm font-semibold transition-all cursor-pointer ${
-                  selectedCategory === cat
-                    ? 'bg-emerald-600 text-white shadow-sm'
-                    : 'text-gray-600 hover:text-emerald-700'
-                }`}
+                className={`px-5 py-2 rounded-lg text-sm font-semibold transition-all cursor-pointer ${selectedCategory === cat
+                  ? 'bg-emerald-600 text-white shadow-sm'
+                  : 'text-gray-600 hover:text-emerald-700'
+                  }`}
               >
                 {cat === 'Semua' ? 'Semua Kegiatan' : cat === 'Dakwah' ? '📖 Dakwah & Kajian' : '🤝 Sosial & Bakti'}
               </button>
@@ -104,7 +110,7 @@ export default function EventSection({ events, onRegisterEvent }: EventSectionPr
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6.5">
             {filteredEvents.map((evt) => {
               const fillPercentage = evt.capacity ? Math.min(100, Math.floor((evt.registeredCount / evt.capacity) * 100)) : 100;
-              
+
               return (
                 <div
                   key={evt.id}
@@ -121,11 +127,10 @@ export default function EventSection({ events, onRegisterEvent }: EventSectionPr
                     />
                     {/* Badge Category */}
                     <div className="absolute top-4 left-4 z-10">
-                      <span className={`px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider ${
-                        evt.category === 'Dakwah' 
-                          ? 'bg-emerald-600 text-white shadow-sm shadow-emerald-600/20' 
-                          : 'bg-amber-500 text-emerald-950 shadow-sm shadow-amber-500/20'
-                      }`}>
+                      <span className={`px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider ${evt.category === 'Dakwah'
+                        ? 'bg-emerald-600 text-white shadow-sm shadow-emerald-600/20'
+                        : 'bg-amber-500 text-emerald-950 shadow-sm shadow-amber-500/20'
+                        }`}>
                         {evt.category}
                       </span>
                     </div>
@@ -181,10 +186,9 @@ export default function EventSection({ events, onRegisterEvent }: EventSectionPr
                             <span className="text-emerald-600">{fillPercentage}%</span>
                           </div>
                           <div className="w-full h-1.5 bg-gray-100 rounded-full overflow-hidden">
-                            <div 
-                              className={`h-full rounded-full transition-all duration-500 ${
-                                fillPercentage > 85 ? 'bg-amber-500' : 'bg-emerald-600'
-                              }`} 
+                            <div
+                              className={`h-full rounded-full transition-all duration-500 ${fillPercentage > 85 ? 'bg-amber-500' : 'bg-emerald-600'
+                                }`}
                               style={{ width: `${fillPercentage}%` }}
                             />
                           </div>
@@ -193,7 +197,7 @@ export default function EventSection({ events, onRegisterEvent }: EventSectionPr
 
                       <button
                         id={`btn-register-${evt.id}`}
-                        onClick={() => setRegisteringEvent(evt)}
+                        onClick={() => handleRegisterWhatsApp(evt)}
                         className="w-full bg-emerald-50 hover:bg-emerald-600 text-emerald-800 hover:text-white font-bold py-2.5 rounded-xl border border-emerald-100 hover:border-emerald-600 transition flex items-center justify-center gap-1.5 text-xs md:text-sm cursor-pointer group/btn"
                       >
                         <span>Ikuti Kegiatan</span>
@@ -217,7 +221,7 @@ export default function EventSection({ events, onRegisterEvent }: EventSectionPr
             </p>
           </div>
           <a
-            href="https://wa.me/6281234567890?text=Assalamualaikum%20Admin%20DKM%20Al-Muttaqin.%20Saya%20memerlukan%20bantuan%20layanan%20sosial%20darurat."
+            href="https://wa.me/6285210535379?text=Assalamualaikum%20Admin%20DKM%20Al-Muttaqin.%20Saya%20memerlukan%20bantuan%20layanan%20sosial%20darurat."
             target="_blank"
             rel="noopener noreferrer"
             className="w-full md:w-auto text-center shrink-0 bg-amber-500 hover:bg-amber-600 text-emerald-950 font-bold px-6 py-3 rounded-xl transition shadow-lg shadow-amber-500/10 cursor-pointer relative z-10"
@@ -231,7 +235,7 @@ export default function EventSection({ events, onRegisterEvent }: EventSectionPr
       {registeringEvent && (
         <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
           <div className="bg-white rounded-2xl max-w-sm w-full p-6 relative shadow-2xl border border-gray-100 animate-in fade-in zoom-in duration-200">
-            
+
             <button
               onClick={() => setRegisteringEvent(null)}
               className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 font-extrabold text-lg cursor-pointer"

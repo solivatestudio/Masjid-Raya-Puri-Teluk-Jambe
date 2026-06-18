@@ -25,7 +25,7 @@ export interface FridaySermon {
   id: string;
   date: string;
   khatib: string;
-  imam: string;
+  muadzin: string;
   theme: string;
 }
 

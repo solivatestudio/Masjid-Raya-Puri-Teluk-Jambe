@@ -67,7 +67,7 @@ export default function PrayerTimes() {
     const h = Math.floor(secondsDiff / 3600);
     const m = Math.floor((secondsDiff % 3600) / 60);
     const s = secondsDiff % 60;
-    
+
     const labelNext = basePrayerTimes[targetIndex].name;
     const paddingLeft = (val: number) => String(val).padStart(2, '0');
     setCountdownText(`menuju ${labelNext}: ${paddingLeft(h)}:${paddingLeft(m)}:${paddingLeft(s)}`);
@@ -95,7 +95,7 @@ export default function PrayerTimes() {
         <div className="bg-emerald-900/60 hover:bg-emerald-900/80 transition px-4 py-2 rounded-full border border-emerald-700/50 flex items-center gap-2 text-xs md:text-sm shadow-inner">
           <Volume2 className="w-4 h-4 text-amber-400 animate-bounce" />
           <span className="font-medium text-emerald-100">
-            Waktu Shalat DKI Jakarta & Sekitarnya
+            Waktu Shalat Kota Karawang & Sekitarnya
           </span>
           <span className="text-emerald-400 font-bold font-mono">|</span>
           <span className="text-amber-300 font-bold font-mono text-xs md:text-sm tracking-wide">
@@ -111,11 +111,10 @@ export default function PrayerTimes() {
               <div
                 key={item.name}
                 id={`prayer-time-${item.name.toLowerCase()}`}
-                className={`px-3 py-2 rounded-lg text-center transition-all ${
-                  isActive
+                className={`px-3 py-2 rounded-lg text-center transition-all ${isActive
                     ? 'bg-amber-500 text-emerald-950 font-bold scale-102 ring-2 ring-amber-300 shadow-lg shadow-amber-500/20'
                     : 'bg-emerald-900/40 text-emerald-200 border border-emerald-800/60 hover:bg-emerald-900/60'
-                }`}
+                  }`}
               >
                 <div className="text-[10px] md:text-xs uppercase tracking-wider font-semibold opacity-80">
                   {item.name}

@@ -2,7 +2,7 @@ import { useState, FormEvent } from 'react';
 import { HALL_INFO, BOOKING_PACKAGES } from '../data';
 import { Landmark, ArrowRight, MessageSquare, ShieldCheck, CheckCircle2, ChevronRight, HelpCircle } from 'lucide-react';
 
-const hallBackground = "/src/assets/images/multipurpose_hall_1780566435966.png";
+const hallBackground = "/src/assets/images/aula.webp";
 
 export default function BookingSection() {
   const [selectedPackage, setSelectedPackage] = useState(BOOKING_PACKAGES[1].id); // Mawaddah default
@@ -39,7 +39,7 @@ export default function BookingSection() {
     const finalPurpose = purpose === 'Lainnya' ? customPurpose : purpose;
 
     // Formatting standard Indonesian WhatsApp dispatch template
-    const waText = `*RESERVASI AULA SERBAGUNA AL-MUTTAQIN*%0A` +
+    const waText = `*RESERVASI AULA SERBAGUNA MASJID RAYA PURI TELUKJAMBE*%0A` +
       `----------------------------------------------%0A` +
       `*Nama Pemesan:* ${fullName}%0A` +
       `*No. WhatsApp:* ${whatsapp}%0A` +
@@ -63,14 +63,14 @@ export default function BookingSection() {
   return (
     <section id="audio-visual-hall" className="py-20 bg-white">
       <div className="max-w-7xl mx-auto px-4 md:px-6">
-        
+
         {/* Section Header */}
         <div className="text-center max-w-3xl mx-auto mb-14">
           <span className="px-3 py-1 bg-emerald-100 text-emerald-800 rounded-full text-xs font-bold uppercase tracking-wider">
             Sewa Aula Syari'ah & Serbaguna
           </span>
           <h2 className="text-3xl md:text-4xl font-extrabold text-gray-900 tracking-tight mt-3">
-            Aula Serbaguna Al-Muttaqin
+            Aula Serbaguna Masjid Raya Puri Teluk Jambe
           </h2>
           <p className="mt-3 text-base text-gray-600">
             Fasilitas ruang pertemuan megah bernuansa islami modern. Tersedia untuk resepsi pernikahan, haflatul ikhtitam, seminar nasional, wisuda tahfiz, serta rapat kerja kemasyarakatan.
@@ -79,7 +79,7 @@ export default function BookingSection() {
 
         {/* Info & Specifications Showcase block */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch mb-16">
-          
+
           {/* Left specification picture banner */}
           <div className="lg:col-span-7 rounded-2xl overflow-hidden relative min-h-[320px] lg:min-h-auto shadow-md border border-gray-100 flex flex-col justify-end">
             <img
@@ -94,7 +94,7 @@ export default function BookingSection() {
               <div className="inline-flex items-center gap-1 bg-amber-500 text-emerald-950 text-[10px] font-bold px-2.5 py-1 rounded-md uppercase tracking-wider">
                 Spesifikasi Utama Gedung
               </div>
-              
+
               <h3 className="text-2xl font-bold">{HALL_INFO.name}</h3>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pb-2">
@@ -134,7 +134,7 @@ export default function BookingSection() {
 
             <div className="mt-6 pt-4 border-t border-gray-200 text-center">
               <span className="text-[11px] text-gray-500 font-medium italic">
-                * Keuntungan sewa dialokasikan penuh untuk kas pemeliharaan masjid Al-Muttaqin.
+                * Keuntungan sewa dialokasikan penuh untuk kas pemeliharaan masjid Raya Puri Telukjambe.
               </span>
             </div>
           </div>
@@ -148,18 +148,17 @@ export default function BookingSection() {
             <p className="text-sm text-gray-500 mt-1">Kami menyediakan paket fleksibel sesuai anggaran dan format acara Anda.</p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {BOOKING_PACKAGES.map((pkg) => {
               const isSelected = selectedPackage === pkg.id;
-              
+
               return (
                 <div
                   key={pkg.id}
-                  className={`bg-white rounded-3xl border transition-all p-6 flex flex-col justify-between relative ${
-                    pkg.isPopular 
-                      ? 'ring-2 ring-emerald-500 card-shadow md:-translate-y-2' 
-                      : 'border-slate-100 card-shadow hover:-translate-y-0.5'
-                  }`}
+                  className={`bg-white rounded-3xl border transition-all p-6 flex flex-col justify-between relative ${pkg.isPopular
+                    ? 'ring-2 ring-emerald-500 card-shadow md:-translate-y-2'
+                    : 'border-slate-100 card-shadow hover:-translate-y-0.5'
+                    }`}
                 >
                   {pkg.isPopular && (
                     <span className="absolute top-0 right-1/2 translate-x-1/2 -translate-y-1/2 bg-emerald-600 text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider">
@@ -188,11 +187,10 @@ export default function BookingSection() {
                     <button
                       id={`btn-select-pkg-${pkg.id}`}
                       onClick={() => handleSelectPackage(pkg.id)}
-                      className={`w-full py-2.5 rounded-xl font-bold text-xs md:text-sm transition cursor-pointer ${
-                        isSelected
-                          ? 'bg-emerald-600 text-white shadow shadow-emerald-600/15'
-                          : 'bg-emerald-50 hover:bg-emerald-100 text-emerald-800'
-                      }`}
+                      className={`w-full py-2.5 rounded-xl font-bold text-xs md:text-sm transition cursor-pointer ${isSelected
+                        ? 'bg-emerald-600 text-white shadow shadow-emerald-600/15'
+                        : 'bg-emerald-50 hover:bg-emerald-100 text-emerald-800'
+                        }`}
                     >
                       {isSelected ? '✓ Terpilih di Formulir' : 'Pilih Paket Ini'}
                     </button>
@@ -211,7 +209,7 @@ export default function BookingSection() {
           </div>
 
           <form onSubmit={handleFormSubmit} className="space-y-5">
-            
+
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               {/* Full Name */}
               <div>
