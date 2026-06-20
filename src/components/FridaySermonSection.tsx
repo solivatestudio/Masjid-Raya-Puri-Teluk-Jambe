@@ -6,7 +6,7 @@ export default function FridaySermonSection() {
   const [copiedId, setCopiedId] = useState<string | null>(null);
 
   const handleCopy = (id: string, theme: string, khatib: string, date: string) => {
-    const textToCopy = `*INFO JUMAT MASJID AL-MUTTAQIN*\n📅 Tanggal: ${date}\n🎙️ Khatib: ${khatib}\n📖 Tema: "${theme}"\nMari bersiap bergegas menghadiri shalat jumat berjamaah tepat waktu.`;
+    const textToCopy = `*INFO JUMAT MASJID RAYA PURI TELUKJAMBE*\n📅 Tanggal: ${date}\n🎙️ Khatib: ${khatib}\n📖 Tema: "${theme}"\nMari bersiap bergegas menghadiri shalat jumat berjamaah tepat waktu.`;
     navigator.clipboard.writeText(textToCopy).then(() => {
       setCopiedId(id);
       setTimeout(() => setCopiedId(null), 2000);
@@ -26,7 +26,7 @@ export default function FridaySermonSection() {
             Jadwal Khatib & Imam Shalat Jum'at
           </h2>
           <p className="mt-3 text-base text-slate-600">
-            Daftar asatidzah, guru-guru mulia, dan al-hafiz pembina umat yang dijadwalkan mengisi khutbah shalat Jumat di Masjid Al-Muttaqin untuk 4 pekan ke depan.
+            Daftar asatidzah, guru-guru mulia, dan al-hafiz pembina umat yang dijadwalkan mengisi khutbah shalat Jumat di Masjid Raya Puri Telukjambe untuk 4 pekan ke depan.
           </p>
         </div>
 

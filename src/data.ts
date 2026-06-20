@@ -199,12 +199,15 @@ export const BOOKING_PACKAGES: BookingPackage[] = [
     name: 'Weekend (Sabtu/Ahad)',
     price: 'Rp 9.000.000',
     features: [
-      'Gedung Full AC selama 4 Jam',
-      'Kursi Futura 150 unit tanpa cover',
-      'Sound system basic (2 wireless mic, 1 mixer)',
-      'Listrik gedung standar (max 5.000 Watt)',
-      'Ruang rias ber-AC (1 unit)',
-      'Petugas parkir & kebersihan standar',
+      'Seluruh ruang ber AC',
+      'Back up PLN dengan Genseet 85 KVa',
+      'Parkir Luas',
+      'Toilet pria dan Wanita',
+      '100 unit kursi tanpa cover',
+      'Tenaga Satpam dan Parkir',
+      'Tenaga Kebersihan',
+      'Parkir luas',
+      'Ruang cuci perabot/piring'
     ],
     isPopular: false
   },
@@ -213,13 +216,15 @@ export const BOOKING_PACKAGES: BookingPackage[] = [
     name: 'Weekdays (Senin-Jumat)',
     price: 'Rp 8.000.000',
     features: [
-      'Sewa Gedung Full AC selama 6 Jam',
-      'Kursi Futura 300 unit + cover premium',
-      'Professional sound system (4 wireless mic, 2 standing speakers)',
-      'Listrik gedung ditingkatkan (hingga 10.000 Watt)',
-      'Ruang rias ber-AC (2 unit VIP)',
-      'Panggung utama & mini garden dekorasi basic',
-      'Kebersihan, parkir terpadu, & izin keramaian kelurahan',
+      'Seluruh ruang ber AC',
+      'Back up PLN dengan Genseet 85 KVa',
+      'Parkir Luas',
+      'Toilet pria dan Wanita',
+      '100 unit kursi tanpa cover',
+      'Tenaga Satpam dan Parkir',
+      'Tenaga Kebersihan',
+      'Parkir luas',
+      'Ruang cuci perabot/piring'
     ],
     isPopular: true
   },
@@ -244,32 +249,32 @@ export const BOOKING_PACKAGES: BookingPackage[] = [
 export const GALLERY_PHOTOS = [
   {
     id: 'g-1',
-    src: 'https://images.unsplash.com/photo-1594144400612-31047b34ec00?auto=format&fit=crop&q=80&w=600',
-    caption: 'Kajian Akbar Ramadhan Bersama Pemuda Hijrah',
+    src: '/src/assets/images/dauroh_alquran_2.webp',
+    caption: 'Dauroh Al-Quran',
   },
   {
     id: 'g-2',
-    src: 'https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&q=80&w=600',
-    caption: 'Pembagian Sembako Murah Santunan Idul Fitri',
+    src: '/src/assets/images/bukber_ramadhan.webp',
+    caption: 'Buka Puasa Bersama Ramadhan',
   },
   {
     id: 'g-3',
-    src: 'https://images.unsplash.com/photo-1579621970563-ebec7560ff3e?auto=format&fit=crop&q=80&w=600',
-    caption: 'Materi Belajar Baca Quran Kelas Tahsin Dewasa',
+    src: '/src/assets/images/idul_adha.webp',
+    caption: 'Penerimaan Hewan Qurban Idul Adha',
   },
   {
     id: 'g-4',
-    src: 'https://images.unsplash.com/photo-1541534741688-6078c6bfb5c5?auto=format&fit=crop&q=80&w=600',
-    caption: 'Gotong Royong Kebersihan Lingkungan Sekitar Masjid',
+    src: '/src/assets/images/mabit_bareng_tahun_baru.webp',
+    caption: 'Malam Bina Iman (Mabit) Bareng Tahun Baru',
   },
   {
     id: 'g-5',
-    src: 'https://images.unsplash.com/photo-1507679799987-c73779587ccf?auto=format&fit=crop&q=80&w=600',
-    caption: 'Kajian Subuh Berjamaah & Kajian Parenting Islami',
+    src: '/src/assets/images/santunan_anak_yatim.webp',
+    caption: 'Santunan Anak Yatim Piatu dan Dhuafa',
   },
   {
     id: 'g-6',
-    src: 'https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?auto=format&fit=crop&q=80&w=600',
-    caption: 'Program Sunatan Massal Gratis untuk Anak Yatim',
+    src: '/src/assets/images/sholat_tarawih.webp',
+    caption: 'Sholat Tarawih Berjamaah di Bulan Suci Ramadhan',
   }
 ];

@@ -13,7 +13,7 @@ import DonationSection from './components/DonationSection';
 import GallerySection from './components/GallerySection';
 
 // Lucide Icons
-import { Menu, X, Landmark, Phone, Mail, MapPin, Heart, ChevronUp, Share2, Compass, HelpCircle } from 'lucide-react';
+import { Menu, X, Landmark, Phone, Mail, MapPin, Heart, ChevronUp, Share2, Compass, HelpCircle, Instagram, Facebook, Youtube } from 'lucide-react';
 
 export default function App() {
   const [events, setEvents] = useState<EventActivity[]>(INITIAL_EVENTS);
@@ -82,8 +82,8 @@ export default function App() {
   const handleShareWebsite = () => {
     if (navigator.share) {
       navigator.share({
-        title: 'Masjid Al-Muttaqin DKI Jakarta',
-        text: 'Portal DKM Transparansi Kas, Jadwal Syiar Dakwah, Donasi QRIS & Booking Aula Serbaguna Masjid Al-Muttaqin.',
+        title: 'Masjid Raya Puri Telukjambe',
+        text: 'Portal DKM Transparansi Kas, Jadwal Syiar Dakwah, Donasi QRIS & Booking Aula Serbaguna Masjid Raya Puri Telukjambe.',
         url: window.location.href,
       }).catch((err) => console.log(err));
     } else {
@@ -111,7 +111,7 @@ export default function App() {
       <div className="bg-emerald-900 border-b border-emerald-800 text-emerald-100 py-2.5 px-4 text-center text-xs font-semibold relative z-50">
         <div className="max-w-7xl mx-auto flex items-center justify-center gap-1.5 flex-wrap">
           <span className="bg-amber-400 text-emerald-950 px-1.5 py-0.5 rounded text-[10px] uppercase font-bold tracking-widest mr-1.5 animate-pulse">Pemberitahuan</span>
-          <span>Yayasan Masjid Al-Muttaqin membuka pendaftaran Kelas Tahsin Al-Quran Semester Ganjil 2026.</span>
+          <span>Yayasan Masjid Raya Puri Telukjambe membuka pendaftaran Kelas Tahsin Al-Quran Semester Ganjil 2026.</span>
           <button
             onClick={() => scrollToSection('kegiatan')}
             className="underline hover:text-white font-bold ml-1 cursor-pointer"
@@ -130,12 +130,10 @@ export default function App() {
             onClick={() => scrollToSection('hero')}
             className="flex items-center gap-2.5 cursor-pointer group"
           >
-            <div className="p-2.5 bg-emerald-900 rounded-xl group-hover:bg-emerald-800 transition border border-emerald-800 text-amber-400">
-              <Landmark className="w-5.5 h-5.5" />
-            </div>
+            <img className='w-15' src="/src/assets/images/logo.svg" alt="logo" />
             <div>
               <span className="block font-black text-base text-white tracking-tight leading-none">
-                AL-MUTTAQIN
+                Masjid Raya Puri Telukjambe
               </span>
               <span className="block text-[10px] text-emerald-300 font-bold uppercase tracking-wider mt-0.5">
                 Portal Resmi DKM Syariah
@@ -339,28 +337,26 @@ export default function App() {
             {/* Footer Column 1: Brand & Contact Info */}
             <div className="space-y-4">
               <div className="flex items-center gap-2">
-                <div className="p-2 bg-emerald-900 text-amber-400 rounded-lg">
-                  <Landmark className="w-5 h-5" />
-                </div>
-                <span className="font-extrabold text-sm tracking-wider">MASJID AL-MUTTAQIN</span>
+                <img className='w-15' src="/src/assets/images/logo.svg" alt="logo" />
+                <span className="font-extrabold text-sm tracking-wider">Masjid Raya Puri Telukjambe</span>
               </div>
 
               <p className="text-xs text-emerald-200/80 leading-relaxed max-w-sm">
-                Masjid Al-Muttaqin di bawah pengelolaan Yayasan Dewan Kemakmuran Masjid (DKM). Kompleks terintegrasi Dakwah, Sosial, Pendidikan, & Pemberdayaan Ekonomi Syariah.
+                Masjid Raya Puri Telukjambe di bawah pengelolaan Yayasan Dewan Kemakmuran Masjid (DKM). Kompleks terintegrasi Dakwah, Sosial, Pendidikan, & Pemberdayaan Ekonomi Syariah.
               </p>
 
               <div className="space-y-2 text-xs text-emerald-300">
                 <div className="flex items-center gap-2">
                   <MapPin className="w-4 h-4 text-amber-400 shrink-0" />
-                  <span>Jl. Jenderal Sudirman No. 23, Jakarta Selatan</span>
+                  <span>Jl. Telukjambe Timur No. 23, Karawang</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <Phone className="w-4 h-4 text-emerald-400 shrink-0" />
-                  <span>0812-3456-7890 (Humas DKM)</span>
+                  <a href="https://wa.me/62895414283161" target="_blank" rel="noopener noreferrer" className="hover:text-amber-400 transition cursor-pointer">0895-4142-83161 (Humas DKM)</a>
                 </div>
                 <div className="flex items-center gap-2">
                   <Mail className="w-4 h-4 text-emerald-400 shrink-0" />
-                  <span>dkm.almuttaqin@gmail.com</span>
+                  <a href="mailto:puritelukjambemasjidraya@gmail.com" target="_blank" rel="noopener noreferrer" className="hover:text-amber-400 transition cursor-pointer">puritelukjambemasjidraya@gmail.com</a>
                 </div>
               </div>
             </div>
@@ -379,10 +375,13 @@ export default function App() {
                     Kajian Dakwah & Sosial
                   </button>
                 </li>
-                <li>
+                <li className='flex items-center gap-2'>
                   <button onClick={() => scrollToSection('transparansi')} className="hover:text-amber-400 transition cursor-pointer">
                     Transparansi Catatan Kas
                   </button>
+                  <div className='w-fit p-1 text-xs rounded-lg bg-amber-400 font-bold text-center text-emerald-900'>
+                    <p>Coming Soon!</p>
+                  </div>
                 </li>
                 <li>
                   <button onClick={() => scrollToSection('khutbah')} className="hover:text-amber-400 transition cursor-pointer">
@@ -433,7 +432,7 @@ export default function App() {
             <div className="space-y-3 bg-emerald-900/35 border border-emerald-800/40 p-4.5 rounded-2xl">
               <h4 className="text-xs font-bold uppercase tracking-wider text-amber-400">Seksi Sekretariat</h4>
               <p className="text-xs text-emerald-200/70 leading-relaxed">
-                Kantor kesekretariatan DKM Al-Muttaqin melayani administrasi berkas walimah, pendaftaran jamaah mabit, dan verifikasi kas masuk setiap hari kerja pukul 08:30 - 16:30 WIB.
+                Kantor kesekretariatan DKM Masjid raya puri telukjambe melayani administrasi berkas walimah, pendaftaran jamaah mabit, dan verifikasi kas masuk setiap hari kerja pukul 08:30 - 16:30 WIB.
               </p>
               <div className="text-[10px] text-amber-300 font-bold bg-emerald-900 border border-emerald-800 p-2 rounded text-center">
                 ● Layanan Jamaah Siaga 24 Jam
@@ -445,7 +444,19 @@ export default function App() {
           {/* Social icons, copyrights, and technical stamps */}
           <div className="pt-8 mt-8 border-t border-emerald-900/80 text-center text-xs text-emerald-300/70 flex flex-col sm:flex-row items-center justify-between gap-4">
             <div>
-              &copy; {new Date().getFullYear()} DKM Al-Muttaqin DKI Jakarta. All Rights Reserved.
+              &copy; {new Date().getFullYear()} DKM Masjid Raya Puri Telukjambe. All Rights Reserved.
+            </div>
+
+            <div className="flex items-center gap-4 text-emerald-400">
+              <a href="https://instagram.com/masjidrayapuritelukjambe" target="_blank" rel="noopener noreferrer" className="hover:text-amber-400 transition" aria-label="Instagram">
+                <Instagram className="w-5 h-5" />
+              </a>
+              <a href="https://web.facebook.com/pages/Aula%20Masjid%20Raya%20Puri%20Teluk%20Jambe%20(PERURI)%20Karawang/732935826736923/" target="_blank" rel="noopener noreferrer" className="hover:text-amber-400 transition" aria-label="Facebook">
+                <Facebook className="w-5 h-5" />
+              </a>
+              <a href="https://www.youtube.com/@masjidrayapuritelukjambe_TV" target="_blank" rel="noopener noreferrer" className="hover:text-amber-400 transition" aria-label="YouTube">
+                <Youtube className="w-5 h-5" />
+              </a>
             </div>
 
             <div className="flex items-center gap-1.5 text-[10px]">

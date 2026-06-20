@@ -16,7 +16,7 @@ export default function HeroSection({ onDonateClick, onSermonClick, onBookingCli
       <div className="absolute inset-0 z-0">
         <img
           src={heroImage}
-          alt="Masjid Al-Muttaqin"
+          alt="Masjid Raya Puri Telukjambe"
           className="w-full h-full object-cover object-bottom transform transition duration-10000 hover:scale-100"
           referrerPolicy="no-referrer"
         />

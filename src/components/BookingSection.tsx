@@ -19,46 +19,13 @@ export default function BookingSection() {
   const [additionalNotes, setAdditionalNotes] = useState('');
 
   // Select package trigger updates form
-  const handleSelectPackage = (pkgId: string) => {
-    setSelectedPackage(pkgId);
-    // Smooth scroll to the form
-    const formElement = document.getElementById('booking-form-element');
-    if (formElement) {
-      formElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    }
-  };
+  const number = '6281218595315'
 
-  const handleFormSubmit = (e: FormEvent) => {
-    e.preventDefault();
-    if (!fullName || !whatsapp || !bookingDate) {
-      alert('Mohon lengkapi Nama Anda, Nomor WhatsApp, dan Tanggal Acara.');
-      return;
-    }
+  const message = `Assalamu'alaykum Wr. Wb. Saya ingin mengajukan reservasi Aula Serbaguna`
 
-    const matchedPkg = BOOKING_PACKAGES.find((p) => p.id === selectedPackage);
-    const finalPurpose = purpose === 'Lainnya' ? customPurpose : purpose;
-
-    // Formatting standard Indonesian WhatsApp dispatch template
-    const waText = `*RESERVASI AULA SERBAGUNA MASJID RAYA PURI TELUKJAMBE*%0A` +
-      `----------------------------------------------%0A` +
-      `*Nama Pemesan:* ${fullName}%0A` +
-      `*No. WhatsApp:* ${whatsapp}%0A` +
-      `*Tanggal Acara:* ${bookingDate}%0A` +
-      `*Waktu Sewa:* ${timeStart} s/d ${timeEnd}%0A` +
-      `*Tujuan Penggunaan:* ${finalPurpose}%0A` +
-      `*Paket yang Dipilih:* ${matchedPkg?.name || 'Kustom'}%0A` +
-      `*Tambahan Layanan:*%0A` +
-      `  - Event Organizer (EO): ${needEO ? 'Ya (Butuh Panitia)' : 'Tidak'}%0A` +
-      `  - Rekomendasi Katering: ${needCatering ? 'Ya (Butuh Diskon Katering)' : 'Tidak'}%0A` +
-      `  - Upgrade Audio/Lighting: ${needSoundUpgrade ? 'Ya (Butuh Penambahan)' : 'Tidak'}%0A` +
-      `*Catatan Tambahan:* ${additionalNotes || 'Tidak ada'}%0A` +
-      `----------------------------------------------%0A` +
-      `Assalamualaikum Admin DKM Al-Muttaqin, saya ingin mengajukan verifikasi ketersediaan jadwal aula rincian di atas. Mohon arahan selanjutnya.`;
-
-    // Opens WA api directly
-    const waUrl = `https://wa.me/6281234567890?text=${waText}`;
-    window.open(waUrl, '_blank');
-  };
+  const handleWhatsapp = () => {
+    window.open(`https://wa.me/${number}?text=${message}`)
+  }
 
   return (
     <section id="audio-visual-hall" className="py-20 bg-white">
@@ -186,14 +153,12 @@ export default function BookingSection() {
                   <div className="pt-6 mt-6 border-t border-gray-100">
                     <button
                       id={`btn-select-pkg-${pkg.id}`}
-                      onClick={() => handleSelectPackage(pkg.id)}
-                      className={`w-full py-2.5 rounded-xl font-bold text-xs md:text-sm transition cursor-pointer ${isSelected
-                        ? 'bg-emerald-600 text-white shadow shadow-emerald-600/15'
-                        : 'bg-emerald-50 hover:bg-emerald-100 text-emerald-800'
-                        }`}
+                      onClick={() => handleWhatsapp()}
+                      className="w-full py-2.5 rounded-xl font-bold text-xs md:text-sm transition cursor-pointer bg-emerald-50 hover:bg-emerald-100 text-emerald-800"
                     >
-                      {isSelected ? '✓ Terpilih di Formulir' : 'Pilih Paket Ini'}
+                      Pilih Paket Ini
                     </button>
+                    <p className='text-center mt-5 italic text-xs text-gray-500 font-medium'>* Tidak termasuk dekorasi, informasi detail lainnya, silahkan hubungi admin di kolom bawah</p>
                   </div>
                 </div>
               );
@@ -202,205 +167,35 @@ export default function BookingSection() {
         </div>
 
         {/* Reservation Request Interactive Form */}
-        <div id="booking-form-element" className="bg-white border border-slate-100 rounded-3xl p-6 md:p-8 max-w-3xl mx-auto card-shadow">
-          <div className="text-center pb-6 border-b border-slate-100 mb-6.5">
-            <h3 className="text-xl font-bold text-slate-800">Form Formulir Reservasi Aula</h3>
-            <p className="text-xs text-gray-500 mt-1">Lengkapi data berikut untuk mengirim aplikasi pemesanan tanggal ke Admin DKM via WhatsApp.</p>
+        <div className="mt-14 emerald-gradient text-white rounded-3xl p-6.5 md:p-8 flex flex-col md:flex-row items-center justify-between gap-6 border border-emerald-800 card-shadow relative overflow-hidden">
+          <div className="absolute top-1/2 left-1/4 -translate-y-1/2 w-64 h-64 bg-amber-500/5 rounded-full blur-2xl" />
+          <div className="space-y-2 relative z-10">
+            <h3 className="text-lg md:text-xl font-bold">Ada hal yang ingin ditanyakan?</h3>
+            <p className="text-xs md:text-sm text-emerald-200">
+              Silahkan hubungi admin untuk konsultasi dan bertanya-tanya, Gratis!
+            </p>
           </div>
 
-          <form onSubmit={handleFormSubmit} className="space-y-5">
+          <div className="flex flex-col gap-4">
+            <a
+              href="https://wa.me/6285210535379."
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-full md:w-auto text-center shrink-0 bg-amber-500 hover:bg-amber-600 text-emerald-950 font-bold px-6 py-3 rounded-xl transition shadow-lg shadow-amber-500/10 cursor-pointer relative z-10"
+            >
+              Hubungi Admin Aula 1
+            </a>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              {/* Full Name */}
-              <div>
-                <label className="block text-xs font-bold text-gray-800 mb-1">Nama Lengkap Pemohon</label>
-                <input
-                  type="text"
-                  required
-                  placeholder="Contoh: Akhyar Raditya"
-                  value={fullName}
-                  onChange={(e) => setFullName(e.target.value)}
-                  className="w-full bg-white border border-gray-300 text-gray-900 rounded-lg px-3 py-2 text-sm focus:ring-1 focus:ring-emerald-500 focus:border-emerald-500 focus:outline-none"
-                />
-              </div>
+            <a
+              href="https://wa.me/6285210535379."
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-full md:w-auto text-center shrink-0 bg-amber-500 hover:bg-amber-600 text-emerald-950 font-bold px-6 py-3 rounded-xl transition shadow-lg shadow-amber-500/10 cursor-pointer relative z-10"
+            >
+              Hubungi Admin Aula 2
+            </a>
+          </div>
 
-              {/* WhatsApp Number */}
-              <div>
-                <label className="block text-xs font-bold text-gray-800 mb-1">Nomor WhatsApp Aktif</label>
-                <input
-                  type="tel"
-                  required
-                  placeholder="Contoh: 0812XXXXXXXX"
-                  value={whatsapp}
-                  onChange={(e) => setWhatsapp(e.target.value)}
-                  className="w-full bg-white border border-gray-300 text-gray-900 rounded-lg px-3 py-2 text-sm focus:ring-1 focus:ring-emerald-500 focus:border-emerald-500 focus:outline-none"
-                />
-              </div>
-            </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-              {/* Event Date */}
-              <div>
-                <label className="block text-xs font-bold text-gray-800 mb-1">Tanggal Rencana Acara</label>
-                <input
-                  type="date"
-                  required
-                  value={bookingDate}
-                  onChange={(e) => setBookingDate(e.target.value)}
-                  className="w-full bg-white border border-gray-300 text-gray-900 rounded-lg px-3 py-2 text-sm focus:ring-1 focus:ring-emerald-500 focus:border-emerald-500 focus:outline-none"
-                />
-              </div>
-
-              {/* Time Start */}
-              <div>
-                <label className="block text-xs font-bold text-gray-800 mb-1">Waktu Mulai Acara</label>
-                <input
-                  type="time"
-                  required
-                  value={timeStart}
-                  onChange={(e) => setTimeStart(e.target.value)}
-                  className="w-full bg-white border border-gray-300 text-gray-900 rounded-lg px-3 py-2 text-sm focus:ring-1 focus:ring-emerald-500 focus:border-emerald-500 focus:outline-none"
-                />
-              </div>
-
-              {/* Time End */}
-              <div>
-                <label className="block text-xs font-bold text-gray-800 mb-1">Waktu Selesai Acara</label>
-                <input
-                  type="time"
-                  required
-                  value={timeEnd}
-                  onChange={(e) => setTimeEnd(e.target.value)}
-                  className="w-full bg-white border border-gray-300 text-gray-900 rounded-lg px-3 py-2 text-sm focus:ring-1 focus:ring-emerald-500 focus:border-emerald-500 focus:outline-none"
-                />
-              </div>
-            </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              {/* Rental Purpose */}
-              <div>
-                <label className="block text-xs font-bold text-gray-800 mb-1">Tujuan / Keperluan Rental</label>
-                <select
-                  value={purpose}
-                  onChange={(e) => setPurpose(e.target.value)}
-                  className="w-full bg-white border border-gray-300 text-gray-900 rounded-lg p-2 text-sm focus:ring-1 focus:ring-emerald-500 focus:border-emerald-500 focus:outline-none"
-                >
-                  <option value="Walimah Pernikahan (Akad & Resepsi)">Walimah Pernikahan (Akad & Resepsi)</option>
-                  <option value="Syarah & Seminar Keagamaan / Pendidikan">Syarah & Seminar Keagamaan / Pendidikan</option>
-                  <option value="Rapat Koordinasi / Musyawarah Besar CSR">Rapat Koordinasi / Musyawarah Besar CSR</option>
-                  <option value="Wisuda Penghafal Quran / Tahfidz">Wisuda Penghafal Quran / Tahfidz</option>
-                  <option value="Lainnya">Lainnya (Cantumkan di bawah ini)</option>
-                </select>
-              </div>
-
-              {/* Rental Package Form Selection */}
-              <div>
-                <label className="block text-xs font-bold text-gray-800 mb-1">Konfirmasi Paket Sewa Aula</label>
-                <select
-                  value={selectedPackage}
-                  onChange={(e) => setSelectedPackage(e.target.value)}
-                  className="w-full bg-white border border-gray-300 text-gray-900 rounded-lg p-2 text-sm focus:ring-1 focus:ring-emerald-500 focus:border-emerald-500 focus:outline-none font-semibold text-emerald-800"
-                >
-                  {BOOKING_PACKAGES.map((p) => (
-                    <option key={p.id} value={p.id}>
-                      {p.name} ({p.price})
-                    </option>
-                  ))}
-                </select>
-              </div>
-            </div>
-
-            {/* Custom Purpose conditional */}
-            {purpose === 'Lainnya' && (
-              <div className="animate-in fade-in slide-in-from-top-2 duration-150">
-                <label className="block text-xs font-bold text-gray-800 mb-1">Sebutkan Tujuan Rencana Acara Anda</label>
-                <input
-                  type="text"
-                  required
-                  placeholder="Contoh: Pentas Seni Sekolah Islami"
-                  value={customPurpose}
-                  onChange={(e) => setCustomPurpose(e.target.value)}
-                  className="w-full bg-white border border-gray-300 text-gray-900 rounded-lg px-3 py-2 text-sm focus:ring-1 focus:ring-emerald-500 focus:border-emerald-500 focus:outline-none"
-                />
-              </div>
-            )}
-
-            {/* Additional checklist requirements options */}
-            <div className="bg-white p-4.5 rounded-xl border border-gray-200.5 space-y-3.5">
-              <span className="block text-xs font-bold text-gray-800 uppercase tracking-widest pb-1 border-b border-gray-100">
-                Layanan Tambahan (Opsional)
-              </span>
-
-              <div className="flex items-center justify-between">
-                <div className="pr-4">
-                  <span className="block text-xs font-bold text-gray-900">Butuh Event Organizer Terpadu Syariah?</span>
-                  <span className="block text-[10px] text-gray-400">Tim kami membantu merapikan rundown acara dan protokol tamu sesuai sunnah.</span>
-                </div>
-                <input
-                  type="checkbox"
-                  checked={needEO}
-                  onChange={(e) => setNeedEO(e.target.checked)}
-                  className="w-5 h-5 accent-emerald-600 rounded text-white cursor-pointer"
-                />
-              </div>
-
-              <div className="flex items-center justify-between">
-                <div className="pr-4">
-                  <span className="block text-xs font-bold text-gray-900">Butuh Referensi Menu Katering Halal?</span>
-                  <span className="block text-[10px] text-gray-400">Hubungkan saya dengan 5 rekanan catering pilihan penawaran terbaik.</span>
-                </div>
-                <input
-                  type="checkbox"
-                  checked={needCatering}
-                  onChange={(e) => setNeedCatering(e.target.checked)}
-                  className="w-5 h-5 accent-emerald-600 rounded text-white cursor-pointer"
-                />
-              </div>
-
-              <div className="flex items-center justify-between">
-                <div className="pr-4">
-                  <span className="block text-xs font-bold text-gray-900">Upgrade Sound System & Lighting Panggung?</span>
-                  <span className="block text-[10px] text-gray-400">Penambahan subwoofer, standing speaker bar tambahan, serta lampu dekorasi hangat.</span>
-                </div>
-                <input
-                  type="checkbox"
-                  checked={needSoundUpgrade}
-                  onChange={(e) => setNeedSoundUpgrade(e.target.checked)}
-                  className="w-5 h-5 accent-emerald-600 rounded text-white cursor-pointer"
-                />
-              </div>
-            </div>
-
-            {/* Additional Notes */}
-            <div>
-              <label className="block text-xs font-bold text-gray-800 mb-1">Catatan Khusus Tambahan</label>
-              <textarea
-                rows={2}
-                placeholder="Contoh: Memerlukan area loading dock barang sehari sebelum acara dimulai..."
-                value={additionalNotes}
-                onChange={(e) => setAdditionalNotes(e.target.value)}
-                className="w-full bg-white border border-gray-300 text-gray-900 rounded-lg p-2.5 text-sm focus:ring-1 focus:ring-emerald-500 focus:border-emerald-500 focus:outline-none"
-              />
-            </div>
-
-            {/* Submission disclaimer and WhatsApp submit Button */}
-            <div className="pt-4 space-y-4">
-              <p className="text-[11px] text-gray-500 text-center">
-                Dengan menekan tombol kirim, data rincian reservasi Anda akan diringkas secara rapi untuk dilanjutkan ke verifikasi jadwal WhatsApp Admin DKM Al-Muttaqin secara instan.
-              </p>
-
-              <button
-                type="submit"
-                id="btn-submit-booking-wa"
-                className="w-full bg-amber-500 hover:bg-amber-600 active:scale-99 text-emerald-950 font-black py-4.5 rounded-xl transition flex items-center justify-center gap-2 shadow-lg shadow-amber-500/10 cursor-pointer"
-              >
-                <MessageSquare className="w-5 h-5 text-emerald-950" />
-                <span>Kirim Formulir Reservasi Ke Admin (WA)</span>
-                <ChevronRight className="w-4 h-4 ml-1" />
-              </button>
-            </div>
-
-          </form>
         </div>
 
       </div>

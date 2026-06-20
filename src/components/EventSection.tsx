@@ -221,7 +221,7 @@ export default function EventSection({ events, onRegisterEvent }: EventSectionPr
             </p>
           </div>
           <a
-            href="https://wa.me/6285210535379?text=Assalamualaikum%20Admin%20DKM%20Al-Muttaqin.%20Saya%20memerlukan%20bantuan%20layanan%20sosial%20darurat."
+            href="https://wa.me/6285210535379?text=Assalamualaikum%20Admin%20DKM%20Masjid%20Raya%20PTJ.%20Saya%20memerlukan%20bantuan%20layanan%20sosial%20darurat."
             target="_blank"
             rel="noopener noreferrer"
             className="w-full md:w-auto text-center shrink-0 bg-amber-500 hover:bg-amber-600 text-emerald-950 font-bold px-6 py-3 rounded-xl transition shadow-lg shadow-amber-500/10 cursor-pointer relative z-10"
@@ -297,7 +297,7 @@ export default function EventSection({ events, onRegisterEvent }: EventSectionPr
                   </div>
 
                   <p className="text-[10px] text-gray-500 italic">
-                    * Data pendaftaran disimpan oleh DKM Al-Muttaqin untuk keperluan estimasi kuota konsumsi & verifikasi tempat duduk.
+                    * Data pendaftaran disimpan oleh DKM Raya Puri Telukjambe untuk keperluan estimasi kuota konsumsi & verifikasi tempat duduk.
                   </p>
                 </div>
 

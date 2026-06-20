@@ -7,20 +7,14 @@ interface DonationSectionProps {
 }
 
 export default function DonationSection({ onSimulateDonation }: DonationSectionProps) {
-  const [donateAmount, setDonateAmount] = useState('100000');
   const [customAmount, setCustomAmount] = useState('');
   const [copiedBank, setCopiedBank] = useState<string | null>(null);
   const [simulatedRecordPosted, setSimulatedRecordPosted] = useState(false);
   const [donorName, setDonorName] = useState('Hamba Allah');
-
-
-  const suggestedAmounts = [25000, 50000, 100000, 250000, 500000];
+  const [donasi, setDonasi] = useState();
 
   const getActiveAmount = () => {
-    if (donateAmount === 'Lainnya') {
-      return parseFloat(customAmount) || 0;
-    }
-    return parseFloat(donateAmount) || 0;
+    return parseFloat(customAmount) || 0;
   };
 
   const handleCopyBankAccount = (accNum: string) => {
@@ -39,7 +33,7 @@ export default function DonationSection({ onSimulateDonation }: DonationSectionP
     }
 
     const phoneNumber = "6281219118993";
-    const message = "Assalamualaikum Admin Masjid Al-Muttaqin 👋" +
+    const message = "Assalamualaikum Admin Masjid Raya Puri Telukjambe 👋" +
       "Saya ingin mengonfirmasi bahwa saya telah/akan menyalurkan infaq." +
       `*Detail Donatur:*` +
       `• Nama: ${donorName}` +
@@ -50,7 +44,6 @@ export default function DonationSection({ onSimulateDonation }: DonationSectionP
     window.open(whatsappUrl, '_blank', 'noopener,noreferrer');
 
     setCustomAmount('');
-    setDonateAmount('100000');
     setDonorName('');
 
     // onSimulateDonation(finalAmount, `Donasi Online QRIS (${donorName})`);
@@ -58,7 +51,6 @@ export default function DonationSection({ onSimulateDonation }: DonationSectionP
     // setTimeout(() => {
     //   setSimulatedRecordPosted(false);
     //   setDonorName('Hamba Allah');
-    //   setDonateAmount('100000');
     //   setCustomAmount('');
     // }, 4000);
   };
@@ -111,53 +103,16 @@ export default function DonationSection({ onSimulateDonation }: DonationSectionP
 
               {/* Merchant Title */}
               <div className="text-center pb-3 border-b border-gray-100 w-full mb-3">
-                <h4 className="font-extrabold text-sm text-gray-950">MASJID AL-MUTTAQIN</h4>
+                <h4 className="font-extrabold text-sm text-gray-950">UPZ MASJID RAYA PTJ</h4>
                 <p className="text-[10px] text-gray-500 uppercase tracking-widest font-bold mt-0.5">NMID: ID10202657890</p>
                 <p className="text-[9px] text-emerald-700 bg-emerald-50 inline-block px-1.5 py-0.5 rounded font-black mt-1">GOPAY, OVO, DANA, LINKAJA & M-BANKING</p>
               </div>
 
               {/* Generated QR visual Grid mockup */}
-              <div className="w-64 h-64 bg-gray-50 rounded-2xl border border-gray-200 p-4 flex flex-col items-center justify-center relative group">
+              <div className="w-52 h-52 bg-gray-50 rounded-2xl border border-gray-200 flex flex-col items-center justify-center relative group">
                 {/* Simulated QR block layout */}
                 <div className="w-full h-full relative flex items-center justify-center opacity-90">
-                  <svg viewBox="0 0 100 100" className="w-full h-full text-emerald-950">
-                    <rect x="0" y="0" width="100" height="100" fill="transparent" />
-                    {/* Decorative QR Squares positioning anchors */}
-                    <rect x="5" y="5" width="25" height="25" fill="currentColor" rx="2" />
-                    <rect x="10" y="10" width="15" height="15" fill="white" />
-                    <rect x="13" y="13" width="9" height="9" fill="currentColor" />
-
-                    <rect x="70" y="5" width="25" height="25" fill="currentColor" rx="2" />
-                    <rect x="75" y="10" width="15" height="15" fill="white" />
-                    <rect x="78" y="13" width="9" height="9" fill="currentColor" />
-
-                    <rect x="5" y="70" width="25" height="25" fill="currentColor" rx="2" />
-                    <rect x="10" y="75" width="15" height="15" fill="white" />
-                    <rect x="13" y="78" width="9" height="9" fill="currentColor" />
-
-                    {/* Simulating barcodes using pathways */}
-                    <path d="M 38,5 H 42 V 22 H 38 Z" fill="currentColor" />
-                    <path d="M 46,5 H 48 V 12 H 46 Z" fill="currentColor" />
-                    <path d="M 52,5 H 64 V 9 H 52 Z" fill="currentColor" />
-                    <path d="M 38,26 H 55 V 30 H 38 Z" fill="currentColor" />
-                    <path d="M 5,38 H 32 V 42 H 5 Z" fill="currentColor" />
-                    <path d="M 13,46 H 25 V 48 H 13 Z" fill="currentColor" />
-                    <path d="M 38,38 H 62 V 62 H 38 Z" fill="currentColor" />
-                    <path d="M 44,44 H 56 V 56 H 44 Z" fill="white" />
-                    {/* Heart symbol right in the center */}
-                    <path d="M 50,46 C 49,44 46,44 46,47 C 46,50 50,53 50,53 C 50,53 54,50 54,47 C 54,44 51,44 50,46 Z" fill="currentColor" />
-
-                    <path d="M 70,38 H 92 V 42 H 70 Z" fill="currentColor" />
-                    <path d="M 80,46 H 88 V 65 H 80 Z" fill="currentColor" />
-                    <path d="M 5,50 H 12 V 64 H 5 Z" fill="currentColor" />
-                    <path d="M 18,52 H 30 V 55 H 18 Z" fill="currentColor" />
-                    <path d="M 38,70 H 45 V 90 H 38 Z" fill="currentColor" />
-                    <path d="M 50,70 H 68 V 74 H 50 Z" fill="currentColor" />
-                    <path d="M 72,70 H 92 V 90 H 72 Z" fill="currentColor" />
-                    <path d="M 50,80 H 64 V 83 H 50 Z" fill="currentColor" />
-                    <path d="M 56,86 H 68 V 92 H 56 Z" fill="currentColor" />
-                    <path d="M 28,60 H 34 V 74 H 28 Z" fill="currentColor" />
-                  </svg>
+                  <img src="/src/assets/images/qris.webp" alt="QRIS" className="w-full h-full " />
                 </div>
 
 
@@ -165,10 +120,6 @@ export default function DonationSection({ onSimulateDonation }: DonationSectionP
 
               {/* Dynamic QRIS Indicator */}
               <div className="w-full mt-4 bg-gray-50 rounded-xl p-3 text-center border border-gray-100">
-                <span className="block text-[10px] text-gray-400 uppercase font-semibold">Estimasi Pemindaian</span>
-                <span className="block text-base font-extrabold text-emerald-950 font-mono">
-                  {formatRupiah(getActiveAmount())}
-                </span>
                 <span className="block text-[9px] text-gray-500 mt-0.5">Silakan scan kode QRIS gratis biaya admin</span>
               </div>
             </div>
@@ -206,67 +157,27 @@ export default function DonationSection({ onSimulateDonation }: DonationSectionP
                   />
                 </div>
 
-                {/* Amount suggestions chips */}
-                <div>
-                  <label className="block text-[11px] font-bold text-emerald-300 uppercase tracking-wider mb-2">
-                    Pilih Nominal Infaq Jariyah
+                {/* Custom Amount input field */}
+                <div className="animate-in fade-in slide-in-from-top-2 duration-150">
+                  <label className="block text-[11px] font-bold text-emerald-300 uppercase mb-1">
+                    Ketik Nominal Anda (Rupiah)
                   </label>
-                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5">
-                    {suggestedAmounts.map((amt) => {
-                      const isSelected = donateAmount === String(amt);
-                      return (
-                        <button
-                          key={amt}
-                          type="button"
-                          onClick={() => {
-                            setDonateAmount(String(amt));
-                            setCustomAmount('');
-                          }}
-                          className={`py-2 rounded-xl text-xs font-bold transition duration-150 cursor-pointer ${isSelected
-                            ? 'bg-amber-400 text-emerald-950 font-black shadow-lg shadow-amber-400/10'
-                            : 'bg-emerald-950 hover:bg-emerald-800 border border-emerald-800 text-emerald-200'
-                            }`}
-                        >
-                          {formatRupiah(amt)}
-                        </button>
-                      );
-                    })}
-                    <button
-                      type="button"
-                      onClick={() => setDonateAmount('Lainnya')}
-                      className={`py-2 rounded-xl text-xs font-bold transition duration-150 cursor-pointer ${donateAmount === 'Lainnya'
-                        ? 'bg-amber-400 text-emerald-950 font-black'
-                        : 'bg-emerald-950 hover:bg-emerald-800 border border-emerald-800 text-emerald-200'
-                        }`}
-                    >
-                      Nominal Kustom
-                    </button>
+                  <div className="relative">
+                    <span className="absolute inset-y-0 left-3 flex items-center text-xs font-bold text-emerald-300 font-mono">
+                      Rp
+                    </span>
+                    <input
+                      type="number"
+                      required
+                      min="1000"
+                      step="1000"
+                      placeholder="Contoh: 1000000"
+                      value={customAmount}
+                      onChange={(e) => setCustomAmount(e.target.value)}
+                      className="w-full bg-emerald-950/60 border border-emerald-800 text-white placeholder-emerald-400 rounded-xl pl-9 pr-4 py-2.5 text-sm font-mono focus:ring-1 focus:ring-amber-400 focus:outline-none"
+                    />
                   </div>
                 </div>
-
-                {/* Custom Amount input field conditional */}
-                {donateAmount === 'Lainnya' && (
-                  <div className="animate-in fade-in slide-in-from-top-2 duration-150">
-                    <label className="block text-[11px] font-bold text-emerald-300 uppercase mb-1">
-                      Ketik Nominal Kustom Anda (Rupiah)
-                    </label>
-                    <div className="relative">
-                      <span className="absolute inset-y-0 left-3 flex items-center text-xs font-bold text-emerald-300 font-mono">
-                        Rp
-                      </span>
-                      <input
-                        type="number"
-                        required
-                        min="1000"
-                        step="1000"
-                        placeholder="Contoh: 1000000"
-                        value={customAmount}
-                        onChange={(e) => setCustomAmount(e.target.value)}
-                        className="w-full bg-emerald-950/60 border border-emerald-800 text-white placeholder-emerald-400 rounded-xl pl-9 pr-4 py-2.5 text-sm font-mono focus:ring-1 focus:ring-amber-400 focus:outline-none"
-                      />
-                    </div>
-                  </div>
-                )}
               </div>
 
               {/* CTA Simulation Submission */}
@@ -309,7 +220,7 @@ export default function DonationSection({ onSimulateDonation }: DonationSectionP
                   <div>
                     <span className="block text-[10px] font-bold text-emerald-300 uppercase tracking-widest">Bank Syariah Indonesia (BSI)</span>
                     <span className="block text-sm font-extrabold tracking-wider font-mono text-white mt-1">712 345 6112</span>
-                    <span className="block text-[10px] text-emerald-300/80 mt-0.5">Yayasan Dewan Kemakmuran Masjid Al-Muttaqin</span>
+                    <span className="block text-[10px] text-emerald-300/80 mt-0.5">Yayasan Dewan Kemakmuran Masjid Raya Puri Telukjambe</span>
                   </div>
 
                   <button
@@ -326,7 +237,7 @@ export default function DonationSection({ onSimulateDonation }: DonationSectionP
                   <div>
                     <span className="block text-[10px] font-bold text-emerald-300 uppercase tracking-widest">Bank Muamalat Indonesia (BMI)</span>
                     <span className="block text-sm font-extrabold tracking-wider font-mono text-white mt-1">328 000 4561</span>
-                    <span className="block text-[10px] text-emerald-300/80 mt-0.5">Keuangan Kas Operasional DKM Al-Muttaqin</span>
+                    <span className="block text-[10px] text-emerald-300/80 mt-0.5">Keuangan Kas Operasional DKM Masjid Raya Puri Telukjambe</span>
                   </div>
 
                   <button

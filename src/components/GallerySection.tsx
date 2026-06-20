@@ -20,7 +20,7 @@ export default function GallerySection() {
   return (
     <section id="galeri" className="py-20 bg-slate-50 border-t border-slate-200/50">
       <div className="max-w-7xl mx-auto px-4 md:px-6">
-        
+
         {/* Section Header */}
         <div className="text-center max-w-3xl mx-auto mb-12">
           <span className="px-3 py-1 bg-emerald-100 text-emerald-800 rounded-full text-xs font-bold uppercase tracking-wider">
@@ -30,10 +30,11 @@ export default function GallerySection() {
             Galeri Kegiatan & Ukhuwah Jamaah
           </h2>
           <p className="mt-3 text-base text-slate-600">
-            Kumpulan lensa dokumentasi aktivitas ibadah berkala, bakti sosial kemasyarakatan, bimbingan syar'i harian, dan kebersamaan umat di lingkungan Masjid Al-Muttaqin Kompleks.
+            Kumpulan lensa dokumentasi aktivitas ibadah berkala, bakti sosial kemasyarakatan, bimbingan syar'i harian, dan kebersamaan umat di lingkungan Masjid Raya Puri Telukjambe.
           </p>
         </div>
- 
+
+
         {/* Gallery Responsive Grid layout */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {GALLERY_PHOTOS.map((photo, index) => (
@@ -64,6 +65,13 @@ export default function GallerySection() {
               </div>
             </div>
           ))}
+        </div>
+
+        {/* View More Button */}
+        <div className="mt-12 flex justify-center">
+          <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="px-8 py-3.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold shadow-lg shadow-emerald-600/20 transition flex items-center gap-2">
+            Lihat lebih banyak di Instagram
+          </a>
         </div>
 
       </div>
