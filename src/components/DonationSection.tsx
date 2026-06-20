@@ -112,7 +112,7 @@ export default function DonationSection({ onSimulateDonation }: DonationSectionP
               <div className="w-52 h-52 bg-gray-50 rounded-2xl border border-gray-200 flex flex-col items-center justify-center relative group">
                 {/* Simulated QR block layout */}
                 <div className="w-full h-full relative flex items-center justify-center opacity-90">
-                  <img src="/src/assets/images/qris.webp" alt="QRIS" className="w-full h-full " />
+                  <img src="/images/qris.webp" alt="QRIS" className="w-full h-full " />
                 </div>
 
 

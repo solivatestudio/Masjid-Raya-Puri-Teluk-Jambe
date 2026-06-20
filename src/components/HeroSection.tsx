@@ -1,7 +1,7 @@
 import { motion } from 'motion/react';
 import { Landmark, ArrowRight, HeartHandshake, CalendarClock, Compass } from 'lucide-react';
 
-const heroImage = "/src/assets/images/header.webp";
+const heroImage = "/images/header.webp";
 
 interface HeroSectionProps {
   onDonateClick: () => void;

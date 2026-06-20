@@ -130,7 +130,7 @@ export default function App() {
             onClick={() => scrollToSection('hero')}
             className="flex items-center gap-2.5 cursor-pointer group"
           >
-            <img className='w-15' src="/src/assets/images/logo.svg" alt="logo" />
+            <img className='w-15' src="/images/logo.svg" alt="logo" />
             <div>
               <span className="block font-black text-base text-white tracking-tight leading-none">
                 Masjid Raya Puri Telukjambe
@@ -337,7 +337,7 @@ export default function App() {
             {/* Footer Column 1: Brand & Contact Info */}
             <div className="space-y-4">
               <div className="flex items-center gap-2">
-                <img className='w-15' src="/src/assets/images/logo.svg" alt="logo" />
+                <img className='w-15' src="/images/logo.svg" alt="logo" />
                 <span className="font-extrabold text-sm tracking-wider">Masjid Raya Puri Telukjambe</span>
               </div>
 

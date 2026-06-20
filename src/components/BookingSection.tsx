@@ -2,7 +2,7 @@ import { useState, FormEvent } from 'react';
 import { HALL_INFO, BOOKING_PACKAGES } from '../data';
 import { Landmark, ArrowRight, MessageSquare, ShieldCheck, CheckCircle2, ChevronRight, HelpCircle } from 'lucide-react';
 
-const hallBackground = "/src/assets/images/aula.webp";
+const hallBackground = "/images/aula.webp";
 
 export default function BookingSection() {
   const [selectedPackage, setSelectedPackage] = useState(BOOKING_PACKAGES[1].id); // Mawaddah default
