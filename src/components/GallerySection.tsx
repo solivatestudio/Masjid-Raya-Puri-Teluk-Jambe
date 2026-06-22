@@ -69,7 +69,7 @@ export default function GallerySection() {
 
         {/* View More Button */}
         <div className="mt-12 flex justify-center">
-          <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="px-8 py-3.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold shadow-lg shadow-emerald-600/20 transition flex items-center gap-2">
+          <a href="https://instagram.com/masjidrayapuritelukjambe/" target="_blank" rel="noopener noreferrer" className="px-8 py-3.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold shadow-lg shadow-emerald-600/20 transition flex items-center gap-2">
             Lihat lebih banyak di Instagram
           </a>
         </div>
