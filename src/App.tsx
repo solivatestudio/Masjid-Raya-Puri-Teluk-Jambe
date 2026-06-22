@@ -147,7 +147,7 @@ export default function App() {
                 Masjid Raya Puri Telukjambe
               </span>
               <span className="block text-[10px] text-emerald-300 font-bold uppercase tracking-wider mt-0.5">
-                Portal Resmi DKM Syariah
+                Portal Resmi
               </span>
             </div>
           </div>
@@ -166,12 +166,12 @@ export default function App() {
             >
               Program Masjid
             </button>
-            <button
+            {/* <button
               onClick={() => scrollToSection('transparansi')}
               className="text-xs uppercase font-extrabold tracking-wider text-emerald-100 hover:text-amber-400 transition cursor-pointer"
             >
               Transparansi Kas
-            </button>
+            </button> */}
             <button
               onClick={() => scrollToSection('khutbah')}
               className="text-xs uppercase font-extrabold tracking-wider text-emerald-100 hover:text-amber-400 transition cursor-pointer"
@@ -195,6 +195,19 @@ export default function App() {
           {/* CTA Header Actions */}
           <div className="hidden lg:flex items-center gap-4">
 
+            {/* Social Media Header Icons (Desktop) */}
+            <div className="flex items-center gap-3 mr-2 border-r border-emerald-800 pr-5">
+              <a href="https://instagram.com/masjidrayapuritelukjambe" target="_blank" rel="noopener noreferrer" className="text-emerald-200 hover:text-amber-400 transition hover:-translate-y-1" aria-label="Instagram">
+                <Instagram className="w-5 h-5" />
+              </a>
+              <a href="https://web.facebook.com/pages/Aula%20Masjid%20Raya%20Puri%20Teluk%20Jambe%20(PERURI)%20Karawang/732935826736923/" target="_blank" rel="noopener noreferrer" className="text-emerald-200 hover:text-amber-400 transition hover:-translate-y-1" aria-label="Facebook">
+                <Facebook className="w-5 h-5" />
+              </a>
+              <a href="https://www.youtube.com/@masjidrayapuritelukjambe_TV" target="_blank" rel="noopener noreferrer" className="text-emerald-200 hover:text-amber-400 transition hover:-translate-y-1" aria-label="YouTube">
+                <Youtube className="w-5 h-5" />
+              </a>
+            </div>
+
             {/* Share Page Button */}
             <button
               onClick={handleShareWebsite}
@@ -214,13 +227,28 @@ export default function App() {
             </button>
           </div>
 
-          {/* Mobile hamburger menu toggle */}
-          <button
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="lg:hidden p-2 text-emerald-100 hover:text-white hover:bg-emerald-900 rounded-lg transition cursor-pointer"
-          >
-            {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-          </button>
+          {/* Mobile hamburger menu toggle & Social Icons */}
+          <div className="flex lg:hidden items-center gap-2">
+            {/* Social Media Header Icons (Mobile) */}
+            <div className="flex items-center gap-3 mr-1">
+              <a href="https://instagram.com/masjidrayapuritelukjambe" target="_blank" rel="noopener noreferrer" className="text-emerald-200 hover:text-amber-400 transition" aria-label="Instagram">
+                <Instagram className="w-5 h-5" />
+              </a>
+              <a href="https://web.facebook.com/pages/Aula%20Masjid%20Raya%20Puri%20Teluk%20Jambe%20(PERURI)%20Karawang/732935826736923/" target="_blank" rel="noopener noreferrer" className="text-emerald-200 hover:text-amber-400 transition" aria-label="Facebook">
+                <Facebook className="w-5 h-5" />
+              </a>
+              <a href="https://www.youtube.com/@masjidrayapuritelukjambe_TV" target="_blank" rel="noopener noreferrer" className="text-emerald-200 hover:text-amber-400 transition" aria-label="YouTube">
+                <Youtube className="w-5 h-5" />
+              </a>
+            </div>
+
+            <button
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              className="p-2 text-emerald-100 hover:text-white hover:bg-emerald-900 rounded-lg transition cursor-pointer"
+            >
+              {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+            </button>
+          </div>
 
         </div>
       </header>
@@ -252,12 +280,12 @@ export default function App() {
               >
                 Program Dakwah & Sosial
               </button>
-              <button
+              {/* <button
                 onClick={() => scrollToSection('transparansi')}
                 className="text-left py-2 text-sm font-bold text-emerald-100 hover:text-amber-400"
               >
                 Transparansi Arus Kas
-              </button>
+              </button> */}
               <button
                 onClick={() => scrollToSection('khutbah')}
                 className="text-left py-2 text-sm font-bold text-emerald-100 hover:text-amber-400"
@@ -418,7 +446,7 @@ export default function App() {
                 </li>
                 <li>
                   <a
-                    href="https://wa.me/6281234567890?text=Assalamualaikum...%20Saya%20memerlukan%20informasi%20bantuan%20ambulans%20Masjid."
+                    href="https://wa.me/6285210535379?text=Assalamualaikum...%20Saya%20memerlukan%20informasi%20bantuan%20ambulans%20Masjid."
                     target="_blank"
                     rel="noopener noreferrer"
                     className="hover:text-amber-400 transition"
@@ -428,7 +456,7 @@ export default function App() {
                 </li>
                 <li>
                   <a
-                    href="https://wa.me/6281234567890?text=Assalamualaikum...%20Saya%20ingin%20berkonsultasi%20syariah."
+                    href="https://wa.me/62895414283161?text=Assalamualaikum...%20Saya%20ingin%20berkonsultasi%20syariah."
                     target="_blank"
                     rel="noopener noreferrer"
                     className="hover:text-amber-400 transition"
@@ -455,18 +483,18 @@ export default function App() {
           {/* Social icons, copyrights, and technical stamps */}
           <div className="pt-8 mt-8 border-t border-emerald-900/80 text-center text-xs text-emerald-300/70 flex flex-col sm:flex-row items-center justify-between gap-4">
             <div>
-              &copy; {new Date().getFullYear()} DKM Masjid Raya Puri Telukjambe. All Rights Reserved.
+              &copy; {new Date().getFullYear()} Design & Development by <a href="https://kinetcstudio.vercel.app/" target="_blank" rel="noopener noreferrer" className="text-blue-300 hover:text-blue-500 transition cursor-pointer">Kinetic Studio</a>. All Rights Reserved.
             </div>
 
-            <div className="flex items-center gap-4 text-emerald-400">
+            <div className="flex items-center gap-6 text-emerald-400 my-4 sm:my-0">
               <a href="https://instagram.com/masjidrayapuritelukjambe" target="_blank" rel="noopener noreferrer" className="hover:text-amber-400 transition" aria-label="Instagram">
-                <Instagram className="w-5 h-5" />
+                <Instagram className="w-8 h-8" />
               </a>
               <a href="https://web.facebook.com/pages/Aula%20Masjid%20Raya%20Puri%20Teluk%20Jambe%20(PERURI)%20Karawang/732935826736923/" target="_blank" rel="noopener noreferrer" className="hover:text-amber-400 transition" aria-label="Facebook">
-                <Facebook className="w-5 h-5" />
+                <Facebook className="w-8 h-8" />
               </a>
               <a href="https://www.youtube.com/@masjidrayapuritelukjambe_TV" target="_blank" rel="noopener noreferrer" className="hover:text-amber-400 transition" aria-label="YouTube">
-                <Youtube className="w-5 h-5" />
+                <Youtube className="w-8 h-8" />
               </a>
             </div>
 

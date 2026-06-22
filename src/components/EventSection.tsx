@@ -7,6 +7,39 @@ interface EventSectionProps {
   onRegisterEvent: (eventId: string) => void;
 }
 
+const getEventStatus = (dateStr: string) => {
+  if (dateStr.toLowerCase().includes('setiap')) return { passed: false, liveStreamReady: true };
+  
+  let cleanDate = dateStr.replace(/(Ahad|Senin|Selasa|Rabu|Kamis|Jumat|Sabtu|Minggu),?/i, '').trim();
+  
+  const months: Record<string, string> = {
+    'januari': 'Jan', 'februari': 'Feb', 'maret': 'Mar', 'april': 'Apr', 
+    'mei': 'May', 'juni': 'Jun', 'juli': 'Jul', 'agustus': 'Aug', 
+    'september': 'Sep', 'oktober': 'Oct', 'november': 'Nov', 'desember': 'Dec'
+  };
+  
+  for (const [id, en] of Object.entries(months)) {
+    if (cleanDate.toLowerCase().includes(id)) {
+      cleanDate = cleanDate.toLowerCase().replace(id, en);
+      break;
+    }
+  }
+  
+  const eventDate = new Date(cleanDate);
+  if (isNaN(eventDate.getTime())) return { passed: false, liveStreamReady: true };
+  
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  
+  const tomorrow = new Date(today);
+  tomorrow.setDate(tomorrow.getDate() + 1);
+  
+  return {
+    passed: eventDate < today,
+    liveStreamReady: eventDate <= tomorrow
+  };
+};
+
 export default function EventSection({ events, onRegisterEvent }: EventSectionProps) {
   const [selectedCategory, setSelectedCategory] = useState<'Semua' | 'Dakwah' | 'Sosial'>('Semua');
   const [searchQuery, setSearchQuery] = useState('');
@@ -112,6 +145,7 @@ export default function EventSection({ events, onRegisterEvent }: EventSectionPr
             {filteredEvents.map((evt, index) => {
               const fillPercentage = evt.capacity ? Math.min(100, Math.floor((evt.registeredCount / evt.capacity) * 100)) : 100;
               const isHiddenOnMobile = index >= 2 && !showAllMobile;
+              const { passed, liveStreamReady } = getEventStatus(evt.date);
 
               return (
                 <div
@@ -197,14 +231,32 @@ export default function EventSection({ events, onRegisterEvent }: EventSectionPr
                         </div>
                       )}
 
-                      <button
-                        id={`btn-register-${evt.id}`}
-                        onClick={() => handleRegisterWhatsApp(evt)}
-                        className="w-full bg-emerald-50 hover:bg-emerald-600 text-emerald-800 hover:text-white font-bold py-2.5 rounded-xl border border-emerald-100 hover:border-emerald-600 transition flex items-center justify-center gap-1.5 text-xs md:text-sm cursor-pointer group/btn"
-                      >
-                        <span>Ikuti Kegiatan</span>
-                        <ChevronRight className="w-4 h-4 transition-transform group-hover/btn:translate-x-0.5" />
-                      </button>
+                      {liveStreamReady ? (
+                        <a href="https://youtube.com/@masjidrayapuritelukjambe_tv?si=ck_pAAn1s1Uza8Hf" target="_blank" rel="noopener noreferrer" className="w-full bg-emerald-50 hover:bg-emerald-600 text-emerald-800 hover:text-white font-bold py-2.5 rounded-xl border border-emerald-100 hover:border-emerald-600 transition flex items-center justify-center gap-1.5 text-xs md:text-sm cursor-pointer group/btn">
+                          Tonton Live Streaming
+                        </a>
+                      ) : (
+                        <button disabled className="w-full bg-gray-100 text-gray-400 font-bold py-2.5 rounded-xl border border-gray-200 cursor-not-allowed flex items-center justify-center gap-1.5 text-xs md:text-sm">
+                          Menunggu Jadwal Live
+                        </button>
+                      )}
+                      {!passed ? (
+                        <button
+                          id={`btn-register-${evt.id}`}
+                          onClick={() => handleRegisterWhatsApp(evt)}
+                          className="w-full bg-emerald-50 hover:bg-emerald-600 text-emerald-800 hover:text-white font-bold py-2.5 rounded-xl border border-emerald-100 hover:border-emerald-600 transition flex items-center justify-center gap-1.5 text-xs md:text-sm cursor-pointer group/btn"
+                        >
+                          <span>Ikuti Kegiatan</span>
+                          <ChevronRight className="w-4 h-4 transition-transform group-hover/btn:translate-x-0.5" />
+                        </button>
+                      ) : (
+                        <button
+                          disabled
+                          className="w-full bg-gray-100 text-gray-400 font-bold py-2.5 rounded-xl border border-gray-200 cursor-not-allowed flex items-center justify-center gap-1.5 text-xs md:text-sm"
+                        >
+                          <span>Telah Berlalu</span>
+                        </button>
+                      )}
                     </div>
                   </div>
                 </div>

@@ -22,3 +22,7 @@
 @utility gold-border {
   border-color: #D97706;
 }
+
+html, body {
+  overflow-x: clip;
+}
