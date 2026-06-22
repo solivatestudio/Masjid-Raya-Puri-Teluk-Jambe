@@ -48,8 +48,8 @@ export default function FridaySermonSection() {
               >
                 {/* Decorative glow indicator for the upcoming weekly sermon */}
                 {isFirst && (
-                  <div className="absolute top-0 right-0 transform translate-x-12 -translate-y-4 rotate-45 bg-amber-500 text-emerald-950 text-[10px] font-bold py-1.5 px-12 uppercase tracking-widest shadow-sm">
-                    Pekan Terdekat
+                  <div className="absolute top-5 right-0 transform translate-x-14 -translate-y-5 rotate-45 bg-amber-500 text-emerald-950 text-[10px] font-bold py-1.5 px-12 uppercase tracking-widest shadow-sm">
+                    Terdekat
                   </div>
                 )}
 
@@ -79,23 +79,10 @@ export default function FridaySermonSection() {
                     </button>
                   </div>
 
-                  {/* Sermon Theme */}
-                  <div className="space-y-1.5">
-                    <div className="flex items-center gap-1.5">
-                      <BookOpen className={`w-4 h-4 ${isFirst ? 'text-amber-300' : 'text-emerald-600'}`} />
-                      <span className={`text-[11px] font-bold uppercase tracking-wider ${isFirst ? 'text-emerald-300' : 'text-emerald-800'
-                        }`}>
-                        Tema Pembahasan Khutbah
-                      </span>
-                    </div>
-                    <p className={`font-bold leading-snug line-clamp-2 ${isFirst ? 'text-lg text-white' : 'text-base text-gray-900'
-                      }`}>
-                      &ldquo;{sermon.theme}&rdquo;
-                    </p>
-                  </div>
+
 
                   {/* Khatib & Imam Credits cards */}
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-3 border-t border-emerald-800/40">
+                  <div className={`grid grid-cols-1 sm:grid-cols-2 gap-3 pt-3 border-t ${isFirst ? 'border-white/50' : 'border-emerald-800'}`}>
 
                     {/* Khatib */}
                     <div className={`p-3.5 rounded-xl flex items-start gap-2.5 ${isFirst ? 'bg-emerald-900/40 border border-emerald-800/60' : 'bg-gray-50 border border-gray-100'
