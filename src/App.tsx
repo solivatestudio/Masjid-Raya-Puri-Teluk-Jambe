@@ -483,7 +483,7 @@ export default function App() {
           {/* Social icons, copyrights, and technical stamps */}
           <div className="pt-8 mt-8 border-t border-emerald-900/80 text-center text-xs text-emerald-300/70 flex flex-col sm:flex-row items-center justify-between gap-4">
             <div>
-              &copy; {new Date().getFullYear()} Design & Development by <a href="https://kinetcstudio.vercel.app/" target="_blank" rel="noopener noreferrer" className="text-blue-300 hover:text-blue-500 transition cursor-pointer">Kinetic Studio</a>. All Rights Reserved.
+              &copy; {new Date().getFullYear()} Design & Development by <a href="https://solivate.com" target="_blank" rel="noopener noreferrer" className="text-blue-300 hover:text-blue-500 transition cursor-pointer">Solivate Studio</a>. All Rights Reserved.
             </div>
 
             <div className="flex items-center gap-6 text-emerald-400 my-4 sm:my-0">
