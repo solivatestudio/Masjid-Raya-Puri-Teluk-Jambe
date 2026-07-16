@@ -23,11 +23,7 @@ Berikut adalah *roadmap* pengembangan sistem yang direkomendasikan untuk fase se
 - [ ] **Database Management**: Mengintegrasikan database (PostgreSQL/MySQL/MongoDB) untuk menyimpan data jadwal shalat, event, laporan kas, dan log pemesanan aula.
 - [ ] **Dashboard Admin Panel**: Membuat antarmuka khusus (CMS) bagi pengurus DKM untuk menambah, mengedit, dan menghapus konten website tanpa perlu mengubah kode sumber.
 
-### Fase 2: Otomatisasi & Pembayaran (Payment Gateway)
-- [ ] **Integrasi Payment Gateway**: Mengganti simulasi donasi dengan integrasi *payment gateway* (seperti Midtrans atau Xendit) agar donasi QRIS/Transfer dapat diverifikasi secara otomatis.
-- [ ] **Sistem Notifikasi Booking**: Mengimplementasikan notifikasi email otomatis atau bot WhatsApp untuk konfirmasi penyewaan aula kepada jamaah dan admin.
-
-### Fase 3: Peningkatan Pengalaman Pengguna (UX) & Optimasi
+### Fase 2: Peningkatan Pengalaman Pengguna (UX) & Optimasi
 - [ ] **PWA (Progressive Web App)**: Mengonfigurasi website agar dapat diunduh/di-install ke *homescreen* smartphone jamaah selayaknya aplikasi *native*.
 - [ ] **Fitur Multi-bahasa (i18n)**: Menambahkan dukungan multi-bahasa (Bahasa Indonesia, Inggris, dan Arab) untuk memperluas jangkauan dakwah.
 - [ ] **Live Streaming Kajian**: Integrasi langsung ke YouTube API untuk menampilkan *live streaming* kajian dan khutbah Jumat di halaman beranda.
