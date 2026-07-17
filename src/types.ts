@@ -54,3 +54,53 @@ export interface PrayerTime {
   time: string;
   isPassed: boolean;
 }
+
+// ── Dashboard Types ──
+
+export interface BookingRecord {
+  id: string;
+  name: string;
+  whatsapp: string;
+  date: string;
+  time_start: string;
+  time_end: string;
+  purpose: string;
+  package_id?: string;
+  need_organizer: boolean;
+  notes: string;
+  status: 'pending' | 'approved' | 'rejected';
+  admin_notes: string;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface TransactionSummary {
+  saldo: number;
+  totalPemasukan: number;
+  totalPengeluaran: number;
+  pemasukanBulanIni: number;
+  pengeluaranBulanIni: number;
+  selisihBulanIni: number;
+}
+
+export interface MonthlyTransaction {
+  month: string;
+  pemasukan: number;
+  pengeluaran: number;
+}
+
+export interface BookingSummary {
+  totalPending: number;
+  totalApprovedThisMonth: number;
+  nearestBooking: { date: string; name: string; purpose: string } | null;
+}
+
+export interface PageviewSummary {
+  total7Days: number;
+  uniqueVisitors: number;
+  activeVisitors: number;
+  topPages: { path: string; views: number; percentage: number }[];
+  referrers: { source: string; views: number }[];
+  daily7Days: { date: string; views: number }[];
+  recentVisits: { id: string; path: string; referrer: string; timestamp: string; userAgent: string }[];
+}
