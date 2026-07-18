@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 import { useState, useEffect, useRef } from 'react';
 import { Link as LinkIcon, Check, X, Loader2 } from 'lucide-react';
 import { generateSlug } from '@/lib/slug';
@@ -74,8 +74,8 @@ export default function SlugInput({ value, onChange, titleSource, autoFromTitle 
       {value && (
         <p className="text-[10px] text-slate-500 mt-1">
           URL: <span className="font-mono text-emerald-700">/blog/{value}</span>
-          {available === false && <span className="text-rose-600 ml-2">— sudah dipakai, ganti dengan suffix</span>}
-          {available === true && <span className="text-emerald-600 ml-2">— tersedia</span>}
+          {available === false && <span className="text-rose-600 ml-2">â€” sudah dipakai, ganti dengan suffix</span>}
+          {available === true && <span className="text-emerald-600 ml-2">â€” tersedia</span>}
         </p>
       )}
     </div>

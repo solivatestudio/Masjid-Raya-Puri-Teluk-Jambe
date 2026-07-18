@@ -1,4 +1,4 @@
-interface StatusBadgeProps {
+﻿interface StatusBadgeProps {
   status: 'pending' | 'approved' | 'rejected' | 'active' | string;
   label?: string;
 }

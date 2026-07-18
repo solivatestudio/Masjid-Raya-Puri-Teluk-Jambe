@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getSql, ensureSeeded } from '@/db';
-import { isAuthenticated } from '@/lib/auth';
+import { requireCmsAuth } from '@/lib/rbac';
 
 export const dynamic = 'force-dynamic';
 export const runtime = 'nodejs';
@@ -53,11 +53,8 @@ export async function GET(req: NextRequest) {
 }
 
 export async function POST(req: NextRequest) {
-  if (!(await isAuthenticated())) {
-    return NextResponse.json({ error: 'Tidak diotorisasi' }, { status: 401 });
-  }
   try {
-    await ensureSeeded();
+    await requireCmsAuth();
     const sql = getSql();
     const { date, description, type, category, amount } = await req.json();
     if (!date || !description || !type || !category || !amount) {

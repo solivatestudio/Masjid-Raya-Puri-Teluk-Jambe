@@ -1,5 +1,6 @@
 'use client';
 import { useState, useEffect, Suspense } from 'react';
+import Link from 'next/link';
 import { INITIAL_EVENTS, INITIAL_FINANCEDATA } from '@/data';
 import HeroSection from '@/components/HeroSection';
 import PrayerTimes from '@/components/PrayerTimes';
@@ -88,6 +89,9 @@ function LandingContent({ events, sermons }: Props) {
             <button onClick={() => scrollToSection('audio-visual-hall')} className="text-xs uppercase font-extrabold tracking-wider text-emerald-100 hover:text-amber-400 transition cursor-pointer">Sewa Aula</button>
             <button onClick={() => scrollToSection('galeri')} className="text-xs uppercase font-extrabold tracking-wider text-emerald-100 hover:text-amber-400 transition cursor-pointer">Galeri</button>
             <a href="/blog" className="text-xs uppercase font-extrabold tracking-wider text-emerald-100 hover:text-amber-400 transition cursor-pointer">Blog</a>
+            <Link href="/login" className="text-xs uppercase font-extrabold tracking-wider text-amber-300 hover:text-amber-100 transition cursor-pointer flex items-center gap-1">
+              🔐 Admin
+            </Link>
           </nav>
 
           <div className="hidden lg:flex items-center gap-4">
@@ -129,7 +133,7 @@ function LandingContent({ events, sermons }: Props) {
           <div className="space-y-6">
             <div className="flex items-center justify-between pb-4 border-b border-emerald-900">
               <span className="font-extrabold text-sm tracking-wider text-amber-300 uppercase">Navigasi DKM</span>
-              <button onClick={() => setMobileMenuOpen(false)} className="text-gray-400 hover:text-white font-extrabold text-lg cursor-pointer">✕</button>
+              <button onClick={() => setMobileMenuOpen(false)} className="text-gray-400 hover:text-white font-extrabold text-lg cursor-pointer">âœ•</button>
             </div>
             <div className="flex flex-col gap-4">
               <button onClick={() => scrollToSection('hero')} className="text-left py-2 text-sm font-bold text-emerald-100 hover:text-amber-400">Beranda</button>
@@ -198,12 +202,21 @@ function LandingContent({ events, sermons }: Props) {
               </ul>
             </div>
             <div className="space-y-3 bg-emerald-900/35 border border-emerald-800/40 p-4 rounded-2xl">
+              <h4 className="text-xs font-bold uppercase tracking-wider text-amber-400">Internal DKM</h4>
+              <p className="text-xs text-emerald-200/70 leading-relaxed">
+                Akses dashboard internal untuk pengurus DKM: kelola artikel, jadwal kajian, booking aula, dan laporan keuangan masjid.
+              </p>
+              <Link href="/login" className="inline-block w-full text-center text-[14px] text-amber-400 font-bold border border-amber-400 hover:bg-amber-400 hover:text-emerald-900 transition-colors duration-300 p-2 rounded">
+                🔐 Masuk Dashboard Admin
+              </Link>
+            </div>
+            <div className="space-y-3 bg-emerald-900/35 border border-emerald-800/40 p-4 rounded-2xl">
               <h4 className="text-xs font-bold uppercase tracking-wider text-amber-400">Sekretariat menerima saran dan masukan</h4>
               <p className="text-xs text-emerald-200/70 leading-relaxed">
-                Kantor sekertariat DKM Masjid Raya Puri Telukjambe menerima saran dan masukan untuk perkembangan terbaik masjid tiap hari kerja pukul 08:30 – 16:30 WIB.
+                Kantor sekertariat DKM Masjid Raya Puri Telukjambe menerima saran dan masukan untuk perkembangan terbaik masjid tiap hari kerja pukul 08:30 â€“ 16:30 WIB.
               </p>
               <a href="https://forms.gle/3JxrimyLqbBcJ3kG8" target="_blank" rel="noopener noreferrer" className="inline-block w-full text-center text-[14px] text-amber-400 font-bold border border-amber-400 hover:bg-amber-400 hover:text-emerald-900 transition-colors duration-300 p-2 rounded">
-                ● Silahkan Klik untuk menyampaikan saran & masukan
+                â— Silahkan Klik untuk menyampaikan saran & masukan
               </a>
             </div>
           </div>
@@ -219,7 +232,7 @@ function LandingContent({ events, sermons }: Props) {
             </div>
             <div className="flex items-center gap-1.5 text-[10px]">
               <span>Masyarakat Transparansi Syari&apos;ah Indonesia</span>
-              <span>•</span>
+              <span>â€¢</span>
               <span>Amanah & Profesional</span>
             </div>
           </div>

@@ -1,12 +1,13 @@
-'use client';
+﻿'use client';
 import { useState, FormEvent, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { Lock, LogIn, Eye, EyeOff, ShieldCheck } from 'lucide-react';
+import { Lock, LogIn, Eye, EyeOff, ShieldCheck, Mail } from 'lucide-react';
 
 function LoginForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const next = searchParams.get('next') || '/dashboard';
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
@@ -17,10 +18,10 @@ function LoginForm() {
     setError('');
     setLoading(true);
     try {
-      const res = await fetch('/api/auth/login', {
+      const res = await fetch('/api/admin/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ password }),
+        body: JSON.stringify({ email, password }),
         credentials: 'include',
       });
       if (!res.ok) {
@@ -37,10 +38,10 @@ function LoginForm() {
   };
 
   return (
-    <div className="min-h-screen emerald-gradient flex items-center justify-center p-4">
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-emerald-950 to-slate-900 flex items-center justify-center p-4">
       <div className="bg-white rounded-3xl card-shadow max-w-md w-full p-8 border border-emerald-100">
         <div className="flex flex-col items-center text-center mb-6">
-          <div className="w-16 h-16 rounded-2xl emerald-gradient flex items-center justify-center text-amber-400 mb-3 shadow-lg">
+          <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-emerald-700 to-emerald-900 flex items-center justify-center text-amber-400 mb-3 shadow-lg">
             <ShieldCheck className="w-8 h-8" />
           </div>
           <h1 className="text-2xl font-extrabold text-slate-900">Dashboard Admin</h1>
@@ -49,9 +50,24 @@ function LoginForm() {
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-xs font-bold text-slate-700 mb-1.5 uppercase tracking-wider">
-              Password Admin
-            </label>
+            <label className="block text-xs font-bold text-slate-700 mb-1.5 uppercase tracking-wider">Email</label>
+            <div className="relative">
+              <div className="absolute inset-y-0 left-3 flex items-center text-slate-400">
+                <Mail className="w-4 h-4" />
+              </div>
+              <input
+                type="email"
+                required
+                autoFocus
+                placeholder="admin@masjidraya.id"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="w-full bg-white border border-gray-300 text-gray-900 rounded-xl pl-10 pr-3 py-3 text-sm focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-600 focus:outline-none"
+              />
+            </div>
+          </div>
+          <div>
+            <label className="block text-xs font-bold text-slate-700 mb-1.5 uppercase tracking-wider">Password</label>
             <div className="relative">
               <div className="absolute inset-y-0 left-3 flex items-center text-slate-400">
                 <Lock className="w-4 h-4" />
@@ -59,7 +75,6 @@ function LoginForm() {
               <input
                 type={showPassword ? 'text' : 'password'}
                 required
-                autoFocus
                 placeholder="Masukkan password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
@@ -84,7 +99,7 @@ function LoginForm() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-emerald-600 hover:bg-emerald-700 disabled:opacity-50 text-white font-bold py-3 rounded-xl transition flex items-center justify-center gap-2 cursor-pointer shadow-md"
+            className="w-full bg-emerald-700 hover:bg-emerald-800 disabled:opacity-50 text-white font-bold py-3 rounded-xl transition flex items-center justify-center gap-2 cursor-pointer shadow-md"
           >
             {loading ? (
               <span>Memverifikasi...</span>
@@ -97,10 +112,9 @@ function LoginForm() {
           </button>
         </form>
 
-        <div className="mt-6 pt-4 border-t border-gray-100 text-center">
-          <a href="/" className="text-xs text-slate-500 hover:text-emerald-600 transition">
-            ← Kembali ke Website
-          </a>
+        <div className="mt-6 pt-4 border-t border-gray-100 text-center text-xs text-slate-500">
+          <p>Default admin: <span className="font-mono">admin@masjidraya.id / admin123</span></p>
+          <p className="mt-1 text-rose-500">âš  Segera ganti password setelah login pertama</p>
         </div>
       </div>
     </div>
@@ -109,7 +123,7 @@ function LoginForm() {
 
 export default function LoginPage() {
   return (
-    <Suspense fallback={<div className="min-h-screen emerald-gradient flex items-center justify-center text-white">Memuat...</div>}>
+    <Suspense fallback={<div className="min-h-screen bg-slate-900 flex items-center justify-center text-white">Memuat...</div>}>
       <LoginForm />
     </Suspense>
   );

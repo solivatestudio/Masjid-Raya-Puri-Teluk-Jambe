@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 import { useEffect, useState, FormEvent } from 'react';
 import { bookingsApi } from '@/lib/api';
 import { formatDate, formatDateShort } from '@/lib/utils';
@@ -117,7 +117,7 @@ export default function BookingPage() {
           <SummaryCard
             title="Booking Terdekat"
             value={summary.nearestBooking ? formatDateShort(summary.nearestBooking.date) : '-'}
-            subtitle={summary.nearestBooking ? `${summary.nearestBooking.name} — ${summary.nearestBooking.purpose}` : 'Tidak ada'}
+            subtitle={summary.nearestBooking ? `${summary.nearestBooking.name} â€” ${summary.nearestBooking.purpose}` : 'Tidak ada'}
             icon={<Users className="w-5 h-5" />}
           />
         </div>
@@ -173,9 +173,9 @@ export default function BookingPage() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <div className="bg-white rounded-3xl border border-slate-100 card-shadow p-5">
           <div className="flex items-center justify-between mb-4">
-            <button onClick={() => { if (calMonth === 0) { setCalMonth(11); setCalYear(calYear - 1); } else { setCalMonth(calMonth - 1); } }} className="text-xs font-bold text-slate-600 hover:text-emerald-700 cursor-pointer px-2 py-1">‹</button>
+            <button onClick={() => { if (calMonth === 0) { setCalMonth(11); setCalYear(calYear - 1); } else { setCalMonth(calMonth - 1); } }} className="text-xs font-bold text-slate-600 hover:text-emerald-700 cursor-pointer px-2 py-1">â€¹</button>
             <span className="text-sm font-bold text-slate-800">{monthNames[calMonth]} {calYear}</span>
-            <button onClick={() => { if (calMonth === 11) { setCalMonth(0); setCalYear(calYear + 1); } else { setCalMonth(calMonth + 1); } }} className="text-xs font-bold text-slate-600 hover:text-emerald-700 cursor-pointer px-2 py-1">›</button>
+            <button onClick={() => { if (calMonth === 11) { setCalMonth(0); setCalYear(calYear + 1); } else { setCalMonth(calMonth + 1); } }} className="text-xs font-bold text-slate-600 hover:text-emerald-700 cursor-pointer px-2 py-1">â€º</button>
           </div>
           <div className="grid grid-cols-7 gap-1 text-center">
             {['Min', 'Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab'].map((d) => (

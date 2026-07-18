@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 import { Landmark, ArrowRight, HeartHandshake, CalendarClock, Compass } from 'lucide-react';
 
 const heroImage = '/images/header.webp';
@@ -66,21 +66,21 @@ export default function HeroSection({ onDonateClick, onSermonClick, onBookingCli
             <h3 className="text-xs font-bold uppercase tracking-widest text-amber-400">Layanan Unggulan Masjid</h3>
             <div className="space-y-3.5">
               <div className="flex gap-4 p-3 bg-emerald-900/60 rounded-xl border border-emerald-800/50">
-                <div className="w-10 h-10 rounded-lg bg-emerald-800 flex items-center justify-center shrink-0 text-base">🕌</div>
+                <div className="w-10 h-10 rounded-lg bg-emerald-800 flex items-center justify-center shrink-0 text-base">ðŸ•Œ</div>
                 <div>
                   <h4 className="font-semibold text-white text-sm">Kajian Dakwah Syar&apos;i & Kegiatan Sosial</h4>
                   <p className="text-xs text-emerald-200/70">bedah ilmu islamiyah terstruktur & kegiatan sosial rutin.</p>
                 </div>
               </div>
               <div className="flex gap-4 p-3 bg-emerald-900/60 rounded-xl border border-emerald-800/50">
-                <div className="w-10 h-10 rounded-lg bg-emerald-800 flex items-center justify-center shrink-0 text-base">🚑</div>
+                <div className="w-10 h-10 rounded-lg bg-emerald-800 flex items-center justify-center shrink-0 text-base">ðŸš‘</div>
                 <div>
                   <h4 className="font-semibold text-white text-sm">Layanan Ambulans & Sosial Siaga</h4>
                   <p className="text-xs text-emerald-200/70">Siap melayani kebutuhan gawat darurat warga 24 jam gratis.</p>
                 </div>
               </div>
               <div className="flex gap-4 p-3 bg-emerald-900/60 rounded-xl border border-emerald-800/50">
-                <div className="w-10 h-10 rounded-lg bg-emerald-800 flex items-center justify-center shrink-0 text-base">🏛️</div>
+                <div className="w-10 h-10 rounded-lg bg-emerald-800 flex items-center justify-center shrink-0 text-base">ðŸ›ï¸</div>
                 <div>
                   <h4 className="font-semibold text-white text-sm">Aula Serbaguna Syariah</h4>
                   <p className="text-xs text-emerald-200/70">Disewakan untuk walimah nikah, seminar, & rapat akbar umat.</p>

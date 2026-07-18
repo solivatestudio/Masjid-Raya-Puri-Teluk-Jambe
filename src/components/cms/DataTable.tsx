@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 import { useState, ReactNode } from 'react';
 import { Search, ChevronLeft, ChevronRight } from 'lucide-react';
 
@@ -91,7 +91,7 @@ export default function DataTable<T>({
 
       {totalPages > 1 && (
         <div className="flex items-center justify-between text-xs text-slate-600">
-          <span>{filtered.length} data · Halaman {page} dari {totalPages}</span>
+          <span>{filtered.length} data Â· Halaman {page} dari {totalPages}</span>
           <div className="flex items-center gap-1">
             <button onClick={() => setPage(Math.max(1, page - 1))} disabled={page === 1} className="p-1.5 rounded border border-slate-200 disabled:opacity-30 hover:bg-slate-50">
               <ChevronLeft className="w-4 h-4" />

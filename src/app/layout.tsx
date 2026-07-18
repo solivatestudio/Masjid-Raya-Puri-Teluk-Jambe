@@ -1,4 +1,4 @@
-import type { Metadata, Viewport } from 'next';
+﻿import type { Metadata, Viewport } from 'next';
 import './globals.css';
 
 const APP_URL = process.env.APP_URL || 'https://masjidrayapuritelukjambe.com';

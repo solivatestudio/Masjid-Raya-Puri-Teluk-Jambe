@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { Plus, Edit, Trash2, CalendarRange, ChevronLeft, ChevronRight } from 'lucide-react';
@@ -77,7 +77,7 @@ export default function AulaPage() {
                         <span className={`ml-2 px-2 py-0.5 rounded text-[10px] font-bold ${s.is_available ? 'bg-emerald-100 text-emerald-800' : 'bg-rose-100 text-rose-800'}`}>
                           {s.is_available ? 'TERSEDIA' : 'BLOCKED'}
                         </span>
-                        {s.block_reason && <span className="ml-2 text-slate-500">— {s.block_reason}</span>}
+                        {s.block_reason && <span className="ml-2 text-slate-500">â€” {s.block_reason}</span>}
                       </div>
                       <button onClick={() => handleDelete(s.id)} className="p-1 hover:bg-rose-100 text-rose-600 rounded transition">
                         <Trash2 className="w-3.5 h-3.5" />

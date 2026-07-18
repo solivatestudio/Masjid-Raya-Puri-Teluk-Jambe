@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { transactionsApi, bookingsApi, pageviewsApi } from '@/lib/api';
@@ -96,7 +96,7 @@ export default function OverviewPage() {
                 <div key={tx.id} className="flex items-center justify-between py-2 border-b border-gray-50 last:border-0">
                   <div className="min-w-0">
                     <p className="text-xs font-semibold text-slate-800 truncate">{tx.description}</p>
-                    <p className="text-[9px] text-slate-400">{tx.date} — {tx.category}</p>
+                    <p className="text-[9px] text-slate-400">{tx.date} â€” {tx.category}</p>
                   </div>
                   <span className={`text-xs font-bold font-mono ${tx.type === 'Pemasukan' ? 'text-emerald-700' : 'text-rose-600'}`}>
                     {tx.type === 'Pemasukan' ? '+' : '-'}{formatRupiah(tx.amount)}
@@ -122,7 +122,7 @@ export default function OverviewPage() {
                 <div key={b.id} className="flex items-center justify-between py-2 border-b border-gray-50 last:border-0">
                   <div className="min-w-0">
                     <p className="text-xs font-semibold text-slate-800">{b.name}</p>
-                    <p className="text-[9px] text-slate-400">{b.date} — {b.purpose?.slice(0, 30)}</p>
+                    <p className="text-[9px] text-slate-400">{b.date} â€” {b.purpose?.slice(0, 30)}</p>
                   </div>
                   <StatusBadge status={b.status} />
                 </div>
@@ -160,10 +160,10 @@ export default function OverviewPage() {
               + Tambah Transaksi
             </Link>
             <Link href="/dashboard/booking" className="block w-full text-center bg-amber-50 hover:bg-amber-100 text-amber-800 text-xs font-bold py-3 rounded-xl transition">
-              📋 Review Booking
+              ðŸ“‹ Review Booking
             </Link>
             <Link href="/dashboard/trafik" className="block w-full text-center bg-blue-50 hover:bg-blue-100 text-blue-800 text-xs font-bold py-3 rounded-xl transition">
-              📊 Lihat Trafik
+              ðŸ“Š Lihat Trafik
             </Link>
           </div>
         </div>

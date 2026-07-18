@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 import { useState, MouseEvent } from 'react';
 import { GALLERY_PHOTOS } from '@/data';
 import { Eye, ChevronLeft, ChevronRight, X } from 'lucide-react';

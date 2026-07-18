@@ -1,4 +1,4 @@
-import { getPublicArticles } from '@/lib/public-api';
+﻿import { getPublicArticles } from '@/lib/public-api';
 import Link from 'next/link';
 import { ArrowRight, Calendar, Eye, BookOpen } from 'lucide-react';
 
@@ -30,7 +30,7 @@ export default async function BlogListPage({ searchParams }: { searchParams: { p
               <p className="text-[10px] text-emerald-300 font-bold uppercase tracking-wider">Blog & Artikel</p>
             </div>
           </Link>
-          <Link href="/" className="text-xs uppercase font-bold text-emerald-300 hover:text-white">← Kembali ke Beranda</Link>
+          <Link href="/" className="text-xs uppercase font-bold text-emerald-300 hover:text-white">â† Kembali ke Beranda</Link>
         </div>
       </header>
 
@@ -64,7 +64,7 @@ export default async function BlogListPage({ searchParams }: { searchParams: { p
 
         {articles.length === 0 ? (
           <div className="text-center py-16 bg-white rounded-2xl border border-slate-200">
-            <div className="text-4xl mb-3">📝</div>
+            <div className="text-4xl mb-3">ðŸ“</div>
             <p className="text-slate-500">Belum ada artikel di kategori ini.</p>
             <Link href="/blog" className="text-emerald-700 font-bold mt-2 inline-block hover:underline">Lihat semua artikel</Link>
           </div>
@@ -126,7 +126,7 @@ export default async function BlogListPage({ searchParams }: { searchParams: { p
 
         <div className="mt-12 text-center">
           <Link href="/" className="inline-flex items-center gap-2 text-emerald-700 hover:text-emerald-900 font-bold text-sm">
-            ← Kembali ke Beranda
+            â† Kembali ke Beranda
           </Link>
         </div>
       </main>

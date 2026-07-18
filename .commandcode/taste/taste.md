@@ -16,3 +16,6 @@
 # ui
 - Use client-side pagination (load all, filter in browser) instead of server-side pagination. Confidence: 0.50
 
+# git
+- Include co-author trailer "Co-authored-by: Hammad <email1.hammad@gmail.com>" in all git commit messages. Confidence: 0.70
+

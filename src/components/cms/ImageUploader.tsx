@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 import { useState } from 'react';
 import { UploadButton } from '@/lib/uploadthing';
 import { X, Image as ImageIcon, Check, Loader2 } from 'lucide-react';
@@ -110,7 +110,7 @@ export default function ImageUploader({
 
             {error && (
               <div className="text-xs text-rose-600 bg-rose-50 px-3 py-2 rounded-lg border border-rose-200">
-                ❌ {error}
+                âŒ {error}
               </div>
             )}
           </div>

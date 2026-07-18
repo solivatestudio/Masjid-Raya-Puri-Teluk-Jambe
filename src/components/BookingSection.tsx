@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 import { HALL_INFO, BOOKING_PACKAGES } from '@/data';
 import { ArrowRight, CheckCircle2, ShieldCheck } from 'lucide-react';
 

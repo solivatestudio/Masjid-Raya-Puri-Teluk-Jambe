@@ -50,7 +50,7 @@ export default function EditKajianPage() {
           is_published: isPublished }),
       });
       if (!res.ok) throw new Error((await res.json()).error || 'Gagal');
-      router.push('/admin/cms/kajian');
+      router.push('/dashboard/kajian');
     } catch (e: any) { setError(e.message); }
     finally { setSaving(false); }
   };
@@ -59,7 +59,7 @@ export default function EditKajianPage() {
 
   return (
     <div className="space-y-6 max-w-3xl">
-      <Link href="/admin/cms/kajian" className="text-slate-600 hover:text-slate-900 flex items-center gap-2 text-sm">
+      <Link href="/dashboard/kajian" className="text-slate-600 hover:text-slate-900 flex items-center gap-2 text-sm">
         <ArrowLeft className="w-4 h-4" /> Kembali
       </Link>
       <h1 className="text-2xl font-extrabold text-slate-900">Edit Kajian</h1>

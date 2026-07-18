@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
@@ -35,14 +35,14 @@ export default function NewKajianPage() {
           is_published: isPublished }),
       });
       if (!res.ok) throw new Error((await res.json()).error || 'Gagal');
-      router.push('/admin/cms/kajian');
+      router.push('/dashboard/kajian');
     } catch (e: any) { setError(e.message); }
     finally { setSaving(false); }
   };
 
   return (
     <div className="space-y-6 max-w-3xl">
-      <Link href="/admin/cms/kajian" className="text-slate-600 hover:text-slate-900 flex items-center gap-2 text-sm">
+      <Link href="/dashboard/kajian" className="text-slate-600 hover:text-slate-900 flex items-center gap-2 text-sm">
         <ArrowLeft className="w-4 h-4" /> Kembali
       </Link>
       <h1 className="text-2xl font-extrabold text-slate-900">Tambah Kajian / Dauroh</h1>
@@ -106,7 +106,7 @@ export default function NewKajianPage() {
             <div className="sm:col-span-2">
               <label className="block text-xs font-bold text-slate-700 mb-1">Hari Recurring</label>
               <select value={recurringDay} onChange={(e) => setRecurringDay(e.target.value)} className="w-full bg-white border border-gray-300 rounded-xl px-3 py-2 text-sm focus:ring-1 focus:ring-emerald-500 focus:outline-none">
-                <option value="">— pilih hari —</option>
+                <option value="">â€” pilih hari â€”</option>
                 {['Ahad', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'].map((d) => <option key={d} value={d}>{d}</option>)}
               </select>
             </div>

@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { Plus, Edit, Trash2, CalendarDays, RefreshCw, Loader2 } from 'lucide-react';
@@ -52,7 +52,7 @@ export default function KhutbahPage() {
             {generating ? <Loader2 className="w-4 h-4 animate-spin" /> : <RefreshCw className="w-4 h-4" />}
             Generate 4 Jumat
           </button>
-          <Link href="/admin/cms/khutbah/new" className="bg-emerald-700 hover:bg-emerald-800 text-white text-xs font-bold px-4 py-2.5 rounded-xl flex items-center gap-1.5">
+          <Link href="/dashboard/khutbah/new" className="bg-emerald-700 hover:bg-emerald-800 text-white text-xs font-bold px-4 py-2.5 rounded-xl flex items-center gap-1.5">
             <Plus className="w-4 h-4" /> Tambah Manual
           </Link>
         </div>
@@ -67,11 +67,11 @@ export default function KhutbahPage() {
         rowKey={(k) => k.id}
         columns={[
           { key: 'date', header: 'Tanggal', className: 'w-40', render: (k) => <span className="text-xs font-mono">{new Date(k.schedule_date).toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })}</span> },
-          { key: 'khatib', header: 'Khatib', render: (k) => <div><div className="font-bold text-slate-900">{k.khatib}</div><div className="text-xs text-slate-500">{k.muadzin || '—'}</div></div> },
-          { key: 'theme', header: 'Tema', render: (k) => <span className="text-xs text-slate-600 italic">{k.theme || '—'}</span> },
+          { key: 'khatib', header: 'Khatib', render: (k) => <div><div className="font-bold text-slate-900">{k.khatib}</div><div className="text-xs text-slate-500">{k.muadzin || 'â€”'}</div></div> },
+          { key: 'theme', header: 'Tema', render: (k) => <span className="text-xs text-slate-600 italic">{k.theme || 'â€”'}</span> },
           { key: 'actions', header: '', className: 'w-24 text-right', render: (k) => (
             <div className="flex items-center justify-end gap-1">
-              <Link href={`/admin/cms/khutbah/${k.id}`} className="p-1.5 hover:bg-emerald-100 text-emerald-700 rounded-lg transition"><Edit className="w-4 h-4" /></Link>
+              <Link href={`/dashboard/khutbah/${k.id}`} className="p-1.5 hover:bg-emerald-100 text-emerald-700 rounded-lg transition"><Edit className="w-4 h-4" /></Link>
               <button onClick={() => handleDelete(k.id, k.khatib)} className="p-1.5 hover:bg-rose-100 text-rose-600 rounded-lg transition"><Trash2 className="w-4 h-4" /></button>
             </div>
           )},

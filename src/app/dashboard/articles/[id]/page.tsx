@@ -1,14 +1,18 @@
 'use client';
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
+import { useRouter, useParams } from 'next/navigation';
 import Link from 'next/link';
 import ArticleEditor from '@/components/cms/ArticleEditor';
 import SlugInput from '@/components/cms/SlugInput';
 import ImageUploader from '@/components/cms/ImageUploader';
-import { ArrowLeft, Save, Send } from 'lucide-react';
+import { ArrowLeft, Save, Send, Loader2 } from 'lucide-react';
 
-export default function NewArticlePage() {
+export default function EditArticlePage() {
   const router = useRouter();
+  const params = useParams();
+  const id = params.id as string;
+
+  const [loading, setLoading] = useState(true);
   const [title, setTitle] = useState('');
   const [slug, setSlug] = useState('');
   const [excerpt, setExcerpt] = useState('');
@@ -22,15 +26,30 @@ export default function NewArticlePage() {
   const [error, setError] = useState('');
   const [saving, setSaving] = useState(false);
 
+  useEffect(() => {
+    fetch(`/api/admin/articles/${id}`, { credentials: 'include' })
+      .then((r) => r.json())
+      .then((a) => {
+        setTitle(a.title);
+        setSlug(a.slug);
+        setExcerpt(a.excerpt || '');
+        setContentHtml(a.content_html || '');
+        setFeaturedImageUrl(a.featured_image_url || '');
+        setFeaturedImageAlt(a.featured_image_alt || '');
+        setCategory(a.category || 'Berita');
+        setTags((a.tags || []).join(', '));
+        setStatus(a.status || 'draft');
+        setLoading(false);
+      })
+      .catch(() => setLoading(false));
+  }, [id]);
+
   const handleSave = async (publish = false) => {
     setError('');
-    if (!title.trim()) { setError('Judul wajib diisi'); return; }
-    if (!slug.trim()) { setError('Slug wajib diisi'); return; }
-
     setSaving(true);
     try {
-      const res = await fetch('/api/admin/articles', {
-        method: 'POST',
+      const res = await fetch(`/api/admin/articles/${id}`, {
+        method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',
         body: JSON.stringify({
@@ -44,7 +63,7 @@ export default function NewArticlePage() {
         const data = await res.json();
         throw new Error(data.error || 'Gagal menyimpan');
       }
-      router.push('/admin/cms/articles');
+      router.push('/dashboard/articles');
     } catch (e: any) {
       setError(e.message);
     } finally {
@@ -52,25 +71,35 @@ export default function NewArticlePage() {
     }
   };
 
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center h-64">
+        <Loader2 className="w-8 h-8 text-emerald-600 animate-spin" />
+      </div>
+    );
+  }
+
   return (
     <div className="space-y-6 max-w-5xl">
       <div className="flex items-center justify-between">
-        <Link href="/admin/cms/articles" className="text-slate-600 hover:text-slate-900 flex items-center gap-2 text-sm">
+        <Link href="/dashboard/articles" className="text-slate-600 hover:text-slate-900 flex items-center gap-2 text-sm">
           <ArrowLeft className="w-4 h-4" /> Kembali ke daftar
         </Link>
         <div className="flex items-center gap-2">
           <button onClick={() => handleSave(false)} disabled={saving} className="bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 text-xs font-bold px-4 py-2.5 rounded-xl flex items-center gap-1.5">
-            <Save className="w-4 h-4" /> Simpan Draft
+            <Save className="w-4 h-4" /> Simpan
           </button>
-          <button onClick={() => handleSave(true)} disabled={saving} className="bg-emerald-700 hover:bg-emerald-800 text-white text-xs font-bold px-4 py-2.5 rounded-xl flex items-center gap-1.5">
-            <Send className="w-4 h-4" /> Publish
-          </button>
+          {status !== 'published' && (
+            <button onClick={() => handleSave(true)} disabled={saving} className="bg-emerald-700 hover:bg-emerald-800 text-white text-xs font-bold px-4 py-2.5 rounded-xl flex items-center gap-1.5">
+              <Send className="w-4 h-4" /> Publish
+            </button>
+          )}
         </div>
       </div>
 
       <div>
-        <h1 className="text-2xl font-extrabold text-slate-900">Tulis Artikel Baru</h1>
-        <p className="text-sm text-slate-500">Buat artikel untuk website masjid</p>
+        <h1 className="text-2xl font-extrabold text-slate-900">Edit Artikel</h1>
+        <p className="text-sm text-slate-500">{title}</p>
       </div>
 
       {error && <div className="bg-rose-50 border border-rose-200 text-rose-700 text-sm font-semibold p-3 rounded-xl">{error}</div>}
@@ -80,39 +109,22 @@ export default function NewArticlePage() {
           <div className="bg-white rounded-2xl border border-slate-100 card-shadow p-5 space-y-4">
             <div>
               <label className="block text-xs font-bold text-slate-700 mb-1">Judul Artikel</label>
-              <input
-                type="text"
-                value={title}
-                onChange={(e) => setTitle(e.target.value)}
-                placeholder="Tulis judul yang menarik..."
-                className="w-full bg-white border border-gray-300 rounded-xl px-3 py-2.5 text-sm focus:ring-1 focus:ring-emerald-500 focus:outline-none"
-              />
+              <input type="text" value={title} onChange={(e) => setTitle(e.target.value)} className="w-full bg-white border border-gray-300 rounded-xl px-3 py-2.5 text-sm focus:ring-1 focus:ring-emerald-500 focus:outline-none" />
             </div>
             <div>
               <label className="block text-xs font-bold text-slate-700 mb-1">Slug URL</label>
-              <SlugInput value={slug} onChange={setSlug} titleSource={title} />
+              <SlugInput value={slug} onChange={setSlug} autoFromTitle={false} />
             </div>
             <div>
-              <label className="block text-xs font-bold text-slate-700 mb-1">Ringkasan (Excerpt)</label>
-              <textarea
-                value={excerpt}
-                onChange={(e) => setExcerpt(e.target.value)}
-                rows={2}
-                placeholder="Ringkasan singkat artikel (max 300 karakter)"
-                className="w-full bg-white border border-gray-300 rounded-xl px-3 py-2 text-sm focus:ring-1 focus:ring-emerald-500 focus:outline-none"
-              />
+              <label className="block text-xs font-bold text-slate-700 mb-1">Ringkasan</label>
+              <textarea value={excerpt} onChange={(e) => setExcerpt(e.target.value)} rows={2} className="w-full bg-white border border-gray-300 rounded-xl px-3 py-2 text-sm focus:ring-1 focus:ring-emerald-500 focus:outline-none" />
             </div>
           </div>
-
           <div>
             <label className="block text-xs font-bold text-slate-700 mb-1">Konten Artikel</label>
-            <ArticleEditor
-              content={contentHtml}
-              onChange={(html, json) => { setContentHtml(html); setContentJson(json); }}
-            />
+            <ArticleEditor content={contentHtml} onChange={(html, json) => { setContentHtml(html); setContentJson(json); }} />
           </div>
         </div>
-
         <div className="space-y-4">
           <div className="bg-white rounded-2xl border border-slate-100 card-shadow p-5 space-y-4">
             <div>
@@ -133,11 +145,10 @@ export default function NewArticlePage() {
               </select>
             </div>
             <div>
-              <label className="block text-xs font-bold text-slate-700 mb-1">Tags (pisah koma)</label>
-              <input type="text" value={tags} onChange={(e) => setTags(e.target.value)} placeholder="pengumuman, ramadhan, khutbah" className="w-full bg-white border border-gray-300 rounded-xl px-3 py-2 text-sm focus:ring-1 focus:ring-emerald-500 focus:outline-none" />
+              <label className="block text-xs font-bold text-slate-700 mb-1">Tags</label>
+              <input type="text" value={tags} onChange={(e) => setTags(e.target.value)} className="w-full bg-white border border-gray-300 rounded-xl px-3 py-2 text-sm focus:ring-1 focus:ring-emerald-500 focus:outline-none" />
             </div>
           </div>
-
           <div className="bg-white rounded-2xl border border-slate-100 card-shadow p-5 space-y-3">
             <h3 className="text-sm font-bold text-slate-800">Featured Image</h3>
             <ImageUploader

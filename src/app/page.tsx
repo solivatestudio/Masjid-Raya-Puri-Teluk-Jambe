@@ -1,4 +1,4 @@
-import 'server-only';
+﻿import 'server-only';
 import { getPublicKajian, getPublicKhutbah } from '@/lib/public-api';
 import LandingPageClient from './LandingPageClient';
 

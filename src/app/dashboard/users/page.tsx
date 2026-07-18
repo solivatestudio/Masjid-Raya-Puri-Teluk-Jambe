@@ -17,7 +17,7 @@ export default function PicPage() {
   const [showForm, setShowForm] = useState(false);
 
   const load = async () => {
-    const res = await fetch('/api/admin/pic', { credentials: 'include' });
+    const res = await fetch('/api/admin/users', { credentials: 'include' });
     if (res.ok) setItems(await res.json());
     setLoading(false);
   };
@@ -33,7 +33,7 @@ export default function PicPage() {
   const handleDelete = async (id: string, name: string) => {
     if (id === currentUser?.id) { alert('Tidak bisa menghapus akun sendiri'); return; }
     if (!confirm(`Hapus user "${name}"?`)) return;
-    const res = await fetch(`/api/admin/pic/${id}`, { method: 'DELETE', credentials: 'include' });
+    const res = await fetch(`/api/admin/users/${id}`, { method: 'DELETE', credentials: 'include' });
     if (!res.ok) {
       const data = await res.json();
       alert(data.error || 'Gagal');
@@ -72,7 +72,7 @@ export default function PicPage() {
           { key: 'last_login', header: 'Login Terakhir', className: 'w-36', render: (u) => <span className="text-xs text-slate-500">{u.last_login_at ? new Date(u.last_login_at).toLocaleString('id-ID', { dateStyle: 'short', timeStyle: 'short' }) : 'Belum pernah'}</span> },
           { key: 'actions', header: '', className: 'w-24 text-right', render: (u) => (
             <div className="flex items-center justify-end gap-1">
-              <Link href={`/admin/cms/pic/${u.id}`} className="p-1.5 hover:bg-emerald-100 text-emerald-700 rounded-lg transition"><Edit className="w-4 h-4" /></Link>
+              <Link href={`/dashboard/pic/${u.id}`} className="p-1.5 hover:bg-emerald-100 text-emerald-700 rounded-lg transition"><Edit className="w-4 h-4" /></Link>
               <button onClick={() => handleDelete(u.id, u.name)} className="p-1.5 hover:bg-rose-100 text-rose-600 rounded-lg transition"><Trash2 className="w-4 h-4" /></button>
             </div>
           )},
@@ -95,7 +95,7 @@ function PicFormModal({ onClose, onSaved }: { onClose: () => void; onSaved: () =
   const handleSave = async () => {
     setError(''); setSaving(true);
     try {
-      const res = await fetch('/api/admin/pic', {
+      const res = await fetch('/api/admin/users', {
         method: 'POST', headers: { 'Content-Type': 'application/json' }, credentials: 'include',
         body: JSON.stringify({ email, password, name, role }),
       });

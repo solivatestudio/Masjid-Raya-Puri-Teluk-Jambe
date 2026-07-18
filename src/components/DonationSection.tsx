@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 import { useState, FormEvent } from 'react';
 import { QrCode, CreditCard, Heart, ArrowRight, Smartphone, AlertCircle, Copy } from 'lucide-react';
 
@@ -30,7 +30,7 @@ export default function DonationSection() {
       return;
     }
     const phoneNumber = '62895414283161';
-    const message = `Assalamualaikum Admin Masjid Raya Puri Telukjambe 👋\nSaya ingin mengonfirmasi bahwa saya telah/akan menyalurkan infaq.\n*Detail Donatur:*\n• Nama: ${donorName}\n• Nominal: *${formatRupiah(finalAmount)}*\n• Metode: QRIS / Transfer Bank\nMohon bantuannya untuk diverifikasi. Terima kasih, Jazakumullah Khairan Katsiran.`;
+    const message = `Assalamualaikum Admin Masjid Raya Puri Telukjambe ðŸ‘‹\nSaya ingin mengonfirmasi bahwa saya telah/akan menyalurkan infaq.\n*Detail Donatur:*\nâ€¢ Nama: ${donorName}\nâ€¢ Nominal: *${formatRupiah(finalAmount)}*\nâ€¢ Metode: QRIS / Transfer Bank\nMohon bantuannya untuk diverifikasi. Terima kasih, Jazakumullah Khairan Katsiran.`;
     const url = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
     window.open(url, '_blank', 'noopener,noreferrer');
     setCustomAmount('');

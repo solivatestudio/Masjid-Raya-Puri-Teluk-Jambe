@@ -35,7 +35,7 @@ export default function EditKhutbahPage() {
         body: JSON.stringify({ schedule_date: scheduleDate, khatib, muadzin: muadzin || null, theme: theme || null, notes: notes || null }),
       });
       if (!res.ok) throw new Error((await res.json()).error || 'Gagal');
-      router.push('/admin/cms/khutbah');
+      router.push('/dashboard/khutbah');
     } catch (e: any) { setError(e.message); }
     finally { setSaving(false); }
   };
@@ -44,7 +44,7 @@ export default function EditKhutbahPage() {
 
   return (
     <div className="space-y-6 max-w-2xl">
-      <Link href="/admin/cms/khutbah" className="text-slate-600 hover:text-slate-900 flex items-center gap-2 text-sm"><ArrowLeft className="w-4 h-4" /> Kembali</Link>
+      <Link href="/dashboard/khutbah" className="text-slate-600 hover:text-slate-900 flex items-center gap-2 text-sm"><ArrowLeft className="w-4 h-4" /> Kembali</Link>
       <h1 className="text-2xl font-extrabold text-slate-900">Edit Jadwal Khutbah</h1>
       {error && <div className="bg-rose-50 border border-rose-200 text-rose-700 text-sm p-3 rounded-xl">{error}</div>}
       <div className="bg-white rounded-2xl border border-slate-100 card-shadow p-6 space-y-4">
