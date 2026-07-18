@@ -42,7 +42,7 @@ export default function EditPicPage() {
   if (loading) return <div className="flex justify-center h-64"><Loader2 className="w-8 h-8 text-emerald-600 animate-spin" /></div>;
 
   return (
-    <div className="space-y-6 max-w-2xl">
+    <div className="space-y-6">
       <Link href="/dashboard/users" className="text-slate-600 hover:text-slate-900 flex items-center gap-2 text-sm"><ArrowLeft className="w-4 h-4" /> Kembali</Link>
       <h1 className="text-2xl font-extrabold text-slate-900">Edit User</h1>
       {error && <div className="bg-rose-50 border border-rose-200 text-rose-700 text-sm p-3 rounded-xl">{error}</div>}

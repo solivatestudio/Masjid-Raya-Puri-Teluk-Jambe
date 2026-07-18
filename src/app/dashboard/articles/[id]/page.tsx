@@ -80,7 +80,7 @@ export default function EditArticlePage() {
   }
 
   return (
-    <div className="space-y-6 max-w-5xl">
+    <div className="space-y-6">
       <div className="flex items-center justify-between">
         <Link href="/dashboard/articles" className="text-slate-600 hover:text-slate-900 flex items-center gap-2 text-sm">
           <ArrowLeft className="w-4 h-4" /> Kembali ke daftar

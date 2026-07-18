@@ -86,13 +86,20 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
     .filter((g) => g.items.length > 0);
 
   return (
-    <div className="min-h-screen bg-gray-50 flex font-sans">
+    <div className="h-screen bg-gray-50 flex font-sans overflow-hidden">
+      {/* Mobile overlay */}
       {sidebarOpen && (
         <div className="fixed inset-0 bg-black/40 z-40 lg:hidden" onClick={() => setSidebarOpen(false)} />
       )}
 
-      <aside className={`fixed inset-y-0 left-0 z-50 w-64 bg-emerald-950 text-white flex flex-col transition-transform duration-200 lg:translate-x-0 lg:static lg:z-auto ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'}`}>
-        <div className="px-5 py-5 border-b border-emerald-900">
+      {/* Sidebar — fixed width 256px, full height, scrollable sendiri */}
+      <aside
+        className={`fixed lg:fixed top-0 left-0 z-50 w-64 h-screen bg-emerald-950 text-white flex flex-col transition-transform duration-200 ${
+          sidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'
+        }`}
+      >
+        {/* Header */}
+        <div className="flex-shrink-0 px-5 py-5 border-b border-emerald-900">
           <div className="flex items-center gap-2.5">
             <img className="w-10" src="/images/logo.svg" alt="logo" />
             <div>
@@ -103,7 +110,8 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
           </div>
         </div>
 
-        <nav className="flex-1 px-3 py-4 space-y-4 overflow-y-auto">
+        {/* Nav — scrollable */}
+        <nav className="flex-1 min-h-0 px-3 py-4 space-y-4 overflow-y-auto">
           {visibleGroups.map((group) => (
             <div key={group.label}>
               <div className="flex items-center gap-2 px-3 mb-2 text-[10px] font-extrabold uppercase tracking-widest text-emerald-400">
@@ -132,7 +140,8 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
           ))}
         </nav>
 
-        <div className="px-3 py-4 border-t border-emerald-900 space-y-1">
+        {/* Footer — fixed di bottom */}
+        <div className="flex-shrink-0 px-3 py-4 border-t border-emerald-900 space-y-1">
           <Link
             href="/"
             target="_blank"
@@ -152,8 +161,10 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
         </div>
       </aside>
 
-      <div className="flex-1 flex flex-col min-w-0 ml-0 lg:ml-64">
-        <header className="bg-white border-b border-slate-200 px-4 md:px-6 h-16 flex items-center gap-4 sticky top-0 z-30">
+      {/* Main content — full width, scrollable sendiri */}
+      <div className="flex-1 flex flex-col min-w-0 h-screen ml-0 lg:ml-64">
+        {/* Header — sticky */}
+        <header className="flex-shrink-0 bg-white border-b border-slate-200 px-4 md:px-6 h-16 flex items-center gap-4 z-30">
           <button
             onClick={() => setSidebarOpen(!sidebarOpen)}
             className="lg:hidden p-2 text-slate-600 hover:bg-slate-100 rounded-lg cursor-pointer"
@@ -178,7 +189,11 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
             </div>
           )}
         </header>
-        <main className="flex-1 p-4 md:p-6 overflow-auto">{children}</main>
+
+        {/* Content — scrollable, full width */}
+        <main className="flex-1 min-h-0 overflow-y-auto bg-gray-50">
+          <div className="p-4 md:p-6 lg:p-8">{children}</div>
+        </main>
       </div>
     </div>
   );

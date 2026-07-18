@@ -58,7 +58,7 @@ export default function EditKajianPage() {
   if (loading) return <div className="flex justify-center h-64"><Loader2 className="w-8 h-8 text-emerald-600 animate-spin" /></div>;
 
   return (
-    <div className="space-y-6 max-w-3xl">
+    <div className="space-y-6">
       <Link href="/dashboard/kajian" className="text-slate-600 hover:text-slate-900 flex items-center gap-2 text-sm">
         <ArrowLeft className="w-4 h-4" /> Kembali
       </Link>
