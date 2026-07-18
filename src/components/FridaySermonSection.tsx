@@ -1,9 +1,9 @@
 'use client';
 import { useState } from 'react';
-import { FRIDAY_SERMONS } from '@/data';
+import type { FridaySermon } from '@/types';
 import { User, Copy, Check } from 'lucide-react';
 
-export default function FridaySermonSection() {
+export default function FridaySermonSection({ sermons }: { sermons: FridaySermon[] }) {
   const [copiedId, setCopiedId] = useState<string | null>(null);
   const [showAllMobile, setShowAllMobile] = useState(false);
 
@@ -31,7 +31,7 @@ export default function FridaySermonSection() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {FRIDAY_SERMONS.map((sermon, idx) => {
+          {sermons.map((sermon, idx) => {
             const isFirst = idx === 0;
             const isHiddenOnMobile = idx >= 1 && !showAllMobile;
             return (
@@ -101,7 +101,7 @@ export default function FridaySermonSection() {
           })}
         </div>
 
-        {!showAllMobile && FRIDAY_SERMONS.length > 1 && (
+        {!showAllMobile && sermons.length > 1 && (
           <div className="mt-8 flex justify-center md:hidden">
             <button onClick={() => setShowAllMobile(true)} className="px-6 py-2.5 bg-white border border-emerald-200 text-emerald-700 hover:bg-emerald-50 font-bold rounded-xl transition text-sm cursor-pointer shadow-sm">
               Lihat selengkapnya

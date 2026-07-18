@@ -5,7 +5,6 @@ import type { EventActivity } from '@/types';
 
 interface EventSectionProps {
   events: EventActivity[];
-  onRegisterEvent: (eventId: string) => void;
 }
 
 const months: Record<string, string> = {
@@ -32,12 +31,9 @@ function getEventStatus(dateStr: string) {
   return { passed: eventDate < today, liveStreamReady: eventDate <= tomorrow };
 }
 
-export default function EventSection({ events, onRegisterEvent }: EventSectionProps) {
+export default function EventSection({ events }: EventSectionProps) {
   const [selectedCategory, setSelectedCategory] = useState<'Semua' | 'Dakwah' | 'Dauroh'>('Semua');
   const [searchQuery, setSearchQuery] = useState('');
-  const [registeringEvent, setRegisteringEvent] = useState<EventActivity | null>(null);
-  const [regForm, setRegForm] = useState({ name: '', phone: '' });
-  const [regSuccess, setRegSuccess] = useState(false);
   const [showAllMobile, setShowAllMobile] = useState(false);
 
   const filteredEvents = events.filter((evt) => {
@@ -48,18 +44,6 @@ export default function EventSection({ events, onRegisterEvent }: EventSectionPr
       evt.description.toLowerCase().includes(searchQuery.toLowerCase());
     return matchesCategory && matchesSearch;
   });
-
-  const handleRegisterSubmit = (e: FormEvent) => {
-    e.preventDefault();
-    if (!regForm.name || !regForm.phone || !registeringEvent) return;
-    onRegisterEvent(registeringEvent.id);
-    setRegSuccess(true);
-    setTimeout(() => {
-      setRegSuccess(false);
-      setRegisteringEvent(null);
-      setRegForm({ name: '', phone: '' });
-    }, 2000);
-  };
 
   const handleRegisterWhatsApp = (evt: EventActivity) => {
     const waNumber = '62895414283161';
@@ -246,56 +230,6 @@ export default function EventSection({ events, onRegisterEvent }: EventSectionPr
           </a>
         </div>
       </div>
-
-      {registeringEvent && (
-        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-          <div className="bg-white rounded-2xl max-w-sm w-full p-6 relative shadow-2xl border border-gray-100">
-            <button onClick={() => setRegisteringEvent(null)} className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 font-extrabold text-lg cursor-pointer">✕</button>
-            {regSuccess ? (
-              <div className="text-center py-8 space-y-3">
-                <div className="w-16 h-16 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto text-3xl">✓</div>
-                <h3 className="text-xl font-bold text-gray-900">Pendaftaran Berhasil!</h3>
-                <p className="text-xs text-gray-500">
-                  Konfirmasi kehadiran telah dikirim ke panitia. Harap hadir 10 menit sebelum acara. Jazakumullah Khairan!
-                </p>
-              </div>
-            ) : (
-              <form onSubmit={handleRegisterSubmit} className="space-y-4">
-                <div className="text-center pb-2 border-b border-gray-100">
-                  <span className="text-[10px] uppercase font-bold text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded">Registrasi Kehadiran</span>
-                  <h3 className="text-base font-bold text-gray-900 line-clamp-1 mt-2">{registeringEvent.title}</h3>
-                  <p className="text-[11px] text-gray-500">Sesi: {registeringEvent.date} ({registeringEvent.time})</p>
-                </div>
-                <div className="space-y-3">
-                  <div>
-                    <label className="block text-xs font-bold text-gray-700 mb-1">Nama Lengkap Jamaah</label>
-                    <input type="text" required placeholder="Contoh: Muhammad Akhyar" value={regForm.name}
-                      onChange={(e) => setRegForm({ ...regForm, name: e.target.value })}
-                      className="w-full bg-white border border-gray-300 text-gray-900 rounded-lg px-3 py-2 text-sm focus:ring-1 focus:ring-emerald-500 focus:border-emerald-500 focus:outline-none" />
-                  </div>
-                  <div>
-                    <label className="block text-xs font-bold text-gray-700 mb-1">Nomor WhatsApp Aktif</label>
-                    <input type="tel" required placeholder="Contoh: 081234567890" value={regForm.phone}
-                      onChange={(e) => setRegForm({ ...regForm, phone: e.target.value })}
-                      className="w-full bg-white border border-gray-300 text-gray-900 rounded-lg px-3 py-2 text-sm focus:ring-1 focus:ring-emerald-500 focus:border-emerald-500 focus:outline-none" />
-                  </div>
-                  <p className="text-[10px] text-gray-500 italic">
-                    * Data pendaftaran disimpan oleh DKM Raya Puri Telukjambe untuk keperluan estimasi kuota konsumsi & verifikasi tempat duduk.
-                  </p>
-                </div>
-                <div className="pt-2 flex gap-2">
-                  <button type="button" onClick={() => setRegisteringEvent(null)} className="flex-1 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-xl py-2.5 text-xs font-bold transition cursor-pointer">
-                    Batal
-                  </button>
-                  <button type="submit" className="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl py-2.5 text-xs font-bold transition shadow-md cursor-pointer">
-                    Daftar Sekarang
-                  </button>
-                </div>
-              </form>
-            )}
-          </div>
-        </div>
-      )}
     </section>
   );
 }

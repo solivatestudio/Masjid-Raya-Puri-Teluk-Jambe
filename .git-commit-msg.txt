@@ -1,0 +1,36 @@
+Add CMS Admin Portal for Blog, Kajian, Khutbah, Aula Availability & PIC management
+
+Backend:
+- 7 new DB tables: users, articles, kajian, khutbah_schedule, aula_availability, plus indexes
+- Migrate INITIAL_EVENTS & FRIDAY_SERMONS from src/data.ts to kajian & khutbah_schedule tables
+- Auto-seed default admin user (admin@masjidraya.id / admin123 - change after first login)
+- 14 new API route handlers under /api/admin/* (CRUD + publish + generate + slug-check + stats)
+- 4 new public API endpoints under /api/public/* (kajian, khutbah, articles list & detail)
+- Web Crypto based auth-admin with HMAC signed cookies + RBAC (admin/editor roles)
+- Middleware updated to protect both /dashboard and /admin routes
+
+Frontend:
+- New /admin route prefix with separate sidebar layout (dark slate theme)
+- 15 CMS pages: overview + 5 entities × (list, new, [id]) + login page
+- Tiptap rich text editor with toolbar (bold/italic/heading/image/link/align/code/etc)
+- SlugInput component with real-time availability check via debounced API
+- DataTable reusable component with client-side search + pagination
+- /admin/cms/articles with Tiptap + publish/draft/scheduled states
+- /admin/cms/kajian CRUD (Dakwah/Dauroh categories)
+- /admin/cms/khutbah with "Generate 4 Fridays" button (auto-create next 4 Friday schedules)
+- /admin/cms/aula calendar view (month navigation, slot blocking for unavailable times)
+- /admin/cms/pic user management (admin only - create editor/admin, reset password, toggle active)
+
+Public Blog:
+- /blog list page with category filter, pagination, search
+- /blog/[slug] article detail with SEO metadata, JSON-LD friendly HTML rendering
+- Views counter increment per article
+
+Landing page refactored to SSR fetch from public APIs (with fallback to static data.ts if DB unavailable)
+Footer & nav updated with Blog link
+
+Dependencies:
+- Add: @tiptap/react, @tiptap/starter-kit, @tiptap/extension-{image,link,placeholder,underline,text-align}, @tiptap/pm
+- Add: sanitize-html (for future server-side article sanitization)
+
+Co-authored-by: Hammad <email1.hammad@gmail.com>
