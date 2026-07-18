@@ -4,6 +4,7 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import ArticleEditor from '@/components/cms/ArticleEditor';
 import SlugInput from '@/components/cms/SlugInput';
+import ImageUploader from '@/components/cms/ImageUploader';
 import { ArrowLeft, Save, Send } from 'lucide-react';
 
 export default function NewArticlePage() {
@@ -137,22 +138,25 @@ export default function NewArticlePage() {
             </div>
           </div>
 
-          <div className="bg-white rounded-2xl border border-slate-100 card-shadow p-5 space-y-4">
+          <div className="bg-white rounded-2xl border border-slate-100 card-shadow p-5 space-y-3">
             <h3 className="text-sm font-bold text-slate-800">Featured Image</h3>
-            <div>
-              <label className="block text-xs font-bold text-slate-700 mb-1">Image URL</label>
-              <input type="text" value={featuredImageUrl} onChange={(e) => setFeaturedImageUrl(e.target.value)} placeholder="/images/artikel-1.webp atau URL external" className="w-full bg-white border border-gray-300 rounded-xl px-3 py-2 text-sm focus:ring-1 focus:ring-emerald-500 focus:outline-none" />
-              <p className="text-[10px] text-slate-500 mt-1">📷 Upload via UploadThing: buka tab baru untuk upload lalu paste URL di sini. (Integrasi UploadThing menyusul)</p>
+            <ImageUploader
+              endpoint="featuredImage"
+              value={featuredImageUrl}
+              onChange={setFeaturedImageUrl}
+              alt={featuredImageAlt}
+              onAltChange={setFeaturedImageAlt}
+              maxSizeMB={4}
+            />
+            <div className="text-[10px] text-slate-500 bg-emerald-50 border border-emerald-100 rounded-lg p-2 leading-relaxed">
+              💡 Gambar otomatis dikonversi ke <span className="font-bold">WebP</span> oleh CDN UploadThing untuk loading lebih cepat.
+              {!featuredImageUrl && (
+                <> Atau <button type="button" className="text-emerald-700 font-bold underline" onClick={() => {
+                  const url = prompt('Image URL:', '/images/');
+                  if (url) setFeaturedImageUrl(url);
+                }}>paste URL manual</button>.</>
+              )}
             </div>
-            <div>
-              <label className="block text-xs font-bold text-slate-700 mb-1">Alt Text (SEO)</label>
-              <input type="text" value={featuredImageAlt} onChange={(e) => setFeaturedImageAlt(e.target.value)} placeholder="Deskripsi gambar untuk aksesibilitas" className="w-full bg-white border border-gray-300 rounded-xl px-3 py-2 text-sm focus:ring-1 focus:ring-emerald-500 focus:outline-none" />
-            </div>
-            {featuredImageUrl && (
-              <div className="rounded-xl overflow-hidden border border-slate-200">
-                <img src={featuredImageUrl} alt={featuredImageAlt} className="w-full" />
-              </div>
-            )}
           </div>
         </div>
       </div>
