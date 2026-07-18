@@ -55,8 +55,6 @@ export interface PrayerTime {
   isPassed: boolean;
 }
 
-// ── Dashboard Types ──
-
 export interface BookingRecord {
   id: string;
   name: string;

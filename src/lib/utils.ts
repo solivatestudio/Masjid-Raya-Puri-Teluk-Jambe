@@ -44,13 +44,15 @@ export function formatTimestamp(isoStr: string) {
   });
 }
 
-export function fillDailyViews(daily: { date: string; views: number }[]): { date: string; views: number }[] {
+export function fillDailyViews(
+  daily: { date: string; views: number }[]
+): { date: string; views: number }[] {
   const result: { date: string; views: number }[] = [];
   for (let i = 6; i >= 0; i--) {
     const d = new Date();
     d.setDate(d.getDate() - i);
     const key = d.toISOString().slice(0, 10);
-    const found = daily.find(x => x.date === key);
+    const found = daily.find((x) => x.date === key);
     result.push({ date: key, views: found ? found.views : 0 });
   }
   return result;

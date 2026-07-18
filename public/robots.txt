@@ -9,4 +9,5 @@ Sitemap: https://masjidrayapuritelukjambe.com/sitemap.xml
 
 # Disallow admin/internal paths
 Disallow: /api/
-Disallow: /.env
+Disallow: /dashboard/
+Disallow: /login

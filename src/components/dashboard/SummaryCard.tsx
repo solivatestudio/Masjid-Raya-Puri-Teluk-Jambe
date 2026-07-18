@@ -11,8 +11,8 @@ interface SummaryCardProps {
 export default function SummaryCard({ title, value, subtitle, icon, variant = 'default' }: SummaryCardProps) {
   if (variant === 'primary') {
     return (
-      <div className="emerald-gradient p-6.5 rounded-3xl text-white card-shadow border border-emerald-700/40 relative overflow-hidden group">
-        <div className="absolute top-1/2 -right-6 -translate-y-1/2 w-40 h-40 bg-white/5 rounded-full blur-2xl transition duration-500 group-hover:scale-110" />
+      <div className="emerald-gradient p-6 rounded-3xl text-white card-shadow border border-emerald-700/40 relative overflow-hidden group">
+        <div className="absolute top-1/2 -right-6 -translate-y-1/2 w-40 h-40 bg-white/5 rounded-full blur-2xl" />
         <div className="flex items-center justify-between mb-4 relative z-10">
           <span className="text-xs font-semibold text-emerald-200 tracking-wide uppercase">{title}</span>
           {icon && <div className="p-2 bg-emerald-800 rounded-lg text-amber-400">{icon}</div>}
@@ -24,7 +24,6 @@ export default function SummaryCard({ title, value, subtitle, icon, variant = 'd
       </div>
     );
   }
-
   return (
     <div className="bg-white p-6 rounded-3xl border border-slate-100 card-shadow flex flex-col justify-between">
       <div className="flex items-center justify-between mb-4">

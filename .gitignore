@@ -1,8 +1,33 @@
+# dependencies
 node_modules/
+.pnp
+.pnp.js
+
+# next.js
+.next/
+out/
+
+# production
 build/
 dist/
-coverage/
+
+# misc
 .DS_Store
 *.log
-.env*
-!.env.example
+*.pem
+
+# debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# env (WAJIB - JANGAN COMMIT)
+.env
+.env*.local
+
+# typescript
+*.tsbuildinfo
+next-env.d.ts
+
+# vercel
+.vercel

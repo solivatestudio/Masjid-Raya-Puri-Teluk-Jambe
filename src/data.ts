@@ -1,13 +1,12 @@
-import { EventActivity, FinanceRecord, FridaySermon, BookingPackage } from './types';
+import type { EventActivity, FinanceRecord, FridaySermon, BookingPackage } from './types';
 
-// Upcoming Mosque activities
 export const INITIAL_EVENTS: EventActivity[] = [
   {
     id: 'evt-1',
     title: 'Kajian Rutin Ahad Pagi',
     category: 'Dakwah',
     date: 'Ahad 21 Juni 2026',
-    time: '05:45 - 07:00 (Ba\'da Shubuh)',
+    time: "05:45 - 07:00 (Ba'da Shubuh)",
     speaker: 'KH. Nandang Qusyaeri, SH',
     location: 'Ruang Utama Masjid Raya Puri Telukjambe',
     description: 'Kajian rutin pembahasan tasawuf, tata cara ibadah rasul, dan mendekatkan diri kepada Allah SWT',
@@ -20,7 +19,7 @@ export const INITIAL_EVENTS: EventActivity[] = [
     title: 'Kajian Rutin Rabu Malam',
     category: 'Dakwah',
     date: 'Rabu 24 Juni 2026',
-    time: 'Ba\'da Maghrib s/d Isya',
+    time: "Ba'da Maghrib s/d Isya",
     speaker: 'KH. Aprizal Muslim, S.Pd.i',
     location: 'Ruang Utama Masjid Raya Puri Telukjambe',
     description: 'Kajian Rutin membahas Ihya Ulumuddin serta membahas kitab Hujjatul islam',
@@ -72,109 +71,33 @@ export const INITIAL_EVENTS: EventActivity[] = [
     title: 'Kajian Rutin Rabu Malam',
     category: 'Dakwah',
     date: 'Rabu, 8 Juli 2026',
-    time: 'Ba\'da Maghrib s/d Isya',
+    time: "Ba'da Maghrib s/d Isya",
     speaker: 'H. Deden Sajidin, Lc',
     location: 'Ruang Utama Masjid Raya Puri Telukjambe',
     description: 'Kajian Rutin membahas Siroh Nabawiyah dan Kisah-kisah para sahabat',
     image: '/images/kajianAhadPagi.webp',
     capacity: 50,
     registeredCount: 10,
-  }
+  },
 ];
 
-// Initial Financial Ledger Data
 export const INITIAL_FINANCEDATA: FinanceRecord[] = [
-  {
-    id: 'fin-1',
-    date: '2026-06-01',
-    description: 'Infaq Kotak Amal Shalat Jumat',
-    type: 'Pemasukan',
-    category: 'Infaq Jumat',
-    amount: 14280000,
-  },
-  {
-    id: 'fin-2',
-    date: '2026-06-02',
-    description: 'Dana Kebersihan & Listrik Aula (Sewa)',
-    type: 'Pemasukan',
-    category: 'Penyewaan Aula',
-    amount: 7500000,
-  },
-  {
-    id: 'fin-3',
-    date: '2026-06-02',
-    description: 'Tagihan Listrik PLN & Air PAM Mei',
-    type: 'Pengeluaran',
-    category: 'Operasional',
-    amount: 5400000,
-  },
-  {
-    id: 'fin-4',
-    date: '2026-06-03',
-    description: 'Donasi QRIS Pembangunan Kanopi',
-    type: 'Pemasukan',
-    category: 'Wakaf Pembangunan',
-    amount: 8500000,
-  },
-  {
-    id: 'fin-5',
-    date: '2026-06-03',
-    description: 'Sembako Program Santunan Dhuafa',
-    type: 'Pengeluaran',
-    category: 'SosialKemasyarakatan',
-    amount: 6200000,
-  },
-  {
-    id: 'fin-6',
-    date: '2026-06-04',
-    description: 'Infaq Harian Jamaah Masjid',
-    type: 'Pemasukan',
-    category: 'Infaq Umum',
-    amount: 3250000,
-  },
-  {
-    id: 'fin-7',
-    date: '2026-06-04',
-    description: 'Honor Mukim Muadzin & Petugas Kebersihan',
-    type: 'Pengeluaran',
-    category: 'Operasional',
-    amount: 4500000,
-  }
+  { id: 'fin-1', date: '2026-06-01', description: 'Infaq Kotak Amal Shalat Jumat', type: 'Pemasukan', category: 'Infaq Jumat', amount: 14280000 },
+  { id: 'fin-2', date: '2026-06-02', description: 'Dana Kebersihan & Listrik Aula (Sewa)', type: 'Pemasukan', category: 'Penyewaan Aula', amount: 7500000 },
+  { id: 'fin-3', date: '2026-06-02', description: 'Tagihan Listrik PLN & Air PAM Mei', type: 'Pengeluaran', category: 'Operasional', amount: 5400000 },
+  { id: 'fin-4', date: '2026-06-03', description: 'Donasi QRIS Pembangunan Kanopi', type: 'Pemasukan', category: 'Wakaf Pembangunan', amount: 8500000 },
+  { id: 'fin-5', date: '2026-06-03', description: 'Sembako Program Santunan Dhuafa', type: 'Pengeluaran', category: 'Sosial Kemasyarakatan', amount: 6200000 },
+  { id: 'fin-6', date: '2026-06-04', description: 'Infaq Harian Jamaah Masjid', type: 'Pemasukan', category: 'Infaq Umum', amount: 3250000 },
+  { id: 'fin-7', date: '2026-06-04', description: 'Honor Mukim Muadzin & Petugas Kebersihan', type: 'Pengeluaran', category: 'Operasional', amount: 4500000 },
 ];
 
-// Friday Sermon (Khatib/Imam) Schedule
 export const FRIDAY_SERMONS: FridaySermon[] = [
-  {
-    id: 'sermon-1',
-    date: 'Jumat, 19 Juni 2026',
-    khatib: 'Ust. H. M. Saefudin',
-    muadzin: 'Ust.Dede Rahmatullah',
-    theme: 'Mempersatukan Umat dengan Akhlak Karimah di Era Modern',
-  },
-  {
-    id: 'sermon-2',
-    date: 'Jumat, 26 Juni 2026',
-    khatib: 'Ust. Hedar Agung Nawawi',
-    muadzin: 'H. Romeli',
-    theme: 'Prinsip Transparansi dan Integritas dalam Manajemen Dakwah',
-  },
-  {
-    id: 'sermon-3',
-    date: 'Jumat, 03 Juli 2026',
-    khatib: 'Ust. H. Muid',
-    muadzin: 'Ust. Lalan Supriadin',
-    theme: 'Zakat, Infaq dan Sedekah Sebagai Solusi Pengentasan Kemiskinan',
-  },
-  {
-    id: 'sermon-4',
-    date: 'Jumat, 10 Juli 2026',
-    khatib: 'KH. M. Ridwan,MPI.',
-    muadzin: 'Samingan',
-    theme: 'Menghadirkan Surga di Tengah Kerukunan Rumah Tangga',
-  }
+  { id: 'sermon-1', date: 'Jumat, 19 Juni 2026', khatib: 'Ust. H. M. Saefudin', muadzin: 'Ust.Dede Rahmatullah', theme: 'Mempersatukan Umat dengan Akhlak Karimah di Era Modern' },
+  { id: 'sermon-2', date: 'Jumat, 26 Juni 2026', khatib: 'Ust. Hedar Agung Nawawi', muadzin: 'H. Romeli', theme: 'Prinsip Transparansi dan Integritas dalam Manajemen Dakwah' },
+  { id: 'sermon-3', date: 'Jumat, 03 Juli 2026', khatib: 'Ust. H. Muid', muadzin: 'Ust. Lalan Supriadin', theme: 'Zakat, Infaq dan Sedekah Sebagai Solusi Pengentasan Kemiskinan' },
+  { id: 'sermon-4', date: 'Jumat, 10 Juli 2026', khatib: 'KH. M. Ridwan,MPI.', muadzin: 'Samingan', theme: 'Menghadirkan Surga di Tengah Kerukunan Rumah Tangga' },
 ];
 
-// Multipurpose Building Rental Specifications
 export const HALL_INFO = {
   name: 'Aula Serbaguna Masjid Raya Puri Telukjambe',
   dimensions: '25 X 25 M2',
@@ -188,11 +111,10 @@ export const HALL_INFO = {
     'Tenaga Satpam dan Parkir',
     'Tenaga Kebersihan',
     'Parkir luas',
-    'Ruang cuci perabot/piring'
-  ]
+    'Ruang cuci perabot/piring',
+  ],
 };
 
-// Multipurpose Hall Rental Packages
 export const BOOKING_PACKAGES: BookingPackage[] = [
   {
     id: 'pkg-weekend',
@@ -207,9 +129,9 @@ export const BOOKING_PACKAGES: BookingPackage[] = [
       'Tenaga Satpam dan Parkir',
       'Tenaga Kebersihan',
       'Parkir luas',
-      'Ruang cuci perabot/piring'
+      'Ruang cuci perabot/piring',
     ],
-    isPopular: false
+    isPopular: false,
   },
   {
     id: 'pkg-weekdays',
@@ -224,57 +146,17 @@ export const BOOKING_PACKAGES: BookingPackage[] = [
       'Tenaga Satpam dan Parkir',
       'Tenaga Kebersihan',
       'Parkir luas',
-      'Ruang cuci perabot/piring'
+      'Ruang cuci perabot/piring',
     ],
-    isPopular: true
+    isPopular: true,
   },
-  // {
-  //   id: 'pkg-rahmah',
-  //   name: 'Paket Rahmah (Full Event Organizer & Catering)',
-  //   price: 'Rp 22.500.000',
-  //   features: [
-  //     'Semua fasilitas Paket Mawaddah',
-  //     'Tambahan sewa s/d 8 jam penuh',
-  //     'Pelaminan pernikahan syari modern & rias pengantin lengkap',
-  //     'Red carpet & set meja akad nikah',
-  //     'Tambahan daya listrik s/d 15.000 Watt',
-  //     'Tim penata acara (Event Coordinator) 4 orang',
-  //     'Voucher katering rekanan pilihan diskon 15%',
-  //   ],
-  //   isPopular: false
-  // }
 ];
 
-// Activity Gallery Content
 export const GALLERY_PHOTOS = [
-  {
-    id: 'g-1',
-    src: '/images/dauroh_alquran_2.webp',
-    caption: 'Dauroh Al-Quran',
-  },
-  {
-    id: 'g-2',
-    src: '/images/bukber_ramadhan.webp',
-    caption: 'Buka Puasa Bersama Ramadhan',
-  },
-  {
-    id: 'g-3',
-    src: '/images/idul_adha.webp',
-    caption: 'Penerimaan Hewan Qurban Idul Adha',
-  },
-  {
-    id: 'g-4',
-    src: '/images/mabit_bareng_tahun_baru.webp',
-    caption: 'Malam Bina Iman (Mabit) Bareng Tahun Baru',
-  },
-  {
-    id: 'g-5',
-    src: '/images/santunan_anak_yatim.webp',
-    caption: 'Santunan Anak Yatim Piatu dan Dhuafa',
-  },
-  {
-    id: 'g-6',
-    src: '/images/sholat_tarawih.webp',
-    caption: 'Sholat Tarawih Berjamaah di Bulan Suci Ramadhan',
-  }
+  { id: 'g-1', src: '/images/dauroh_alquran_2.webp', caption: 'Dauroh Al-Quran' },
+  { id: 'g-2', src: '/images/bukber_ramadhan.webp', caption: 'Buka Puasa Bersama Ramadhan' },
+  { id: 'g-3', src: '/images/idul_adha.webp', caption: 'Penerimaan Hewan Qurban Idul Adha' },
+  { id: 'g-4', src: '/images/mabit_bareng_tahun_baru.webp', caption: 'Malam Bina Iman (Mabit) Bareng Tahun Baru' },
+  { id: 'g-5', src: '/images/santunan_anak_yatim.webp', caption: 'Santunan Anak Yatim Piatu dan Dhuafa' },
+  { id: 'g-6', src: '/images/sholat_tarawih.webp', caption: 'Sholat Tarawih Berjamaah di Bulan Suci Ramadhan' },
 ];
