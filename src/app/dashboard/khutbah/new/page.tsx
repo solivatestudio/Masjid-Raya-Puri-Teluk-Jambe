@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { ArrowLeft, Save, Loader2 } from 'lucide-react';
+import { revalidateCMS } from '@/lib/revalidate';
 
 export default function NewKhutbahPage() {
   const router = useRouter();

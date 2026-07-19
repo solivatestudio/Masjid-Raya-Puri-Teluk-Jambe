@@ -1,11 +1,17 @@
-﻿'use client';
+'use client';
 import { useEffect, useState, FormEvent } from 'react';
 import { bookingsApi } from '@/lib/api';
-import { formatDate, formatDateShort } from '@/lib/utils';
+import { formatDateIDN, formatDateShort, formatRupiah } from '@/lib/utils';
 import SummaryCard from '@/components/dashboard/SummaryCard';
 import StatusBadge from '@/components/dashboard/StatusBadge';
-import { CalendarCheck, Clock, Users, CheckCircle, XCircle, Plus, X, Check } from 'lucide-react';
+import ImageUploader from '@/components/cms/ImageUploader';
+import { CalendarCheck, Clock, Users, CheckCircle, XCircle, Plus, X, Check, Receipt, ExternalLink, Image as ImageIcon, ChevronLeft, ChevronRight } from 'lucide-react';
 import type { BookingSummary, BookingRecord } from '@/types';
+
+const BOOKING_PACKAGES = [
+  { id: 'pkg-weekend', name: 'Weekend (Sabtu/Ahad)', price: 9000000 },
+  { id: 'pkg-weekdays', name: 'Weekdays (Senin-Jumat)', price: 8000000 },
+];
 
 export default function BookingPage() {
   const [bookings, setBookings] = useState<BookingRecord[]>([]);
@@ -23,7 +29,11 @@ export default function BookingPage() {
   const [formTimeStart, setFormTimeStart] = useState('08:00');
   const [formTimeEnd, setFormTimeEnd] = useState('14:00');
   const [formPurpose, setFormPurpose] = useState('');
+  const [formPackage, setFormPackage] = useState('pkg-weekdays');
   const [formNotes, setFormNotes] = useState('');
+  const [formProof, setFormProof] = useState('');
+  const [proofModal, setProofModal] = useState<{ url: string; name: string; date: string } | null>(null);
+  const [submitting, setSubmitting] = useState(false);
 
   const today = new Date();
   const [calMonth, setCalMonth] = useState(today.getMonth());
@@ -55,7 +65,9 @@ export default function BookingPage() {
     const notes = status === 'rejected' ? prompt('Alasan penolakan (opsional):') || '' : '';
     try {
       await bookingsApi.updateStatus(id, status, notes);
-      fetchData();
+      await fetchData();
+      setSuccessMsg(`Booking berhasil di-${status === 'approved' ? 'setujui' : 'tolak'}!`);
+      setTimeout(() => setSuccessMsg(''), 3000);
     } catch (e: any) {
       setError(e.message);
     }
@@ -64,6 +76,8 @@ export default function BookingPage() {
   const handleCreate = async (e: FormEvent) => {
     e.preventDefault();
     if (!formName || !formWhatsapp || !formDate || !formPurpose) return;
+    setSubmitting(true);
+    setError('');
     try {
       await bookingsApi.create({
         name: formName,
@@ -74,7 +88,9 @@ export default function BookingPage() {
         purpose: formPurpose,
         notes: formNotes,
         needOrganizer: false,
-      });
+        packageId: formPackage,
+        payment_proof_url: formProof || null,
+      } as any);
       setSuccessMsg('Booking berhasil ditambahkan!');
       setTimeout(() => setSuccessMsg(''), 3000);
       setFormName('');
@@ -82,10 +98,13 @@ export default function BookingPage() {
       setFormDate('');
       setFormPurpose('');
       setFormNotes('');
+      setFormProof('');
       setShowForm(false);
-      fetchData();
+      await fetchData();
     } catch (e: any) {
       setError(e.message);
+    } finally {
+      setSubmitting(false);
     }
   };
 
@@ -117,7 +136,7 @@ export default function BookingPage() {
           <SummaryCard
             title="Booking Terdekat"
             value={summary.nearestBooking ? formatDateShort(summary.nearestBooking.date) : '-'}
-            subtitle={summary.nearestBooking ? `${summary.nearestBooking.name} â€” ${summary.nearestBooking.purpose}` : 'Tidak ada'}
+            subtitle={summary.nearestBooking ? `${summary.nearestBooking.name} — ${summary.nearestBooking.purpose}` : 'Tidak ada'}
             icon={<Users className="w-5 h-5" />}
           />
         </div>
@@ -132,7 +151,7 @@ export default function BookingPage() {
 
       {showForm && (
         <form onSubmit={handleCreate} className="bg-emerald-50/60 border border-emerald-100 rounded-2xl p-6 space-y-4">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div>
               <label className="block text-[10px] font-bold text-emerald-900 mb-1">Nama Pemesan</label>
               <input type="text" required placeholder="Nama lengkap" value={formName} onChange={(e) => setFormName(e.target.value)} className="w-full bg-white border border-gray-300 text-gray-900 rounded-lg p-2 text-xs focus:ring-1 focus:ring-emerald-500 focus:outline-none" />
@@ -146,10 +165,6 @@ export default function BookingPage() {
               <input type="date" required value={formDate} onChange={(e) => setFormDate(e.target.value)} className="w-full bg-white border border-gray-300 text-gray-900 rounded-lg p-2 text-xs focus:ring-1 focus:ring-emerald-500 focus:outline-none" />
             </div>
             <div>
-              <label className="block text-[10px] font-bold text-emerald-900 mb-1">Keperluan</label>
-              <input type="text" required placeholder="Contoh: Walimah Nikah" value={formPurpose} onChange={(e) => setFormPurpose(e.target.value)} className="w-full bg-white border border-gray-300 text-gray-900 rounded-lg p-2 text-xs focus:ring-1 focus:ring-emerald-500 focus:outline-none" />
-            </div>
-            <div>
               <label className="block text-[10px] font-bold text-emerald-900 mb-1">Jam Mulai</label>
               <input type="time" required value={formTimeStart} onChange={(e) => setFormTimeStart(e.target.value)} className="w-full bg-white border border-gray-300 text-gray-900 rounded-lg p-2 text-xs focus:ring-1 focus:ring-emerald-500 focus:outline-none" />
             </div>
@@ -157,14 +172,34 @@ export default function BookingPage() {
               <label className="block text-[10px] font-bold text-emerald-900 mb-1">Jam Selesai</label>
               <input type="time" required value={formTimeEnd} onChange={(e) => setFormTimeEnd(e.target.value)} className="w-full bg-white border border-gray-300 text-gray-900 rounded-lg p-2 text-xs focus:ring-1 focus:ring-emerald-500 focus:outline-none" />
             </div>
-            <div className="sm:col-span-2">
-              <label className="block text-[10px] font-bold text-emerald-900 mb-1">Catatan Tambahan</label>
+            <div>
+              <label className="block text-[10px] font-bold text-emerald-900 mb-1">Paket</label>
+              <select value={formPackage} onChange={(e) => setFormPackage(e.target.value)} className="w-full bg-white border border-gray-300 text-gray-900 rounded-lg p-2 text-xs focus:ring-1 focus:ring-emerald-500 focus:outline-none">
+                {BOOKING_PACKAGES.map((p) => <option key={p.id} value={p.id}>{p.name} ({formatRupiah(p.price)})</option>)}
+              </select>
+            </div>
+            <div className="md:col-span-2">
+              <label className="block text-[10px] font-bold text-emerald-900 mb-1">Keperluan</label>
+              <input type="text" required placeholder="Contoh: Walimah Nikah" value={formPurpose} onChange={(e) => setFormPurpose(e.target.value)} className="w-full bg-white border border-gray-300 text-gray-900 rounded-lg p-2 text-xs focus:ring-1 focus:ring-emerald-500 focus:outline-none" />
+            </div>
+            <div>
+              <label className="block text-[10px] font-bold text-emerald-900 mb-1">Catatan</label>
               <input type="text" placeholder="Opsional" value={formNotes} onChange={(e) => setFormNotes(e.target.value)} className="w-full bg-white border border-gray-300 text-gray-900 rounded-lg p-2 text-xs focus:ring-1 focus:ring-emerald-500 focus:outline-none" />
             </div>
           </div>
+          <div>
+            <label className="block text-[10px] font-bold text-emerald-900 mb-1">Bukti Transfer (Opsional)</label>
+            <ImageUploader
+              endpoint="featuredImage"
+              value={formProof}
+              onChange={setFormProof}
+              maxSizeMB={2}
+            />
+            <p className="text-[10px] text-slate-500 mt-1">Upload screenshot transfer DP / lunas via QRIS atau transfer bank. Format: JPG/PNG, max 2MB.</p>
+          </div>
           <div className="flex justify-end">
-            <button type="submit" className="bg-emerald-700 hover:bg-emerald-800 text-white text-xs font-bold px-6 py-2 rounded-xl transition cursor-pointer">
-              Simpan Booking
+            <button type="submit" disabled={submitting} className="bg-emerald-700 hover:bg-emerald-800 disabled:opacity-50 text-white text-xs font-bold px-6 py-2 rounded-xl transition cursor-pointer">
+              {submitting ? 'Menyimpan...' : 'Simpan Booking'}
             </button>
           </div>
         </form>
@@ -173,15 +208,17 @@ export default function BookingPage() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <div className="bg-white rounded-3xl border border-slate-100 card-shadow p-5">
           <div className="flex items-center justify-between mb-4">
-            <button onClick={() => { if (calMonth === 0) { setCalMonth(11); setCalYear(calYear - 1); } else { setCalMonth(calMonth - 1); } }} className="text-xs font-bold text-slate-600 hover:text-emerald-700 cursor-pointer px-2 py-1">â€¹</button>
+            <button onClick={() => { if (calMonth === 0) { setCalMonth(11); setCalYear(calYear - 1); } else { setCalMonth(calMonth - 1); } }} className="text-xs font-bold text-slate-600 hover:text-emerald-700 cursor-pointer px-2 py-1">‹</button>
             <span className="text-sm font-bold text-slate-800">{monthNames[calMonth]} {calYear}</span>
-            <button onClick={() => { if (calMonth === 11) { setCalMonth(0); setCalYear(calYear + 1); } else { setCalMonth(calMonth + 1); } }} className="text-xs font-bold text-slate-600 hover:text-emerald-700 cursor-pointer px-2 py-1">â€º</button>
+            <button onClick={() => { if (calMonth === 11) { setCalMonth(0); setCalYear(calYear + 1); } else { setCalMonth(calMonth + 1); } }} className="text-xs font-bold text-slate-600 hover:text-emerald-700 cursor-pointer px-2 py-1">›</button>
           </div>
           <div className="grid grid-cols-7 gap-1 text-center">
             {['Min', 'Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab'].map((d) => (
               <span key={d} className="text-[9px] font-bold text-slate-400 py-1">{d}</span>
             ))}
-            {Array.from({ length: firstDay }).map((_, i) => <div key={`empty-${i}`} />)}
+            {Array.from({ length: firstDay }).map((_, i) => (
+              <div key={`empty-${i}`} />
+            ))}
             {Array.from({ length: daysInMonth }).map((_, i) => {
               const day = i + 1;
               const dateStr = `${calYear}-${String(calMonth + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
@@ -207,14 +244,14 @@ export default function BookingPage() {
           </div>
 
           <div className="overflow-x-auto">
-            <table className="w-full text-left border-collapse min-w-[750px]">
+            <table className="w-full text-left border-collapse min-w-[900px]">
               <thead>
                 <tr className="bg-gray-100/60 border-b border-gray-200">
                   <th className="px-4 py-3.5 text-[10px] font-bold uppercase tracking-wider text-gray-600">Nama</th>
                   <th className="px-4 py-3.5 text-[10px] font-bold uppercase tracking-wider text-gray-600">Kontak</th>
+                  <th className="px-4 py-3.5 text-[10px] font-bold uppercase tracking-wider text-gray-600">Tanggal & Jam</th>
                   <th className="px-4 py-3.5 text-[10px] font-bold uppercase tracking-wider text-gray-600">Keperluan</th>
-                  <th className="px-4 py-3.5 text-[10px] font-bold uppercase tracking-wider text-gray-600">Tanggal</th>
-                  <th className="px-4 py-3.5 text-[10px] font-bold uppercase tracking-wider text-gray-600">Jam</th>
+                  <th className="px-4 py-3.5 text-[10px] font-bold uppercase tracking-wider text-gray-600">Bukti</th>
                   <th className="px-4 py-3.5 text-[10px] font-bold uppercase tracking-wider text-gray-600">Status</th>
                   <th className="px-4 py-3.5 text-[10px] font-bold uppercase tracking-wider text-gray-600 text-center">Aksi</th>
                 </tr>
@@ -229,9 +266,24 @@ export default function BookingPage() {
                       <td className="px-4 py-3 text-xs text-slate-600">
                         <a href={`https://wa.me/${b.whatsapp}`} target="_blank" rel="noopener noreferrer" className="text-emerald-600 hover:underline">{b.whatsapp}</a>
                       </td>
-                      <td className="px-4 py-3 text-xs text-slate-700 max-w-[160px] truncate">{b.purpose}</td>
-                      <td className="px-4 py-3 text-xs text-slate-600 font-mono">{b.date}</td>
-                      <td className="px-4 py-3 text-xs text-slate-600 font-mono">{b.time_start.slice(0, 5)} - {b.time_end.slice(0, 5)}</td>
+                      <td className="px-4 py-3 text-xs text-slate-600">
+                        <div>{formatDateIDN(b.date)}</div>
+                        <div className="text-slate-500 text-[10px] font-mono">{b.time_start.slice(0, 5)} - {b.time_end.slice(0, 5)}</div>
+                      </td>
+                      <td className="px-4 py-3 text-xs text-slate-700 max-w-[200px] truncate">{b.purpose}</td>
+                      <td className="px-4 py-3 text-center">
+                        {b.payment_proof_url ? (
+                          <button
+                            type="button"
+                            onClick={() => setProofModal({ url: b.payment_proof_url!, name: b.name, date: b.date })}
+                            className="inline-flex items-center gap-1 text-[10px] font-bold text-emerald-700 hover:text-emerald-900 hover:underline"
+                          >
+                            <Receipt className="w-3.5 h-3.5" /> Lihat
+                          </button>
+                        ) : (
+                          <span className="text-[10px] text-slate-400">—</span>
+                        )}
+                      </td>
                       <td className="px-4 py-3"><StatusBadge status={b.status} /></td>
                       <td className="px-4 py-3">
                         {b.status === 'pending' ? (
@@ -261,6 +313,28 @@ export default function BookingPage() {
           </div>
         </div>
       </div>
+
+      {proofModal && (
+        <div className="fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4" onClick={() => setProofModal(null)}>
+          <div className="bg-white rounded-2xl max-w-2xl w-full p-6" onClick={(e) => e.stopPropagation()}>
+            <div className="flex items-center justify-between mb-4">
+              <div>
+                <h3 className="text-lg font-bold text-slate-900">Bukti Transfer</h3>
+                <p className="text-xs text-slate-500">{proofModal.name} — {formatDateIDN(proofModal.date)}</p>
+              </div>
+              <button onClick={() => setProofModal(null)} className="p-2 hover:bg-slate-100 rounded-lg">
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+            <img src={proofModal.url} alt="Bukti transfer" className="w-full rounded-xl border border-slate-200" referrerPolicy="no-referrer" />
+            <div className="mt-3 flex justify-end">
+              <a href={proofModal.url} target="_blank" rel="noopener noreferrer" className="text-xs text-emerald-700 font-bold flex items-center gap-1 hover:underline">
+                <ExternalLink className="w-3.5 h-3.5" /> Buka di tab baru
+              </a>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

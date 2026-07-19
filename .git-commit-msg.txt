@@ -1,0 +1,43 @@
+QC fixes batch: realtime data, IDR formatter, date readable, bukti transfer, RBAC, mobile layout, no 404, remove admin navbar link
+
+Backend:
+- bookings table: add payment_proof_url TEXT + payment_proof_uploaded_at TIMESTAMPTZ columns (with ALTER TABLE for existing DBs)
+- /api/bookings POST: accept payment_proof_url field, auto-set uploaded_at
+- /api/admin/revalidate/route.ts: new endpoint to manually revalidate cache
+
+Utilities:
+- src/lib/revalidate.ts: helper to call revalidate API from client
+- src/lib/utils.ts: add formatDateIDN (Senin, 19 Juli 2026), formatDateTime, formatRupiahInput, parseRupiahInput (handles "1.000.000" -> 1000000)
+
+Fixes:
+
+1. Keuangan realtime + IDR input + readable date:
+- /dashboard/keuangan: use parseRupiahInput on amount, auto-format with thousand separator (Rp 1.000.000)
+- Table date column: use formatDateIDN instead of raw ISO
+- All refreshMsg auto-show after add/delete
+- Status badge shows real timestamp
+
+2. Booking realtime + bukti transfer:
+- /dashboard/booking: ImageUploader component for payment proof in form
+- Modal preview bukti transfer (click "Lihat" button in table)
+- Date format readable in table + summary
+- "Generate 4 Jumat" button revalidates after action
+- Calendar navigation uses ChevronLeft/ChevronRight icons instead of ‹/› unicode
+
+3. Landing page icons: ganti chevron text ‹/› di booking dengan ChevronLeft/Right icon
+
+4. Data articles & kajian tidak update realtime:
+- All CMS CRUD pages (articles, kajian, khutbah) now call revalidateCMS() after create/update/delete
+- Public landing revalidate: 300 -> 30 seconds
+- /blog revalidate: 300 -> 30 seconds
+
+5. FridaySermonSection mobile: grid-cols-1 md:grid-cols-2 -> grid-cols-2 md:grid-cols-2 (always 2 col, 4 cards = 2 baris)
+
+6. RBAC: role enforcement di /dashboard/users (admin only):
+- /dashboard/users/page.tsx: client-side guard, show "Akses Ditolak" UI for non-admin (Lock icon + redirect to /dashboard)
+- /dashboard/users/[id]/page.tsx: same guard + custom "User Tidak Ditemukan" 404 page (UserX icon + "← Kembali ke Daftar User" button)
+- Fixed path /dashboard/pic -> /dashboard/users in Link href
+
+7. Hapus link "🔐 Admin" di top navbar landing (sesuai request: pindah ke footer only, navbar lebih rapi)
+
+Co-authored-by: Hammad <email1.hammad@gmail.com>

@@ -1,7 +1,7 @@
-﻿'use client';
+'use client';
 import { useEffect, useState, FormEvent } from 'react';
 import { transactionsApi } from '@/lib/api';
-import { formatRupiah } from '@/lib/utils';
+import { formatRupiah, formatRupiahInput, parseRupiahInput, formatDateIDN, formatTimestamp } from '@/lib/utils';
 import SummaryCard from '@/components/dashboard/SummaryCard';
 import StatusBadge from '@/components/dashboard/StatusBadge';
 import { Wallet, ArrowUpRight, ArrowDownLeft, Plus, X, Check, Calendar, Tag, FileText, TrendingUp, TrendingDown } from 'lucide-react';
@@ -25,9 +25,11 @@ export default function KeuanganPage() {
   const [formDesc, setFormDesc] = useState('');
   const [formType, setFormType] = useState<'Pemasukan' | 'Pengeluaran'>('Pemasukan');
   const [formCat, setFormCat] = useState('Infaq Umum');
+  const [formAmountDisplay, setFormAmountDisplay] = useState('');
   const [formAmount, setFormAmount] = useState('');
   const [formDate, setFormDate] = useState(new Date().toISOString().substring(0, 10));
   const [successMsg, setSuccessMsg] = useState('');
+  const [submitting, setSubmitting] = useState(false);
 
   const fetchData = async () => {
     try {
@@ -59,8 +61,13 @@ export default function KeuanganPage() {
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    const amount = parseFloat(formAmount);
-    if (!formDesc || isNaN(amount) || amount <= 0) return;
+    const amount = parseRupiahInput(formAmount);
+    if (!formDesc || amount <= 0) {
+      setError('Deskripsi dan jumlah wajib diisi');
+      return;
+    }
+    setSubmitting(true);
+    setError('');
     try {
       await transactionsApi.create({
         date: formDate,
@@ -73,10 +80,13 @@ export default function KeuanganPage() {
       setTimeout(() => setSuccessMsg(''), 3000);
       setFormDesc('');
       setFormAmount('');
+      setFormAmountDisplay('');
       setShowForm(false);
-      fetchData();
+      await fetchData();
     } catch (e: any) {
       setError(e.message);
+    } finally {
+      setSubmitting(false);
     }
   };
 
@@ -84,10 +94,18 @@ export default function KeuanganPage() {
     if (!confirm('Hapus transaksi ini?')) return;
     try {
       await transactionsApi.delete(id);
-      fetchData();
+      await fetchData();
+      setSuccessMsg('Transaksi berhasil dihapus!');
+      setTimeout(() => setSuccessMsg(''), 3000);
     } catch (e: any) {
       setError(e.message);
     }
+  };
+
+  const handleAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const raw = e.target.value.replace(/\D/g, '');
+    setFormAmountDisplay(raw ? formatRupiahInput(raw) : '');
+    setFormAmount(raw);
   };
 
   if (loading && !summary) {
@@ -101,7 +119,7 @@ export default function KeuanganPage() {
           <h1 className="text-2xl font-extrabold text-slate-900">Keuangan Masjid</h1>
           <p className="text-sm text-slate-500">Laporan pemasukan & pengeluaran dana masjid</p>
         </div>
-        <StatusBadge status="active" label={new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' })} />
+        <StatusBadge status="active" label={formatTimestamp(new Date().toISOString())} />
       </div>
 
       {error && (
@@ -208,8 +226,20 @@ export default function KeuanganPage() {
               </select>
             </div>
             <div>
-              <label className="block text-[10px] font-bold text-emerald-900 mb-1">Jumlah</label>
-              <input type="number" required min="1000" step="1000" placeholder="Rp" value={formAmount} onChange={(e) => setFormAmount(e.target.value)} className="w-full bg-white border border-gray-300 text-gray-900 rounded-lg p-2 text-xs focus:ring-1 focus:ring-emerald-500 focus:outline-none" />
+              <label className="block text-[10px] font-bold text-emerald-900 mb-1">Jumlah (Rp)</label>
+              <div className="relative">
+                <span className="absolute inset-y-0 left-2 flex items-center text-xs text-slate-500 pointer-events-none">Rp</span>
+                <input
+                  type="text"
+                  required
+                  inputMode="numeric"
+                  placeholder="1.000.000"
+                  value={formAmountDisplay}
+                  onChange={handleAmountChange}
+                  className="w-full bg-white border border-gray-300 text-gray-900 rounded-lg p-2 pl-8 text-xs font-mono focus:ring-1 focus:ring-emerald-500 focus:outline-none"
+                />
+              </div>
+              <p className="text-[9px] text-slate-400 mt-0.5">Otomatis format: {formAmountDisplay || '1.000.000'}</p>
             </div>
             <div>
               <label className="block text-[10px] font-bold text-emerald-900 mb-1">Tanggal</label>
@@ -217,8 +247,8 @@ export default function KeuanganPage() {
             </div>
           </div>
           <div className="flex justify-end">
-            <button type="submit" className="bg-emerald-700 hover:bg-emerald-800 text-white text-xs font-bold px-6 py-2 rounded-xl transition cursor-pointer">
-              Simpan Transaksi
+            <button type="submit" disabled={submitting} className="bg-emerald-700 hover:bg-emerald-800 disabled:opacity-50 text-white text-xs font-bold px-6 py-2 rounded-xl transition cursor-pointer">
+              {submitting ? 'Menyimpan...' : 'Simpan Transaksi'}
             </button>
           </div>
         </form>
@@ -226,7 +256,7 @@ export default function KeuanganPage() {
 
       <div className="bg-white rounded-3xl overflow-hidden border border-slate-100 card-shadow">
         <div className="overflow-x-auto">
-          <table className="w-full text-left border-collapse min-w-[650px]">
+          <table className="w-full text-left border-collapse min-w-[750px]">
             <thead>
               <tr className="bg-gray-100/60 border-b border-gray-200">
                 <th className="px-5 py-4 text-xs font-bold uppercase tracking-wider text-gray-600"><span className="flex items-center gap-1"><Calendar className="w-3.5 h-3.5" /> Tanggal</span></th>
@@ -245,7 +275,7 @@ export default function KeuanganPage() {
                   const isIn = tx.type === 'Pemasukan';
                   return (
                     <tr key={tx.id} className="hover:bg-gray-50/50 transition-colors">
-                      <td className="px-5 py-3.5 whitespace-nowrap text-xs text-slate-600 font-mono">{tx.date}</td>
+                      <td className="px-5 py-3.5 whitespace-nowrap text-xs text-slate-600">{formatDateIDN(tx.date)}</td>
                       <td className="px-5 py-3.5 text-sm font-semibold text-slate-900">{tx.description}</td>
                       <td className="px-5 py-3.5 whitespace-nowrap">
                         <span className={`px-2.5 py-0.5 rounded text-[10px] font-bold ${isIn ? 'bg-emerald-50 text-emerald-800' : 'bg-amber-50 text-amber-800'}`}>{tx.category}</span>

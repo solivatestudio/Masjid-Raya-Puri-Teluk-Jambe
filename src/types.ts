@@ -68,6 +68,8 @@ export interface BookingRecord {
   notes: string;
   status: 'pending' | 'approved' | 'rejected';
   admin_notes: string;
+  payment_proof_url: string | null;
+  payment_proof_uploaded_at: string | null;
   created_at: string;
   updated_at: string;
 }

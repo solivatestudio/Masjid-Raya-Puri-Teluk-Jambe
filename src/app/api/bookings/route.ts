@@ -30,7 +30,7 @@ export async function POST(req: NextRequest) {
   try {
     await ensureSeeded();
     const sql = getSql();
-    const { name, whatsapp, date, timeStart, timeEnd, purpose, packageId, needOrganizer, notes } =
+    const { name, whatsapp, date, timeStart, timeEnd, purpose, packageId, needOrganizer, notes, payment_proof_url } =
       await req.json();
 
     if (!name || !whatsapp || !date || !timeStart || !timeEnd || !purpose) {
@@ -41,9 +41,9 @@ export async function POST(req: NextRequest) {
     }
 
     const rows = (await (sql as any).query(
-      `INSERT INTO bookings (name, whatsapp, date, time_start, time_end, purpose, package_id, need_organizer, notes)
-       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING *`,
-      [name, whatsapp, date, timeStart, timeEnd, purpose, packageId || null, needOrganizer || false, notes || '']
+      `INSERT INTO bookings (name, whatsapp, date, time_start, time_end, purpose, package_id, need_organizer, notes, payment_proof_url, payment_proof_uploaded_at)
+       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11) RETURNING *`,
+      [name, whatsapp, date, timeStart, timeEnd, purpose, packageId || null, needOrganizer || false, notes || '', payment_proof_url || null, payment_proof_url ? new Date().toISOString() : null]
     )) as any[];
 
     return NextResponse.json(rows[0], { status: 201 });

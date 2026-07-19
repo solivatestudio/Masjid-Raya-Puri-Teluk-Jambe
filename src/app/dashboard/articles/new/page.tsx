@@ -5,6 +5,7 @@ import Link from 'next/link';
 import ArticleEditor from '@/components/cms/ArticleEditor';
 import SlugInput from '@/components/cms/SlugInput';
 import ImageUploader from '@/components/cms/ImageUploader';
+import { revalidateCMS } from '@/lib/revalidate';
 import { ArrowLeft, Save, Send } from 'lucide-react';
 
 export default function NewArticlePage() {

@@ -1,7 +1,8 @@
 'use client';
 import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { Plus, Edit, Trash2, Users, Mail, ShieldCheck, ShieldAlert } from 'lucide-react';
+import { Plus, Edit, Trash2, Users, Mail, ShieldCheck, ShieldAlert, Lock } from 'lucide-react';
 import StatusBadge from '@/components/cms/StatusBadge';
 import DataTable from '@/components/cms/DataTable';
 
@@ -11,13 +12,20 @@ interface User {
 }
 
 export default function PicPage() {
+  const router = useRouter();
   const [items, setItems] = useState<User[]>([]);
   const [currentUser, setCurrentUser] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
+  const [accessDenied, setAccessDenied] = useState(false);
 
   const load = async () => {
     const res = await fetch('/api/admin/users', { credentials: 'include' });
+    if (res.status === 403) {
+      setAccessDenied(true);
+      setLoading(false);
+      return;
+    }
     if (res.ok) setItems(await res.json());
     setLoading(false);
   };

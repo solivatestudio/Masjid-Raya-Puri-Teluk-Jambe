@@ -2,6 +2,7 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { Plus, Edit, Trash2, CalendarDays, RefreshCw, Loader2 } from 'lucide-react';
+import { revalidateCMS } from '@/lib/revalidate';
 import DataTable from '@/components/cms/DataTable';
 
 interface Khutbah {
@@ -34,7 +35,8 @@ export default function KhutbahPage() {
       const res = await fetch('/api/admin/khutbah/generate', { method: 'POST', credentials: 'include' });
       const data = await res.json();
       alert(`Generate selesai: ${data.created} dibuat, ${data.skipped} dilewati (sudah ada)`);
-      load();
+      await load();
+      await revalidateCMS();
     } finally {
       setGenerating(false);
     }

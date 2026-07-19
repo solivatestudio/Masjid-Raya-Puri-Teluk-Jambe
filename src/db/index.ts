@@ -74,10 +74,14 @@ export async function ensureSchema() {
       notes TEXT DEFAULT '',
       status VARCHAR(20) NOT NULL DEFAULT 'pending' CHECK (status IN ('pending', 'approved', 'rejected')),
       admin_notes TEXT DEFAULT '',
+      payment_proof_url TEXT,
+      payment_proof_uploaded_at TIMESTAMPTZ,
       created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
       updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
     )
   `, []);
+  await (sql as any).query(`ALTER TABLE bookings ADD COLUMN IF NOT EXISTS payment_proof_url TEXT`, []);
+  await (sql as any).query(`ALTER TABLE bookings ADD COLUMN IF NOT EXISTS payment_proof_uploaded_at TIMESTAMPTZ`, []);
   await (sql as any).query(`CREATE INDEX IF NOT EXISTS idx_bookings_date ON bookings(date)`, []);
   await (sql as any).query(`CREATE INDEX IF NOT EXISTS idx_bookings_status ON bookings(status)`, []);
 

@@ -89,9 +89,6 @@ function LandingContent({ events, sermons }: Props) {
             <button onClick={() => scrollToSection('audio-visual-hall')} className="text-xs uppercase font-extrabold tracking-wider text-emerald-100 hover:text-amber-400 transition cursor-pointer">Sewa Aula</button>
             <button onClick={() => scrollToSection('galeri')} className="text-xs uppercase font-extrabold tracking-wider text-emerald-100 hover:text-amber-400 transition cursor-pointer">Galeri</button>
             <a href="/blog" className="text-xs uppercase font-extrabold tracking-wider text-emerald-100 hover:text-amber-400 transition cursor-pointer">Blog</a>
-            <Link href="/login" className="text-xs uppercase font-extrabold tracking-wider text-amber-300 hover:text-amber-100 transition cursor-pointer flex items-center gap-1">
-              🔐 Admin
-            </Link>
           </nav>
 
           <div className="hidden lg:flex items-center gap-4">

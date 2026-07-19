@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { ArrowLeft, Save, Loader2 } from 'lucide-react';
+import { revalidateCMS } from '@/lib/revalidate';
 
 export default function NewKajianPage() {
   const router = useRouter();
@@ -35,6 +36,7 @@ export default function NewKajianPage() {
           is_published: isPublished }),
       });
       if (!res.ok) throw new Error((await res.json()).error || 'Gagal');
+      await revalidateCMS();
       router.push('/dashboard/kajian');
     } catch (e: any) { setError(e.message); }
     finally { setSaving(false); }

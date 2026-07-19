@@ -2,6 +2,7 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { Plus, Edit, Trash2, BookOpen } from 'lucide-react';
+import { revalidateCMS } from '@/lib/revalidate';
 import DataTable from '@/components/cms/DataTable';
 
 interface Kajian {
@@ -25,7 +26,8 @@ export default function KajianPage() {
   const handleDelete = async (id: string, title: string) => {
     if (!confirm(`Hapus kajian "${title}"?`)) return;
     await fetch(`/api/admin/kajian/${id}`, { method: 'DELETE', credentials: 'include' });
-    load();
+    await load();
+    await revalidateCMS();
   };
 
   return (

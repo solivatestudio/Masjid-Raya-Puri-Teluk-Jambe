@@ -2,7 +2,7 @@
 import { getPublicKajian, getPublicKhutbah } from '@/lib/public-api';
 import LandingPageClient from './LandingPageClient';
 
-export const revalidate = 300;
+export const revalidate = 30;
 
 export default async function LandingPage() {
   let kajian: any[] = [];

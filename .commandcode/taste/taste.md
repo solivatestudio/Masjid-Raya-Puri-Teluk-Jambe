@@ -19,3 +19,12 @@
 # git
 - Include co-author trailer "Co-authored-by: Hammad <email1.hammad@gmail.com>" in all git commit messages. Confidence: 0.70
 
+# date
+- Display dates in readable day/date/time format (e.g., "Senin, 19 Juli 2026 10:00") instead of raw ISO format. Confidence: 0.70
+
+# currency
+- Format financial amounts as Indonesian Rupiah (IDR) with automatic comma separators (e.g., "Rp 1.500.000"). Confidence: 0.70
+
+# navbar
+- Place admin menu items in the footer section, not in the main navbar. Confidence: 0.70
+

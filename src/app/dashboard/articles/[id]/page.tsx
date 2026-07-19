@@ -6,6 +6,7 @@ import ArticleEditor from '@/components/cms/ArticleEditor';
 import SlugInput from '@/components/cms/SlugInput';
 import ImageUploader from '@/components/cms/ImageUploader';
 import { ArrowLeft, Save, Send, Loader2 } from 'lucide-react';
+import { revalidateCMS } from '@/lib/revalidate';
 
 export default function EditArticlePage() {
   const router = useRouter();

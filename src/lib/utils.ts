@@ -1,14 +1,26 @@
-export function formatRupiah(val: number) {
+export function formatRupiah(val: number | string) {
+  const num = typeof val === 'string' ? parseFloat(val.replace(/[^\d.-]/g, '')) || 0 : val;
   return new Intl.NumberFormat('id-ID', {
     style: 'currency',
     currency: 'IDR',
     minimumFractionDigits: 0,
     maximumFractionDigits: 0,
-  }).format(val);
+  }).format(num);
+}
+
+export function formatRupiahInput(val: string | number): string {
+  const num = typeof val === 'string' ? parseInt(val.replace(/\D/g, ''), 10) || 0 : val;
+  return num.toLocaleString('id-ID');
+}
+
+export function parseRupiahInput(val: string): number {
+  return parseInt(val.replace(/\D/g, ''), 10) || 0;
 }
 
 export function formatDate(dateStr: string) {
+  if (!dateStr) return '-';
   const date = new Date(dateStr);
+  if (isNaN(date.getTime())) return dateStr;
   return date.toLocaleDateString('id-ID', {
     year: 'numeric',
     month: 'long',
@@ -17,7 +29,9 @@ export function formatDate(dateStr: string) {
 }
 
 export function formatDateShort(dateStr: string) {
+  if (!dateStr) return '-';
   const date = new Date(dateStr);
+  if (isNaN(date.getTime())) return dateStr;
   return date.toLocaleDateString('id-ID', {
     year: 'numeric',
     month: 'short',
@@ -25,8 +39,22 @@ export function formatDateShort(dateStr: string) {
   });
 }
 
-export function formatTime(dateStr: string) {
+export function formatDateIDN(dateStr: string) {
+  if (!dateStr) return '-';
   const date = new Date(dateStr);
+  if (isNaN(date.getTime())) return dateStr;
+  return date.toLocaleDateString('id-ID', {
+    weekday: 'long',
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric',
+  });
+}
+
+export function formatTime(dateStr: string) {
+  if (!dateStr) return '-';
+  const date = new Date(dateStr);
+  if (isNaN(date.getTime())) return dateStr;
   return date.toLocaleTimeString('id-ID', {
     hour: '2-digit',
     minute: '2-digit',
@@ -34,19 +62,33 @@ export function formatTime(dateStr: string) {
 }
 
 export function formatTimestamp(isoStr: string) {
+  if (!isoStr) return '-';
   const date = new Date(isoStr);
+  if (isNaN(date.getTime())) return isoStr;
   return date.toLocaleString('id-ID', {
-    year: 'numeric',
-    month: 'short',
+    weekday: 'long',
     day: 'numeric',
+    month: 'long',
+    year: 'numeric',
     hour: '2-digit',
     minute: '2-digit',
   });
 }
 
-export function fillDailyViews(
-  daily: { date: string; views: number }[]
-): { date: string; views: number }[] {
+export function formatDateTime(isoStr: string) {
+  if (!isoStr) return '-';
+  const date = new Date(isoStr);
+  if (isNaN(date.getTime())) return isoStr;
+  return date.toLocaleString('id-ID', {
+    day: 'numeric',
+    month: 'short',
+    year: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+  });
+}
+
+export function fillDailyViews(daily: { date: string; views: number }[]): { date: string; views: number }[] {
   const result: { date: string; views: number }[] = [];
   for (let i = 6; i >= 0; i--) {
     const d = new Date();

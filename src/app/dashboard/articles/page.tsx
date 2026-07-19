@@ -2,6 +2,7 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { Plus, Edit, Trash2, FileText } from 'lucide-react';
+import { revalidateCMS } from '@/lib/revalidate';
 import DataTable from '@/components/cms/DataTable';
 import StatusBadge from '@/components/cms/StatusBadge';
 

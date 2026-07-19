@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { ArrowLeft, Save, Loader2 } from 'lucide-react';
+import { revalidateCMS } from '@/lib/revalidate';
 
 export default function EditKajianPage() {
   const router = useRouter();
