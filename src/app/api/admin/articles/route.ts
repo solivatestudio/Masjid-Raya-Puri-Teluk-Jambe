@@ -1,6 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getSql, ensureSeeded } from '@/db';
 import { requireCmsAuth, authErrorResponse } from '@/lib/rbac';
+import sanitizeHtml from 'sanitize-html';
+import { revalidatePath } from 'next/cache';
+import { SANITIZE_CONFIG } from '@/lib/tiptap';
 
 export const dynamic = 'force-dynamic';
 export const runtime = 'nodejs';
@@ -54,15 +57,21 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Slug sudah dipakai' }, { status: 409 });
     }
     const validStatus = ['draft', 'published', 'scheduled'].includes(status) ? status : 'draft';
+    const safeContentHtml = sanitizeHtml(content_html || '', SANITIZE_CONFIG);
     const published_at = validStatus === 'published' ? new Date().toISOString() : null;
 
     const rows = (await (sql as any).query(
       `INSERT INTO articles (slug, title, excerpt, content_html, content_json, featured_image_url, featured_image_alt, author_id, category, tags, status, scheduled_at, published_at)
        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13) RETURNING *`,
-      [slug, title, excerpt || null, content_html || '', content_json ? JSON.stringify(content_json) : null, featured_image_url || null, featured_image_alt || null, session.userId, category || null, tags || null, validStatus, scheduled_at || null, published_at]
+      [slug, title, excerpt || null, safeContentHtml, content_json ? JSON.stringify(content_json) : null, featured_image_url || null, featured_image_alt || null, session.userId, category || null, tags || null, validStatus, scheduled_at || null, published_at]
     )) as any[];
+    revalidatePath('/blog', 'page');
+    revalidatePath(`/blog/${slug}`, 'page');
     return NextResponse.json(rows[0], { status: 201 });
   } catch (error) {
     return authErrorResponse(error);
   }
 }
+
+
+

@@ -1,6 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { revalidatePath } from 'next/cache';
+import sanitizeHtml from 'sanitize-html';
 import { getSql } from '@/db';
 import { requireCmsAuth, authErrorResponse } from '@/lib/rbac';
+import { SANITIZE_CONFIG } from '@/lib/tiptap';
 
 export const dynamic = 'force-dynamic';
 export const runtime = 'nodejs';
@@ -32,10 +35,10 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: 
     const values: any[] = [];
     let idx = 1;
 
-    for (const f of fields) {
-      if (body[f] !== undefined) {
-        updates.push(`${f} = $${idx++}`);
-        values.push(body[f]);
+    for (const field of fields) {
+      if (body[field] !== undefined) {
+        updates.push(`${field} = $${idx++}`);
+        values.push(field === 'content_html' ? sanitizeHtml(body[field] || '', SANITIZE_CONFIG) : body[field]);
       }
     }
     if (body.content_json !== undefined) {
@@ -58,6 +61,8 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: 
       values
     )) as any[];
     if (!rows[0]) return NextResponse.json({ error: 'Artikel tidak ditemukan' }, { status: 404 });
+    revalidatePath('/blog', 'page');
+    revalidatePath(`/blog/${rows[0].slug}`, 'page');
     return NextResponse.json(rows[0]);
   } catch (error) {
     return authErrorResponse(error);
@@ -69,10 +74,13 @@ export async function DELETE(_req: NextRequest, { params }: { params: Promise<{ 
     await requireCmsAuth();
     const sql = getSql();
     const { id } = await params;
-    const rows = (await (sql as any).query(`DELETE FROM articles WHERE id = $1 RETURNING id`, [id])) as any[];
+    const rows = (await (sql as any).query(`DELETE FROM articles WHERE id = $1 RETURNING id, slug`, [id])) as any[];
     if (!rows[0]) return NextResponse.json({ error: 'Artikel tidak ditemukan' }, { status: 404 });
+    revalidatePath('/blog', 'page');
+    revalidatePath(`/blog/${rows[0].slug}`, 'page');
     return NextResponse.json({ message: 'Artikel berhasil dihapus' });
   } catch (error) {
     return authErrorResponse(error);
   }
 }
+

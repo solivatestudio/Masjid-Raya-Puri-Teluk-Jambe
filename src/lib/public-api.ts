@@ -64,7 +64,7 @@ export async function getPublicKhutbah(limit = 4): Promise<PublicKhutbah[]> {
   try {
     const sql = getSql();
     const rows = (await (sql as any).query(
-      `SELECT id, schedule_date, khatib, muadzin, theme FROM khutbah_schedule WHERE schedule_date >= (CURRENT_DATE - INTERVAL '14 days') ORDER BY schedule_date ASC LIMIT $1`,
+      `SELECT id, schedule_date, khatib, muadzin, theme FROM khutbah_schedule WHERE schedule_date >= CURRENT_DATE ORDER BY schedule_date ASC LIMIT $1`,
       [limit]
     )) as any[];
     return rows;
@@ -124,3 +124,4 @@ export async function getPublicArticleBySlug(slug: string): Promise<(PublicArtic
     return null;
   }
 }
+

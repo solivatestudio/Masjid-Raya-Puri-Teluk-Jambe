@@ -1,12 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getSql, ensureSeeded } from '@/db';
-import { requireCmsAuth } from '@/lib/rbac';
+import { requireCmsRole, authErrorResponse } from '@/lib/rbac';
 
 export const dynamic = 'force-dynamic';
 export const runtime = 'nodejs';
 
 export async function GET(req: NextRequest) {
   try {
+    await requireCmsRole('admin');
     await ensureSeeded();
     const sql = getSql();
     const { searchParams } = new URL(req.url);
@@ -48,13 +49,13 @@ export async function GET(req: NextRequest) {
 
     return NextResponse.json(rows);
   } catch (error: any) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    return authErrorResponse(error);
   }
 }
 
 export async function POST(req: NextRequest) {
   try {
-    await requireCmsAuth();
+    await requireCmsRole('admin');
     const sql = getSql();
     const { date, description, type, category, amount } = await req.json();
     if (!date || !description || !type || !category || !amount) {
@@ -66,6 +67,6 @@ export async function POST(req: NextRequest) {
     )) as any[];
     return NextResponse.json(rows[0], { status: 201 });
   } catch (error: any) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    return authErrorResponse(error);
   }
 }

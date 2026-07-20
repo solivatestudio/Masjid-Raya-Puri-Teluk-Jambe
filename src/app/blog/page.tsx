@@ -2,7 +2,8 @@ import { getPublicArticles } from '@/lib/public-api';
 import Link from 'next/link';
 import { ArrowRight, Calendar, Eye, BookOpen, ArrowLeft, Search } from 'lucide-react';
 
-export const revalidate = 30;
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
 
 export default async function BlogListPage({ searchParams }: { searchParams: { page?: string; category?: string; search?: string } }) {
   const page = parseInt(searchParams.page || '1');
@@ -133,3 +134,4 @@ export default async function BlogListPage({ searchParams }: { searchParams: { p
     </div>
   );
 }
+

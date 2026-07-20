@@ -1,4 +1,4 @@
-import { neon, neonConfig } from '@neondatabase/serverless';
+import { neon } from '@neondatabase/serverless';
 
 let cachedSql: ReturnType<typeof neon> | null = null;
 let seeded = false;
@@ -9,15 +9,26 @@ export function getSql() {
   if (!url) {
     throw new Error('DATABASE_URL is not set');
   }
-  neonConfig.fetchConnectionCache = true;
   cachedSql = neon(url);
   return cachedSql;
 }
 
 export async function hashPassword(plain: string): Promise<string> {
+  const iterations = 210000;
+  const saltBytes = crypto.getRandomValues(new Uint8Array(16));
+  const salt = Buffer.from(saltBytes).toString('base64url');
+  const enc = new TextEncoder();
+  const keyMaterial = await crypto.subtle.importKey('raw', enc.encode(plain), 'PBKDF2', false, ['deriveBits']);
+  const bits = await crypto.subtle.deriveBits(
+    { name: 'PBKDF2', salt: enc.encode(salt), iterations, hash: 'SHA-256' },
+    keyMaterial,
+    256
+  );
+  return `pbkdf2-sha256$${iterations}$${salt}$${Buffer.from(bits).toString('base64url')}`;
+}
+
+async function hashPasswordLegacy(plain: string): Promise<string> {
   const salt = '$2b$10$' + 'solivatestudiomasjidraya2026'.slice(0, 22);
-  // Simple scrypt-based hash via Web Crypto - bcrypt-compatible replacement
-  // For demo we use a deterministic but secure pbkdf2 hash; in production upgrade to bcrypt
   const enc = new TextEncoder();
   const keyMaterial = await crypto.subtle.importKey('raw', enc.encode(plain), 'PBKDF2', false, ['deriveBits']);
   const bits = await crypto.subtle.deriveBits(
@@ -29,7 +40,20 @@ export async function hashPassword(plain: string): Promise<string> {
 }
 
 export async function verifyPassword(plain: string, hash: string): Promise<boolean> {
-  const computed = await hashPassword(plain);
+  if (hash.startsWith('pbkdf2-sha256$')) {
+    const [, iterRaw, salt, expected] = hash.split('$');
+    const iterations = Number(iterRaw);
+    if (!iterations || !salt || !expected) return false;
+    const enc = new TextEncoder();
+    const keyMaterial = await crypto.subtle.importKey('raw', enc.encode(plain), 'PBKDF2', false, ['deriveBits']);
+    const bits = await crypto.subtle.deriveBits(
+      { name: 'PBKDF2', salt: enc.encode(salt), iterations, hash: 'SHA-256' },
+      keyMaterial,
+      256
+    );
+    return timingSafeStringEqual(Buffer.from(bits).toString('base64url'), expected);
+  }
+  const computed = await hashPasswordLegacy(plain);
   return timingSafeStringEqual(computed, hash);
 }
 
@@ -39,7 +63,6 @@ function timingSafeStringEqual(a: string, b: string): boolean {
   for (let i = 0; i < a.length; i++) diff |= a.charCodeAt(i) ^ b.charCodeAt(i);
   return diff === 0;
 }
-
 export async function ensureSchema() {
   const sql = getSql();
   await (sql as any).query(`CREATE EXTENSION IF NOT EXISTS pgcrypto`, []);
@@ -261,10 +284,15 @@ export async function ensureSeeded() {
   // Seed default admin user (only if no users exist)
   const userCount = (await (sql as any).query(`SELECT COUNT(*)::int as c FROM users`, [])) as { c: number }[];
   if ((userCount[0]?.c ?? 0) === 0) {
-    const adminHash = await hashPassword('admin123');
+    const bootstrapEmail = process.env.INITIAL_ADMIN_EMAIL || 'admin@masjidraya.id';
+    const bootstrapPassword = process.env.INITIAL_ADMIN_PASSWORD || process.env.ADMIN_PASSWORD;
+    if (!bootstrapPassword || bootstrapPassword.length < 12) {
+      throw new Error('INITIAL_ADMIN_PASSWORD atau ADMIN_PASSWORD minimal 12 karakter wajib diset untuk bootstrap admin');
+    }
+    const adminHash = await hashPassword(bootstrapPassword);
     await (sql as any).query(
       `INSERT INTO users (email, password_hash, name, role) VALUES ($1, $2, $3, $4)`,
-      ['admin@masjidraya.id', adminHash, 'Administrator DKM', 'admin']
+      [bootstrapEmail.toLowerCase().trim(), adminHash, 'Administrator DKM', 'admin']
     );
   }
 
@@ -346,3 +374,6 @@ export async function ensureSeeded() {
 
   seeded = true;
 }
+
+
+

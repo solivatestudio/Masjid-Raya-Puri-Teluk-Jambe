@@ -1,17 +1,29 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getSql, ensureSeeded } from '@/db';
+import { getSql } from '@/db';
 
 export const dynamic = 'force-dynamic';
 export const runtime = 'nodejs';
 
+function withTimeout<T>(promise: Promise<T>, ms = 8000): Promise<T> {
+  return Promise.race([
+    promise,
+    new Promise<T>((_, reject) => setTimeout(() => reject(new Error('Database timeout')), ms)),
+  ]);
+}
+
 export async function GET(_req: NextRequest) {
   try {
-    await ensureSeeded();
     const sql = getSql();
-    const rows = (await (sql as any).query(
+    const rows = (await withTimeout((sql as any).query(
       `SELECT DISTINCT date FROM bookings WHERE status = 'approved' ORDER BY date ASC`
-    )) as any[];
-    return NextResponse.json(rows.map((r: any) => r.date));
+    ))) as any[];
+    const dates = rows.map((r: any) => {
+      if (r.date instanceof Date) return r.date.toISOString().slice(0, 10);
+      return String(r.date).slice(0, 10);
+    });
+    return NextResponse.json(dates, {
+      headers: { 'Cache-Control': 'no-store, max-age=0' },
+    });
   } catch (error: any) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }

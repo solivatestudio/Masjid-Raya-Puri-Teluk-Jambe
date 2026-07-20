@@ -1,11 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getSql, ensureSeeded } from '@/db';
+import { requireCmsRole, authErrorResponse } from '@/lib/rbac';
 
 export const dynamic = 'force-dynamic';
 export const runtime = 'nodejs';
 
 export async function GET(_req: NextRequest) {
   try {
+    await requireCmsRole('admin');
     await ensureSeeded();
     const sql = getSql();
     const rows = (await (sql as any).query(`
@@ -20,6 +22,7 @@ export async function GET(_req: NextRequest) {
     `)) as any[];
     return NextResponse.json(rows);
   } catch (error: any) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    return authErrorResponse(error);
   }
 }
+

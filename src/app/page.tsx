@@ -2,7 +2,8 @@ import 'server-only';
 import { getPublicKajian, getPublicKhutbah } from '@/lib/public-api';
 import LandingPageClient from './LandingPageClient';
 
-export const revalidate = 30;
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
 
 export default async function LandingPage() {
   let kajian: any[] = [];
@@ -43,3 +44,4 @@ export default async function LandingPage() {
 
   return <LandingPageClient events={events} sermons={sermons} />;
 }
+

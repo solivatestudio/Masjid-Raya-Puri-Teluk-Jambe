@@ -16,7 +16,7 @@ export async function POST(req: NextRequest) {
     if (Array.isArray(paths)) {
       for (const p of paths) {
         try {
-          revalidatePath(p);
+          revalidatePath(p, 'page');
           revalidatedPaths.push(p);
         } catch {}
       }
@@ -25,16 +25,16 @@ export async function POST(req: NextRequest) {
     if (Array.isArray(tags)) {
       for (const t of tags) {
         try {
-          revalidateTag(t);
+          revalidateTag(t, 'default');
           revalidatedTags.push(t);
         } catch {}
       }
     }
 
     // Always also revalidate common pages
-    revalidatePath('/');
-    revalidatePath('/blog');
-    revalidatePath('/blog');
+    revalidatePath('/', 'page');
+    revalidatePath('/blog', 'page');
+    revalidatePath('/blog', 'page');
     revalidatedPaths.push('/', '/blog');
 
     return NextResponse.json({
@@ -46,3 +46,4 @@ export async function POST(req: NextRequest) {
     return authErrorResponse(error);
   }
 }
+

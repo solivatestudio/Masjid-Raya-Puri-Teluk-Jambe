@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { revalidatePath } from 'next/cache';
 import { getSql } from '@/db';
 import { requireCmsAuth, authErrorResponse } from '@/lib/rbac';
 
@@ -16,6 +17,8 @@ export async function POST(req: NextRequest) {
       [id]
     )) as any[];
     if (!rows[0]) return NextResponse.json({ error: 'Artikel tidak ditemukan' }, { status: 404 });
+    revalidatePath('/blog', 'page');
+    revalidatePath(`/blog/${rows[0].slug}`, 'page');
     return NextResponse.json(rows[0]);
   } catch (error) {
     return authErrorResponse(error);

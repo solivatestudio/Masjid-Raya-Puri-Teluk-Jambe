@@ -32,7 +32,7 @@ export const SANITIZE_CONFIG = {
   allowedAttributes: {
     a: ['href', 'target', 'rel'],
     img: ['src', 'alt', 'title', 'width', 'height', 'class'],
-    '*': ['class', 'style'],
+    '*': ['class'],
   },
   allowedSchemes: ['http', 'https', 'mailto'],
   transformTags: {
@@ -42,3 +42,4 @@ export const SANITIZE_CONFIG = {
     }),
   },
 };
+

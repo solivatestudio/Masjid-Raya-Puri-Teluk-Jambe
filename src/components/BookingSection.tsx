@@ -149,7 +149,9 @@ function AvailabilityCalendar() {
     fetch('/api/bookings/calendar')
       .then((res) => res.json())
       .then((data) => {
-        if (data && data.bookedDates) {
+        if (Array.isArray(data)) {
+          setBookedDates(data);
+        } else if (data && data.bookedDates) {
           setBookedDates(data.bookedDates);
         }
       })
@@ -181,7 +183,7 @@ function AvailabilityCalendar() {
     const isBooked = bookedDates.includes(dateStr);
 
     days.push(
-      <div key={i} className={`p-2 border rounded-lg text-center text-sm font-medium ${isBooked ? 'bg-green-100 text-green-800 border-green-200' : 'bg-white text-gray-700 border-gray-100'}`}>
+      <div key={i} className={`p-2 border rounded-lg text-center text-sm font-medium ${isBooked ? 'bg-rose-100 text-rose-800 border-rose-200' : 'bg-white text-gray-700 border-gray-100'}`}>
         {i}
       </div>
     );
@@ -211,10 +213,11 @@ function AvailabilityCalendar() {
           <span className="text-gray-600">Tersedia</span>
         </div>
         <div className="flex items-center gap-2">
-          <div className="w-4 h-4 rounded bg-green-100 border border-green-200"></div>
+          <div className="w-4 h-4 rounded bg-rose-100 border border-rose-200"></div>
           <span className="text-gray-600">Telah Dibooking</span>
         </div>
       </div>
     </div>
   );
 }
+

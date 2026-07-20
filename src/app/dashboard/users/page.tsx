@@ -2,7 +2,7 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { Plus, Edit, Trash2, Users, Mail, ShieldCheck, ShieldAlert, Lock } from 'lucide-react';
+import { Plus, Edit, Trash2, Mail, ShieldCheck, ShieldAlert, Lock } from 'lucide-react';
 import StatusBadge from '@/components/cms/StatusBadge';
 import DataTable from '@/components/cms/DataTable';
 
@@ -49,6 +49,17 @@ export default function PicPage() {
     load();
   };
 
+  if (accessDenied) {
+    return (
+      <div className="flex flex-col items-center justify-center min-h-[60vh] text-center">
+        <div className="w-20 h-20 rounded-full bg-rose-100 flex items-center justify-center mb-4">
+          <Lock className="w-10 h-10 text-rose-600" />
+        </div>
+        <h1 className="text-2xl font-extrabold text-slate-900 mb-2">Akses Ditolak</h1>
+        <p className="text-sm text-slate-600 max-w-md">Manajemen user hanya dapat diakses oleh Admin.</p>
+      </div>
+    );
+  }
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
@@ -59,6 +70,16 @@ export default function PicPage() {
         <button onClick={() => setShowForm(true)} className="bg-emerald-700 hover:bg-emerald-800 text-white text-xs font-bold px-4 py-2.5 rounded-xl flex items-center gap-1.5">
           <Plus className="w-4 h-4" /> Tambah User
         </button>
+      </div>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="bg-amber-50 border border-amber-200 rounded-2xl p-4">
+          <div className="flex items-center gap-2 text-amber-800 font-extrabold text-sm"><ShieldCheck className="w-4 h-4" /> Admin</div>
+          <p className="text-xs text-amber-900/80 mt-1">Akses penuh: keuangan, booking aula, trafik, konten, dan manajemen user.</p>
+        </div>
+        <div className="bg-blue-50 border border-blue-200 rounded-2xl p-4">
+          <div className="flex items-center gap-2 text-blue-800 font-extrabold text-sm"><ShieldAlert className="w-4 h-4" /> Editor</div>
+          <p className="text-xs text-blue-900/80 mt-1">Akses konten saja: artikel blog, kajian/dauroh, dan jadwal khutbah. Tidak bisa membuka data operasional sensitif.</p>
+        </div>
       </div>
 
       <DataTable<User>
@@ -80,7 +101,7 @@ export default function PicPage() {
           { key: 'last_login', header: 'Login Terakhir', className: 'w-36', render: (u) => <span className="text-xs text-slate-500">{u.last_login_at ? new Date(u.last_login_at).toLocaleString('id-ID', { dateStyle: 'short', timeStyle: 'short' }) : 'Belum pernah'}</span> },
           { key: 'actions', header: '', className: 'w-24 text-right', render: (u) => (
             <div className="flex items-center justify-end gap-1">
-              <Link href={`/dashboard/pic/${u.id}`} className="p-1.5 hover:bg-emerald-100 text-emerald-700 rounded-lg transition"><Edit className="w-4 h-4" /></Link>
+              <Link href={`/dashboard/users/${u.id}`} className="p-1.5 hover:bg-emerald-100 text-emerald-700 rounded-lg transition"><Edit className="w-4 h-4" /></Link>
               <button onClick={() => handleDelete(u.id, u.name)} className="p-1.5 hover:bg-rose-100 text-rose-600 rounded-lg transition"><Trash2 className="w-4 h-4" /></button>
             </div>
           )},
@@ -137,3 +158,8 @@ function PicFormModal({ onClose, onSaved }: { onClose: () => void; onSaved: () =
     </div>
   );
 }
+
+
+
+
+

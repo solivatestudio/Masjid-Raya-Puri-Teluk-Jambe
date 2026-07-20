@@ -8,6 +8,7 @@ import EventSection from '@/components/EventSection';
 import FridaySermonSection from '@/components/FridaySermonSection';
 import BookingSection from '@/components/BookingSection';
 import DonationSection from '@/components/DonationSection';
+import FinanceTransparencySection from '@/components/FinanceTransparencySection';
 import GallerySection from '@/components/GallerySection';
 import PageviewTracker from '@/components/PageviewTracker';
 import { Menu, X, Phone, Mail, MapPin, Heart, ChevronUp, Share2, Instagram, Facebook, Youtube, MessageCircle } from 'lucide-react';
@@ -87,6 +88,7 @@ function LandingContent({ events, sermons }: Props) {
             <button onClick={() => scrollToSection('kegiatan')} className="text-xs uppercase font-extrabold tracking-wider text-emerald-100 hover:text-amber-400 transition cursor-pointer">Program Masjid</button>
             <button onClick={() => scrollToSection('khutbah')} className="text-xs uppercase font-extrabold tracking-wider text-emerald-100 hover:text-amber-400 transition cursor-pointer">Khatib Jumat</button>
             <button onClick={() => scrollToSection('audio-visual-hall')} className="text-xs uppercase font-extrabold tracking-wider text-emerald-100 hover:text-amber-400 transition cursor-pointer">Sewa Aula</button>
+            <button onClick={() => scrollToSection('transparansi-keuangan')} className="text-xs uppercase font-extrabold tracking-wider text-emerald-100 hover:text-amber-400 transition cursor-pointer">Keuangan</button>
             <button onClick={() => scrollToSection('galeri')} className="text-xs uppercase font-extrabold tracking-wider text-emerald-100 hover:text-amber-400 transition cursor-pointer">Galeri</button>
             <a href="/blog" className="text-xs uppercase font-extrabold tracking-wider text-emerald-100 hover:text-amber-400 transition cursor-pointer">Blog</a>
           </nav>
@@ -137,6 +139,7 @@ function LandingContent({ events, sermons }: Props) {
               <button onClick={() => scrollToSection('kegiatan')} className="text-left py-2 text-sm font-bold text-emerald-100 hover:text-amber-400">Program Dakwah & Sosial</button>
               <button onClick={() => scrollToSection('khutbah')} className="text-left py-2 text-sm font-bold text-emerald-100 hover:text-amber-400">Jadwal Khatib Jumat</button>
               <button onClick={() => scrollToSection('audio-visual-hall')} className="text-left py-2 text-sm font-bold text-emerald-100 hover:text-amber-400">Booking Aula Serbaguna</button>
+              <button onClick={() => scrollToSection('transparansi-keuangan')} className="text-left py-2 text-sm font-bold text-emerald-100 hover:text-amber-400">Transparansi Keuangan</button>
               <button onClick={() => scrollToSection('galeri')} className="text-left py-2 text-sm font-bold text-emerald-100 hover:text-amber-400">Galeri Kebersamaan</button>
               <a href="/blog" className="text-left py-2 text-sm font-bold text-emerald-100 hover:text-amber-400">Blog & Artikel</a>
             </div>
@@ -159,6 +162,7 @@ function LandingContent({ events, sermons }: Props) {
         <EventSection events={finalEvents} />
         <FridaySermonSection sermons={finalSermons} />
         <BookingSection />
+        <FinanceTransparencySection />
         <DonationSection />
         <GallerySection />
       </main>
@@ -247,3 +251,5 @@ export default function LandingPageClient({ events, sermons }: Props) {
     </Suspense>
   );
 }
+
+

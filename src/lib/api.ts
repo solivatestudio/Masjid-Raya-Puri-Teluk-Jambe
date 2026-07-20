@@ -2,6 +2,7 @@ import type { TransactionSummary, MonthlyTransaction, BookingSummary, BookingRec
 
 async function fetcher<T>(url: string, options?: RequestInit): Promise<T> {
   const res = await fetch(url, {
+    cache: 'no-store',
     headers: { 'Content-Type': 'application/json' },
     ...options,
     credentials: 'include',
@@ -45,3 +46,4 @@ export const pageviewsApi = {
   summary: () => fetcher<PageviewSummary>(`${BASE}/pageviews/summary`),
   recent: () => fetcher<any[]>(`${BASE}/pageviews/recent`),
 };
+

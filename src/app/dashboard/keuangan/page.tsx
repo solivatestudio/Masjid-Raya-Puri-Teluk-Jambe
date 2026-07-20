@@ -5,7 +5,7 @@ import { formatRupiah, formatRupiahInput, parseRupiahInput, formatDateIDN, forma
 import SummaryCard from '@/components/dashboard/SummaryCard';
 import StatusBadge from '@/components/dashboard/StatusBadge';
 import LineChart from '@/components/dashboard/LineChart';
-import { Wallet, ArrowUpRight, ArrowDownLeft, Plus, X, Check, Calendar, Tag, FileText, TrendingUp, TrendingDown } from 'lucide-react';
+import { Wallet, ArrowUpRight, ArrowDownLeft, Plus, X, Check, Calendar, Tag, FileText, TrendingUp, TrendingDown, FileSpreadsheet } from 'lucide-react';
 import type { TransactionSummary, MonthlyTransaction } from '@/types';
 
 const CATEGORIES = ['Semua', 'Infaq Umum', 'Infaq Jumat', 'Penyewaan Aula', 'Wakaf Pembangunan', 'Operasional', 'Honorarium', 'Sosial Kemasyarakatan', 'Pemeliharaan'];
@@ -103,6 +103,14 @@ export default function KeuanganPage() {
     }
   };
 
+  const handleExportCsv = () => {
+    const params = new URLSearchParams();
+    if (filterType !== 'Semua') params.set('type', filterType);
+    if (filterCategory) params.set('category', filterCategory);
+    if (startDate) params.set('startDate', startDate);
+    if (endDate) params.set('endDate', endDate);
+    window.location.href = `/api/admin/transactions/export${params.toString() ? `?${params.toString()}` : ''}`;
+  };
   const handleAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const raw = e.target.value.replace(/\D/g, '');
     setFormAmountDisplay(raw ? formatRupiahInput(raw) : '');
@@ -195,10 +203,16 @@ export default function KeuanganPage() {
           <span className="text-[10px] text-slate-400">s/d</span>
           <input type="date" value={endDate} onChange={(e) => setEndDate(e.target.value)} className="bg-white border border-gray-200 text-xs rounded-lg px-2 py-1.5 text-slate-700 focus:ring-1 focus:ring-emerald-500 focus:outline-none" />
         </div>
-        <button onClick={() => setShowForm(!showForm)} className="bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold px-4 py-2.5 rounded-xl transition flex items-center gap-1.5 cursor-pointer">
-          {showForm ? <X className="w-4 h-4" /> : <Plus className="w-4 h-4" />}
-          <span>{showForm ? 'Batal' : 'Tambah Transaksi'}</span>
-        </button>
+        <div className="flex flex-wrap gap-2">
+          <button onClick={handleExportCsv} className="bg-white border border-emerald-200 hover:bg-emerald-50 text-emerald-800 text-xs font-bold px-4 py-2.5 rounded-xl transition flex items-center gap-1.5 cursor-pointer">
+            <FileSpreadsheet className="w-4 h-4" />
+            <span>Export Spreadsheet</span>
+          </button>
+          <button onClick={() => setShowForm(!showForm)} className="bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold px-4 py-2.5 rounded-xl transition flex items-center gap-1.5 cursor-pointer">
+            {showForm ? <X className="w-4 h-4" /> : <Plus className="w-4 h-4" />}
+            <span>{showForm ? 'Batal' : 'Tambah Transaksi'}</span>
+          </button>
+        </div>
       </div>
 
       {showForm && (
