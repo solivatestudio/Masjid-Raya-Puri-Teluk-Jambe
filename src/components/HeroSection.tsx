@@ -1,5 +1,6 @@
-﻿'use client';
-import { Landmark, ArrowRight, HeartHandshake, CalendarClock, Compass } from 'lucide-react';
+'use client';
+
+import { Landmark, ArrowRight, HeartHandshake, CalendarClock, Compass, BookOpen, Heart, Building2 } from 'lucide-react';
 
 const heroImage = '/images/header.webp';
 
@@ -19,6 +20,7 @@ export default function HeroSection({ onDonateClick, onSermonClick, onBookingCli
       </div>
       <div className="absolute top-20 left-10 w-72 h-72 bg-amber-500/10 rounded-full blur-3xl" />
       <div className="absolute bottom-10 right-10 w-96 h-96 bg-emerald-500/20 rounded-full blur-3xl" />
+
       <div className="relative z-20 max-w-7xl mx-auto px-4 md:px-6 py-16 md:py-24 text-center lg:text-left flex flex-col lg:flex-row items-center gap-12">
         <div className="flex-1 space-y-6">
           <div className="inline-flex items-center gap-2 bg-emerald-900/80 border border-emerald-700/50 backdrop-blur px-4 py-1.5 rounded-full text-xs font-semibold text-amber-400 tracking-wide">
@@ -32,16 +34,30 @@ export default function HeroSection({ onDonateClick, onSermonClick, onBookingCli
             Membangun lingkungan yang nyaman dalam menjalankan ibadah, menguatkan ukhuwah islamiyah, dan melayani umat secara profesional, transparan, dan amanah di Karawang.
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 pt-4">
-            <button onClick={onDonateClick} className="w-full sm:w-auto bg-amber-500 hover:bg-amber-600 text-emerald-950 font-bold px-8 py-3.5 rounded-xl shadow-lg flex items-center justify-center gap-2 group cursor-pointer">
+            <button
+              id="cta-donate"
+              onClick={onDonateClick}
+              className="w-full sm:w-auto bg-amber-500 hover:bg-amber-600 active:scale-98 text-emerald-950 font-bold px-8 py-3.5 rounded-xl shadow-lg shadow-amber-500/20 hover:shadow-amber-500/40 transition flex items-center justify-center gap-2 group cursor-pointer"
+            >
               <HeartHandshake className="w-5 h-5 text-emerald-900" />
               <span>Donasi Sekarang</span>
               <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
             </button>
-            <button onClick={onSermonClick} className="w-full sm:w-auto bg-emerald-900/90 hover:bg-emerald-800 text-white border border-emerald-700 font-semibold px-6 py-3.5 rounded-xl flex items-center justify-center gap-2 cursor-pointer">
+
+            <button
+              id="cta-schedule"
+              onClick={onSermonClick}
+              className="w-full sm:w-auto bg-emerald-900/90 hover:bg-emerald-800 text-white border border-emerald-700 font-semibold px-6 py-3.5 rounded-xl transition flex items-center justify-center gap-2 cursor-pointer"
+            >
               <CalendarClock className="w-5 h-5 text-emerald-300" />
               <span>Jadwal Khutbah</span>
             </button>
-            <button onClick={onBookingClick} className="w-full sm:w-auto bg-white/10 hover:bg-white/15 text-emerald-100 border border-white/20 font-semibold px-6 py-3.5 rounded-xl flex items-center justify-center gap-2 cursor-pointer backdrop-blur">
+
+            <button
+              id="cta-booking"
+              onClick={onBookingClick}
+              className="w-full sm:w-auto bg-white/10 hover:bg-white/15 text-emerald-100 border border-white/20 font-semibold px-6 py-3.5 rounded-xl transition flex items-center justify-center gap-2 cursor-pointer backdrop-blur"
+            >
               <Compass className="w-5 h-5 text-amber-400" />
               <span>Sewa Aula</span>
             </button>
@@ -64,23 +80,32 @@ export default function HeroSection({ onDonateClick, onSermonClick, onBookingCli
         <div className="flex-1 w-full max-w-md hidden md:block">
           <div className="bg-emerald-950/40 border border-emerald-800/60 backdrop-blur-md rounded-2xl p-6 card-shadow space-y-4">
             <h3 className="text-xs font-bold uppercase tracking-widest text-amber-400">Layanan Unggulan Masjid</h3>
+
             <div className="space-y-3.5">
               <div className="flex gap-4 p-3 bg-emerald-900/60 rounded-xl border border-emerald-800/50">
-                <div className="w-10 h-10 rounded-lg bg-emerald-800 flex items-center justify-center shrink-0 text-base">ðŸ•Œ</div>
+                <div className="w-10 h-10 rounded-lg bg-emerald-800 flex items-center justify-center shrink-0 text-amber-400">
+                  <BookOpen className="w-5 h-5" />
+                </div>
                 <div>
                   <h4 className="font-semibold text-white text-sm">Kajian Dakwah Syar&apos;i & Kegiatan Sosial</h4>
                   <p className="text-xs text-emerald-200/70">bedah ilmu islamiyah terstruktur & kegiatan sosial rutin.</p>
                 </div>
               </div>
+
               <div className="flex gap-4 p-3 bg-emerald-900/60 rounded-xl border border-emerald-800/50">
-                <div className="w-10 h-10 rounded-lg bg-emerald-800 flex items-center justify-center shrink-0 text-base">ðŸš‘</div>
+                <div className="w-10 h-10 rounded-lg bg-emerald-800 flex items-center justify-center shrink-0 text-amber-400">
+                  <Heart className="w-5 h-5" />
+                </div>
                 <div>
                   <h4 className="font-semibold text-white text-sm">Layanan Ambulans & Sosial Siaga</h4>
                   <p className="text-xs text-emerald-200/70">Siap melayani kebutuhan gawat darurat warga 24 jam gratis.</p>
                 </div>
               </div>
+
               <div className="flex gap-4 p-3 bg-emerald-900/60 rounded-xl border border-emerald-800/50">
-                <div className="w-10 h-10 rounded-lg bg-emerald-800 flex items-center justify-center shrink-0 text-base">ðŸ›ï¸</div>
+                <div className="w-10 h-10 rounded-lg bg-emerald-800 flex items-center justify-center shrink-0 text-amber-400">
+                  <Building2 className="w-5 h-5" />
+                </div>
                 <div>
                   <h4 className="font-semibold text-white text-sm">Aula Serbaguna Syariah</h4>
                   <p className="text-xs text-emerald-200/70">Disewakan untuk walimah nikah, seminar, & rapat akbar umat.</p>

@@ -1,4 +1,4 @@
-﻿'use client';
+'use client';
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { Plus, Edit, Trash2, BookOpen } from 'lucide-react';
@@ -53,13 +53,13 @@ export default function KajianPage() {
           { key: 'title', header: 'Judul', render: (k) => (
             <div>
               <div className="font-bold text-slate-900 line-clamp-1">{k.title}</div>
-              <div className="text-xs text-slate-500">{k.speaker || 'â€”'}</div>
+              <div className="text-xs text-slate-500">{k.speaker || '—'}</div>
             </div>
           )},
           { key: 'category', header: 'Kategori', className: 'w-24', render: (k) => <span className={`px-2 py-0.5 rounded text-[10px] font-bold ${k.category === 'Dakwah' ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800'}`}>{k.category}</span> },
           { key: 'date', header: 'Tanggal', className: 'w-32', render: (k) => <span className="text-xs">{k.date_label}</span> },
           { key: 'time', header: 'Waktu', className: 'w-32', render: (k) => <span className="text-xs text-slate-600">{k.time_label}</span> },
-          { key: 'pic', header: 'PIC', className: 'w-24', render: (k) => <span className="text-xs">{k.pic_name || 'â€”'}</span> },
+          { key: 'pic', header: 'PIC', className: 'w-24', render: (k) => <span className="text-xs">{k.pic_name || '—'}</span> },
           { key: 'actions', header: '', className: 'w-24 text-right', render: (k) => (
             <div className="flex items-center justify-end gap-1">
               <Link href={`/dashboard/kajian/${k.id}`} className="p-1.5 hover:bg-emerald-100 text-emerald-700 rounded-lg transition"><Edit className="w-4 h-4" /></Link>

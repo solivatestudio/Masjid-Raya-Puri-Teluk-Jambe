@@ -1,4 +1,4 @@
-﻿'use client';
+'use client';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
@@ -6,7 +6,7 @@ import ArticleEditor from '@/components/cms/ArticleEditor';
 import SlugInput from '@/components/cms/SlugInput';
 import ImageUploader from '@/components/cms/ImageUploader';
 import { revalidateCMS } from '@/lib/revalidate';
-import { ArrowLeft, Save, Send } from 'lucide-react';
+import { ArrowLeft, Save, Send, Lightbulb } from 'lucide-react';
 
 export default function NewArticlePage() {
   const router = useRouter();
@@ -150,7 +150,7 @@ export default function NewArticlePage() {
               maxSizeMB={4}
             />
             <div className="text-[10px] text-slate-500 bg-emerald-50 border border-emerald-100 rounded-lg p-2 leading-relaxed">
-              ðŸ’¡ Gambar otomatis dikonversi ke <span className="font-bold">WebP</span> oleh CDN UploadThing untuk loading lebih cepat.
+              <Lightbulb className="w-4 h-4 inline mr-1" /> Gambar otomatis dikonversi ke <span className="font-bold">WebP</span> oleh CDN UploadThing untuk loading lebih cepat.
               {!featuredImageUrl && (
                 <> Atau <button type="button" className="text-emerald-700 font-bold underline" onClick={() => {
                   const url = prompt('Image URL:', '/images/');

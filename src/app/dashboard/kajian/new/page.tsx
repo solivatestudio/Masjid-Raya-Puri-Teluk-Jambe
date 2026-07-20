@@ -1,4 +1,4 @@
-﻿'use client';
+'use client';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
@@ -108,7 +108,7 @@ export default function NewKajianPage() {
             <div className="sm:col-span-2">
               <label className="block text-xs font-bold text-slate-700 mb-1">Hari Recurring</label>
               <select value={recurringDay} onChange={(e) => setRecurringDay(e.target.value)} className="w-full bg-white border border-gray-300 rounded-xl px-3 py-2 text-sm focus:ring-1 focus:ring-emerald-500 focus:outline-none">
-                <option value="">â€” pilih hari â€”</option>
+                <option value="">— pilih hari —</option>
                 {['Ahad', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'].map((d) => <option key={d} value={d}>{d}</option>)}
               </select>
             </div>

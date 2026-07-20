@@ -1,4 +1,4 @@
-﻿interface ProgressRingProps {
+interface ProgressRingProps {
   value: number;
   max?: number;
   size?: number;

@@ -8,10 +8,9 @@ import ImageUploader from '@/components/cms/ImageUploader';
 import { CalendarCheck, Clock, Users, CheckCircle, XCircle, Plus, X, Check, Receipt, ExternalLink, Image as ImageIcon, ChevronLeft, ChevronRight } from 'lucide-react';
 import type { BookingSummary, BookingRecord } from '@/types';
 
-const BOOKING_PACKAGES = [
-  { id: 'pkg-weekend', name: 'Weekend (Sabtu/Ahad)', price: 9000000 },
-  { id: 'pkg-weekdays', name: 'Weekdays (Senin-Jumat)', price: 8000000 },
-];
+import { BOOKING_PACKAGES as PACKAGES_DATA } from '@/data';
+
+const BOOKING_PACKAGES = PACKAGES_DATA.map((p) => ({ id: p.id, name: p.name, price: parseInt(p.price.replace(/[^0-9]/g, ''), 10) }));
 
 export default function BookingPage() {
   const [bookings, setBookings] = useState<BookingRecord[]>([]);

@@ -1,4 +1,4 @@
-﻿import type { Metadata, Viewport } from 'next';
+import type { Metadata, Viewport } from 'next';
 import './globals.css';
 
 const APP_URL = process.env.APP_URL || 'https://masjidrayapuritelukjambe.com';
@@ -183,6 +183,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
         <meta name="geo.region" content="ID-JB" />
         <meta name="geo.placename" content="Telukjambe Timur, Karawang, Jawa Barat" />
         <meta name="geo.position" content="-6.3665;107.3157" />
@@ -200,7 +201,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           dangerouslySetInnerHTML={{ __html: JSON.stringify(siteJsonLd) }}
         />
       </head>
-      <body className="font-sans antialiased">
+      <body className="font-sans antialiased" style={{ fontFamily: "'Inter', sans-serif" }}>
         <noscript>
           <h1>Masjid Raya Puri Telukjambe - Portal Resmi DKM Karawang</h1>
           <p>

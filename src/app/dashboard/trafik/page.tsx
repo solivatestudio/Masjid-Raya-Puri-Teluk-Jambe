@@ -1,4 +1,4 @@
-﻿'use client';
+'use client';
 import { useEffect, useState } from 'react';
 import { pageviewsApi } from '@/lib/api';
 import { getRelativeTime, fillDailyViews } from '@/lib/utils';
@@ -128,7 +128,7 @@ export default function TrafikPage() {
               <div className="space-y-2">
                 {data.referrers.map((r) => (
                   <div key={r.source} className="flex items-center justify-between py-1.5 border-b border-gray-50 last:border-0">
-                    <span className="text-xs font-medium text-slate-700">{r.source === 'Direct' ? 'ðŸ”— Direct' : r.source.length > 40 ? r.source.slice(0, 40) + '...' : r.source}</span>
+                    <span className="text-xs font-medium text-slate-700">{r.source === 'Direct' ? 'Direct' : r.source.length > 40 ? r.source.slice(0, 40) + '...' : r.source}</span>
                     <span className="text-[10px] font-mono text-slate-500">{r.views} kunjungan</span>
                   </div>
                 ))}

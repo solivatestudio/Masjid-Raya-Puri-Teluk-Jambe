@@ -1,4 +1,4 @@
-﻿'use client';
+'use client';
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { transactionsApi, bookingsApi, pageviewsApi } from '@/lib/api';
@@ -6,15 +6,15 @@ import { formatRupiah, fillDailyViews } from '@/lib/utils';
 import SummaryCard from '@/components/dashboard/SummaryCard';
 import StatusBadge from '@/components/dashboard/StatusBadge';
 import LineChart, { LineSeries } from '@/components/dashboard/LineChart';
-import { Wallet, CalendarCheck, Eye, ArrowRight, TrendingUp } from 'lucide-react';
-import type { TransactionSummary, BookingSummary } from '@/types';
+import { Wallet, CalendarCheck, Eye, ArrowRight, TrendingUp, ClipboardList, BarChart3 } from 'lucide-react';
+import type { TransactionSummary, BookingSummary, FinanceRecord, BookingRecord } from '@/types';
 
 export default function OverviewPage() {
   const [txnSummary, setTxnSummary] = useState<TransactionSummary | null>(null);
   const [bookingSummary, setBookingSummary] = useState<BookingSummary | null>(null);
   const [visitors, setVisitors] = useState(0);
-  const [recentTxns, setRecentTxns] = useState<any[]>([]);
-  const [recentBookings, setRecentBookings] = useState<any[]>([]);
+  const [recentTxns, setRecentTxns] = useState<FinanceRecord[]>([]);
+  const [recentBookings, setRecentBookings] = useState<BookingRecord[]>([]);
   const [dailyViews, setDailyViews] = useState<{ date: string; views: number }[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
@@ -97,7 +97,7 @@ export default function OverviewPage() {
                 <div key={tx.id} className="flex items-center justify-between py-2 border-b border-gray-50 last:border-0">
                   <div className="min-w-0">
                     <p className="text-xs font-semibold text-slate-800 truncate">{tx.description}</p>
-                    <p className="text-[9px] text-slate-400">{tx.date} â€” {tx.category}</p>
+                    <p className="text-[9px] text-slate-400">{tx.date} — {tx.category}</p>
                   </div>
                   <span className={`text-xs font-bold font-mono ${tx.type === 'Pemasukan' ? 'text-emerald-700' : 'text-rose-600'}`}>
                     {tx.type === 'Pemasukan' ? '+' : '-'}{formatRupiah(tx.amount)}
@@ -123,7 +123,7 @@ export default function OverviewPage() {
                 <div key={b.id} className="flex items-center justify-between py-2 border-b border-gray-50 last:border-0">
                   <div className="min-w-0">
                     <p className="text-xs font-semibold text-slate-800">{b.name}</p>
-                    <p className="text-[9px] text-slate-400">{b.date} â€” {b.purpose?.slice(0, 30)}</p>
+                    <p className="text-[9px] text-slate-400">{b.date} — {b.purpose?.slice(0, 30)}</p>
                   </div>
                   <StatusBadge status={b.status} />
                 </div>
@@ -159,10 +159,10 @@ export default function OverviewPage() {
               + Tambah Transaksi
             </Link>
             <Link href="/dashboard/booking" className="block w-full text-center bg-amber-50 hover:bg-amber-100 text-amber-800 text-xs font-bold py-3 rounded-xl transition">
-              ðŸ“‹ Review Booking
+              <ClipboardList className="w-4 h-4 inline mr-1" /> Review Booking
             </Link>
             <Link href="/dashboard/trafik" className="block w-full text-center bg-blue-50 hover:bg-blue-100 text-blue-800 text-xs font-bold py-3 rounded-xl transition">
-              ðŸ“Š Lihat Trafik
+              <BarChart3 className="w-4 h-4 inline mr-1" /> Lihat Trafik
             </Link>
           </div>
         </div>

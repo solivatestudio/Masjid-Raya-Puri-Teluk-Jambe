@@ -1,4 +1,4 @@
-﻿'use client';
+'use client';
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { Plus, Edit, Trash2, CalendarDays, RefreshCw, Loader2 } from 'lucide-react';
@@ -69,8 +69,8 @@ export default function KhutbahPage() {
         rowKey={(k) => k.id}
         columns={[
           { key: 'date', header: 'Tanggal', className: 'w-40', render: (k) => <span className="text-xs font-mono">{new Date(k.schedule_date).toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })}</span> },
-          { key: 'khatib', header: 'Khatib', render: (k) => <div><div className="font-bold text-slate-900">{k.khatib}</div><div className="text-xs text-slate-500">{k.muadzin || 'â€”'}</div></div> },
-          { key: 'theme', header: 'Tema', render: (k) => <span className="text-xs text-slate-600 italic">{k.theme || 'â€”'}</span> },
+          { key: 'khatib', header: 'Khatib', render: (k) => <div><div className="font-bold text-slate-900">{k.khatib}</div><div className="text-xs text-slate-500">{k.muadzin || '—'}</div></div> },
+          { key: 'theme', header: 'Tema', render: (k) => <span className="text-xs text-slate-600 italic">{k.theme || '—'}</span> },
           { key: 'actions', header: '', className: 'w-24 text-right', render: (k) => (
             <div className="flex items-center justify-end gap-1">
               <Link href={`/dashboard/khutbah/${k.id}`} className="p-1.5 hover:bg-emerald-100 text-emerald-700 rounded-lg transition"><Edit className="w-4 h-4" /></Link>

@@ -1,7 +1,8 @@
-﻿'use client';
+'use client';
 import { useState, FormEvent } from 'react';
 import { Calendar, Clock, MapPin, User, ChevronRight, Search, Sparkles } from 'lucide-react';
 import type { EventActivity } from '@/types';
+import { WA_NUMBERS } from '@/constants';
 
 interface EventSectionProps {
   events: EventActivity[];
@@ -46,13 +47,13 @@ export default function EventSection({ events }: EventSectionProps) {
   });
 
   const handleRegisterWhatsApp = (evt: EventActivity) => {
-    const waNumber = '62895414283161';
+    const waNumber = WA_NUMBERS.HUMAS_DKM;
     const message = `Assalamualaikum Admin, saya ingin mendaftar untuk mengikuti kegiatan:\n\n*${evt.title}*\nTanggal: ${evt.date}\nWaktu: ${evt.time}\n\nMohon informasi selanjutnya.`;
     window.open(`https://wa.me/${waNumber}?text=${encodeURIComponent(message)}`, '_blank', 'noopener,noreferrer');
   };
 
   const handleRegisterWhatsAppDauroh = (evt: EventActivity) => {
-    const waNumber = '6285216590900';
+    const waNumber = WA_NUMBERS.DAUROH_QURAN;
     const message = `Assalamualaikum Admin, saya ingin mendaftar untuk mengikuti kegiatan Dauroh Quran:\n\n*${evt.title}*\nTanggal: ${evt.date}\nWaktu: ${evt.time}\n\nMohon informasi selanjutnya.`;
     window.open(`https://wa.me/${waNumber}?text=${encodeURIComponent(message)}`, '_blank', 'noopener,noreferrer');
   };
@@ -81,7 +82,7 @@ export default function EventSection({ events }: EventSectionProps) {
                   selectedCategory === cat ? 'bg-emerald-600 text-white shadow-sm' : 'text-gray-600 hover:text-emerald-700'
                 }`}
               >
-                {cat === 'Semua' ? 'Semua Kegiatan' : cat === 'Dakwah' ? 'ðŸ“– Dakwah & Kajian' : "ðŸ¤ Dauroh Al-Qur'an"}
+                {cat === 'Semua' ? 'Semua Kegiatan' : cat === 'Dakwah' ? 'Dakwah & Kajian' : "Dauroh Al-Qur'an"}
               </button>
             ))}
           </div>
@@ -101,7 +102,7 @@ export default function EventSection({ events }: EventSectionProps) {
 
         {filteredEvents.length === 0 ? (
           <div className="text-center py-16 bg-white rounded-2xl border border-gray-200 shadow-sm max-w-xl mx-auto">
-            <div className="text-4xl mb-3">ðŸ”</div>
+            <Search className="w-10 h-10 text-slate-300 mx-auto" />
             <h3 className="text-lg font-bold text-gray-800">Tidak ada kegiatan ditemukan</h3>
             <p className="text-sm text-gray-500 mt-1">Coba sesuaikan kata pencarian atau pilih kategori lain.</p>
           </div>

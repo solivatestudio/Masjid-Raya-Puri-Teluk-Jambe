@@ -1,7 +1,7 @@
-﻿'use client';
+'use client';
 import { useState, FormEvent, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { Lock, LogIn, Eye, EyeOff, ShieldCheck, Mail } from 'lucide-react';
+import { Lock, LogIn, Eye, EyeOff, ShieldCheck, Mail, AlertTriangle } from 'lucide-react';
 
 function LoginForm() {
   const router = useRouter();
@@ -114,7 +114,7 @@ function LoginForm() {
 
         <div className="mt-6 pt-4 border-t border-gray-100 text-center text-xs text-slate-500">
           <p>Default admin: <span className="font-mono">admin@masjidraya.id / admin123</span></p>
-          <p className="mt-1 text-rose-500">âš  Segera ganti password setelah login pertama</p>
+          <p className="mt-1 text-rose-500 flex items-center justify-center gap-1"><AlertTriangle className="w-3.5 h-3.5 inline" /> Segera ganti password setelah login pertama</p>
         </div>
       </div>
     </div>

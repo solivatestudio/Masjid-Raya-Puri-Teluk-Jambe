@@ -1,4 +1,5 @@
 import type { EventActivity, FinanceRecord, FridaySermon, BookingPackage } from './types';
+import { HALL_FACILITIES } from './constants';
 
 export const INITIAL_EVENTS: EventActivity[] = [
   {
@@ -102,17 +103,7 @@ export const HALL_INFO = {
   name: 'Aula Serbaguna Masjid Raya Puri Telukjambe',
   dimensions: '25 X 25 M2',
   capacity: '200-300 ORANG, SESUAI KONDISI DEKORASI',
-  facilities: [
-    'Seluruh ruang ber AC',
-    'Back up PLN dengan Genseet 85 KVa',
-    'Parkir Luas',
-    'Toilet pria dan Wanita',
-    '100 unit kursi tanpa cover',
-    'Tenaga Satpam dan Parkir',
-    'Tenaga Kebersihan',
-    'Parkir luas',
-    'Ruang cuci perabot/piring',
-  ],
+  facilities: HALL_FACILITIES,
 };
 
 export const BOOKING_PACKAGES: BookingPackage[] = [
@@ -120,34 +111,14 @@ export const BOOKING_PACKAGES: BookingPackage[] = [
     id: 'pkg-weekend',
     name: 'Weekend (Sabtu/Ahad)',
     price: 'Rp 9.000.000',
-    features: [
-      'Seluruh ruang ber AC',
-      'Back up PLN dengan Genseet 85 KVa',
-      'Parkir Luas',
-      'Toilet pria dan Wanita',
-      '100 unit kursi tanpa cover',
-      'Tenaga Satpam dan Parkir',
-      'Tenaga Kebersihan',
-      'Parkir luas',
-      'Ruang cuci perabot/piring',
-    ],
+    features: HALL_FACILITIES,
     isPopular: false,
   },
   {
     id: 'pkg-weekdays',
     name: 'Weekdays (Senin-Jumat)',
     price: 'Rp 8.000.000',
-    features: [
-      'Seluruh ruang ber AC',
-      'Back up PLN dengan Genseet 85 KVa',
-      'Parkir Luas',
-      'Toilet pria dan Wanita',
-      '100 unit kursi tanpa cover',
-      'Tenaga Satpam dan Parkir',
-      'Tenaga Kebersihan',
-      'Parkir luas',
-      'Ruang cuci perabot/piring',
-    ],
+    features: HALL_FACILITIES,
     isPopular: true,
   },
 ];

@@ -4,21 +4,21 @@ import { usePathname, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import {
   LayoutDashboard, Wallet, CalendarCheck, BarChart3,
-  FileText, BookOpen, CalendarDays, CalendarRange,
+  FileText, BookOpen, CalendarDays,
   Users, Menu, X, LogOut, ChevronRight, BookOpenCheck,
 } from 'lucide-react';
 
 interface NavItem {
   href: string;
   label: string;
-  icon: any;
+  icon: React.ComponentType<{ className?: string }>;
   exact?: boolean;
   adminOnly?: boolean;
 }
 
 interface NavGroup {
   label: string;
-  icon: any;
+  icon: React.ComponentType<{ className?: string }>;
   items: NavItem[];
   adminOnly?: boolean;
 }
@@ -42,7 +42,6 @@ const navGroups: NavGroup[] = [
       { href: '/dashboard/articles', label: 'Artikel Blog', icon: FileText },
       { href: '/dashboard/kajian', label: 'Kajian & Dauroh', icon: BookOpen },
       { href: '/dashboard/khutbah', label: 'Jadwal Khutbah', icon: CalendarDays },
-      { href: '/dashboard/aula', label: 'Ketersediaan Aula', icon: CalendarRange },
     ],
   },
   {

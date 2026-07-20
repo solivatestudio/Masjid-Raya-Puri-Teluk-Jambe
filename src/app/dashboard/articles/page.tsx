@@ -1,4 +1,4 @@
-﻿'use client';
+'use client';
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { Plus, Edit, Trash2, FileText } from 'lucide-react';
@@ -71,7 +71,7 @@ export default function ArticlesPage() {
               {a.excerpt && <div className="text-xs text-slate-500 line-clamp-1 mt-0.5">{a.excerpt}</div>}
             </div>
           )},
-          { key: 'category', header: 'Kategori', className: 'w-28', render: (a) => a.category ? <span className="text-xs">{a.category}</span> : <span className="text-xs text-slate-400">â€”</span> },
+          { key: 'category', header: 'Kategori', className: 'w-28', render: (a) => a.category ? <span className="text-xs">{a.category}</span> : <span className="text-xs text-slate-400">—</span> },
           { key: 'status', header: 'Status', className: 'w-28', render: (a) => <StatusBadge status={a.status} /> },
           { key: 'views', header: 'Views', className: 'w-20 text-right', render: (a) => <span className="text-xs text-slate-500">{a.views_count}</span> },
           { key: 'updated', header: 'Update', className: 'w-32', render: (a) => <span className="text-xs text-slate-500">{new Date(a.updated_at).toLocaleDateString('id-ID', { day: 'numeric', month: 'short' })}</span> },

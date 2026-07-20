@@ -1,4 +1,4 @@
-﻿'use client';
+'use client';
 import { useState } from 'react';
 import type { FridaySermon } from '@/types';
 import { User, Copy, Check } from 'lucide-react';
@@ -8,7 +8,7 @@ export default function FridaySermonSection({ sermons }: { sermons: FridaySermon
   const [showAllMobile, setShowAllMobile] = useState(false);
 
   const handleCopy = (id: string, theme: string, khatib: string, date: string) => {
-    const textToCopy = `*INFO JUMAT MASJID RAYA PURI TELUKJAMBE*\nðŸ“… Tanggal: ${date}\nðŸŽ™ï¸ Khatib: ${khatib}\nðŸ“– Tema: "${theme}"\nMari bersiap bergegas menghadiri shalat jumat berjamaah tepat waktu.`;
+    const textToCopy = `*INFO JUMAT MASJID RAYA PURI TELUKJAMBE*\n📅 Tanggal: ${date}\n🎙️ Khatib: ${khatib}\n📖 Tema: "${theme}"\nMari bersiap bergegas menghadiri shalat jumat berjamaah tepat waktu.`;
     navigator.clipboard.writeText(textToCopy).then(() => {
       setCopiedId(id);
       setTimeout(() => setCopiedId(null), 2000);

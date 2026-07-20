@@ -1,4 +1,4 @@
-﻿'use client';
+'use client';
 import { useEditor, EditorContent } from '@tiptap/react';
 import {
   Bold, Italic, UnderlineIcon, Heading1, Heading2, Heading3,

@@ -1,9 +1,11 @@
-﻿'use client';
+'use client';
+import { useState, useEffect } from 'react';
 import { HALL_INFO, BOOKING_PACKAGES } from '@/data';
-import { ArrowRight, CheckCircle2, ShieldCheck } from 'lucide-react';
+import { ArrowRight, CheckCircle2, ShieldCheck, ChevronLeft, ChevronRight } from 'lucide-react';
+import { WA_NUMBERS } from '@/constants';
 
 const hallBackground = '/images/aula.webp';
-const ADMIN_WA = '6281218595315';
+const ADMIN_WA = WA_NUMBERS.ADMIN_AULA;
 
 export default function BookingSection() {
   return (
@@ -132,7 +134,87 @@ export default function BookingSection() {
             Hubungi Admin Aula <ArrowRight className="w-4 h-4 inline ml-1" />
           </a>
         </div>
+
+        <AvailabilityCalendar />
       </div>
     </section>
+  );
+}
+
+function AvailabilityCalendar() {
+  const [currentDate, setCurrentDate] = useState(new Date());
+  const [bookedDates, setBookedDates] = useState<string[]>([]);
+
+  useEffect(() => {
+    fetch('/api/bookings/calendar')
+      .then((res) => res.json())
+      .then((data) => {
+        if (data && data.bookedDates) {
+          setBookedDates(data.bookedDates);
+        }
+      })
+      .catch((err) => console.error(err));
+  }, []);
+
+  const getDaysInMonth = (year: number, month: number) => new Date(year, month + 1, 0).getDate();
+  const getFirstDayOfMonth = (year: number, month: number) => new Date(year, month, 1).getDay();
+
+  const year = currentDate.getFullYear();
+  const month = currentDate.getMonth();
+
+  const daysInMonth = getDaysInMonth(year, month);
+  const firstDay = getFirstDayOfMonth(year, month);
+
+  const prevMonth = () => setCurrentDate(new Date(year, month - 1, 1));
+  const nextMonth = () => setCurrentDate(new Date(year, month + 1, 1));
+
+  const monthNames = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+  const dayNames = ['Min', 'Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab'];
+
+  const days = [];
+  for (let i = 0; i < firstDay; i++) {
+    days.push(<div key={`empty-${i}`} className="p-2"></div>);
+  }
+
+  for (let i = 1; i <= daysInMonth; i++) {
+    const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(i).padStart(2, '0')}`;
+    const isBooked = bookedDates.includes(dateStr);
+
+    days.push(
+      <div key={i} className={`p-2 border rounded-lg text-center text-sm font-medium ${isBooked ? 'bg-green-100 text-green-800 border-green-200' : 'bg-white text-gray-700 border-gray-100'}`}>
+        {i}
+      </div>
+    );
+  }
+
+  return (
+    <div className="bg-white rounded-3xl p-6 border border-gray-100 shadow-sm mt-14 relative overflow-hidden">
+      <div className="flex items-center justify-between mb-6">
+        <h3 className="text-xl font-bold text-gray-900">Ketersediaan Aula</h3>
+        <div className="flex items-center gap-4">
+          <button onClick={prevMonth} className="p-2 hover:bg-gray-100 rounded-full transition cursor-pointer"><ChevronLeft className="w-5 h-5" /></button>
+          <span className="font-semibold text-gray-800 w-32 text-center">{monthNames[month]} {year}</span>
+          <button onClick={nextMonth} className="p-2 hover:bg-gray-100 rounded-full transition cursor-pointer"><ChevronRight className="w-5 h-5" /></button>
+        </div>
+      </div>
+      <div className="grid grid-cols-7 gap-2 mb-2">
+        {dayNames.map(day => (
+          <div key={day} className="text-center text-xs font-bold text-gray-500">{day}</div>
+        ))}
+      </div>
+      <div className="grid grid-cols-7 gap-2">
+        {days}
+      </div>
+      <div className="mt-6 flex flex-wrap items-center justify-center gap-6 text-sm">
+        <div className="flex items-center gap-2">
+          <div className="w-4 h-4 rounded bg-white border border-gray-200"></div>
+          <span className="text-gray-600">Tersedia</span>
+        </div>
+        <div className="flex items-center gap-2">
+          <div className="w-4 h-4 rounded bg-green-100 border border-green-200"></div>
+          <span className="text-gray-600">Telah Dibooking</span>
+        </div>
+      </div>
+    </div>
   );
 }
