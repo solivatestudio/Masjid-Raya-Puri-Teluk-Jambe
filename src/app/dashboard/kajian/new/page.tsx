@@ -30,6 +30,7 @@ export default function NewKajianPage() {
     try {
       const res = await fetch('/api/admin/kajian', {
         method: 'POST', headers: { 'Content-Type': 'application/json' }, credentials: 'include',
+        cache: 'no-store',
         body: JSON.stringify({ title, category, date_label: dateLabel, date_start: dateStart || null, time_label: timeLabel,
           speaker: speaker || null, location, description: description || null, image_url: imageUrl || null,
           capacity: capacity ? parseInt(capacity) : null, is_recurring: isRecurring, recurring_day: recurringDay || null,

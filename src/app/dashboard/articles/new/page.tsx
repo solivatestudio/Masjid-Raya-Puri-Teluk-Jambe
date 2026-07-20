@@ -34,6 +34,7 @@ export default function NewArticlePage() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',
+        cache: 'no-store',
         body: JSON.stringify({
           slug, title, excerpt, content_html: contentHtml, content_json: contentJson,
           featured_image_url: featuredImageUrl || null, featured_image_alt: featuredImageAlt || null,

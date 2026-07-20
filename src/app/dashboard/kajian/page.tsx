@@ -17,7 +17,7 @@ export default function KajianPage() {
   const [loading, setLoading] = useState(true);
 
   const load = async () => {
-    const res = await fetch('/api/admin/kajian', { credentials: 'include' });
+    const res = await fetch('/api/admin/kajian', { credentials: 'include', cache: 'no-store' });
     if (res.ok) setItems(await res.json());
     setLoading(false);
   };
@@ -25,7 +25,7 @@ export default function KajianPage() {
 
   const handleDelete = async (id: string, title: string) => {
     if (!confirm(`Hapus kajian "${title}"?`)) return;
-    await fetch(`/api/admin/kajian/${id}`, { method: 'DELETE', credentials: 'include' });
+    await fetch(`/api/admin/kajian/${id}`, { method: 'DELETE', credentials: 'include', cache: 'no-store' });
     await load();
     await revalidateCMS();
   };

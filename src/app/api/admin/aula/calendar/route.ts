@@ -21,7 +21,10 @@ export async function GET(req: NextRequest) {
       `SELECT * FROM aula_availability WHERE date >= $1 AND date <= $2 ORDER BY date ASC, time_start ASC`,
       [startDate, endDate]
     )) as any[];
-    return NextResponse.json({ month, slots: rows });
+    return NextResponse.json(
+      { month, slots: rows },
+      { headers: { 'Cache-Control': 'no-store, max-age=0, must-revalidate' } }
+    );
   } catch (error) {
     return authErrorResponse(error);
   }

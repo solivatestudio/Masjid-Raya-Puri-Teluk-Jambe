@@ -22,6 +22,7 @@ export default function NewKhutbahPage() {
     try {
       const res = await fetch('/api/admin/khutbah', {
         method: 'POST', headers: { 'Content-Type': 'application/json' }, credentials: 'include',
+        cache: 'no-store',
         body: JSON.stringify({ schedule_date: scheduleDate, khatib, muadzin: muadzin || null, theme: theme || null, notes: notes || null }),
       });
       if (!res.ok) throw new Error((await res.json()).error || 'Gagal');

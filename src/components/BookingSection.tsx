@@ -146,16 +146,29 @@ function AvailabilityCalendar() {
   const [bookedDates, setBookedDates] = useState<string[]>([]);
 
   useEffect(() => {
-    fetch('/api/bookings/calendar')
-      .then((res) => res.json())
-      .then((data) => {
-        if (Array.isArray(data)) {
-          setBookedDates(data);
-        } else if (data && data.bookedDates) {
-          setBookedDates(data.bookedDates);
-        }
-      })
-      .catch((err) => console.error(err));
+    let active = true;
+    const refreshCalendar = () => {
+      fetch('/api/bookings/calendar', { cache: 'no-store' })
+        .then((res) => res.json())
+        .then((data) => {
+          if (!active) return;
+          if (Array.isArray(data)) {
+            setBookedDates(data);
+          } else if (data && data.bookedDates) {
+            setBookedDates(data.bookedDates);
+          }
+        })
+        .catch((err) => console.error(err));
+    };
+
+    refreshCalendar();
+    const interval = window.setInterval(refreshCalendar, 15000);
+    window.addEventListener('focus', refreshCalendar);
+    return () => {
+      active = false;
+      window.clearInterval(interval);
+      window.removeEventListener('focus', refreshCalendar);
+    };
   }, []);
 
   const getDaysInMonth = (year: number, month: number) => new Date(year, month + 1, 0).getDate();
@@ -214,7 +227,7 @@ function AvailabilityCalendar() {
         </div>
         <div className="flex items-center gap-2">
           <div className="w-4 h-4 rounded bg-rose-100 border border-rose-200"></div>
-          <span className="text-gray-600">Telah Dibooking</span>
+          <span className="text-gray-600">Tidak tersedia / telah dibooking</span>
         </div>
       </div>
     </div>

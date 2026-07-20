@@ -19,10 +19,10 @@ export default function EditKhutbahPage() {
   const [notes, setNotes] = useState('');
 
   useEffect(() => {
-    fetch(`/api/admin/khutbah/${id}`, { credentials: 'include' })
+    fetch(`/api/admin/khutbah/${id}`, { credentials: 'include', cache: 'no-store' })
       .then((r) => r.json())
       .then((k) => {
-        setScheduleDate(k.schedule_date); setKhatib(k.khatib);
+        setScheduleDate(k.schedule_date ? String(k.schedule_date).slice(0, 10) : ''); setKhatib(k.khatib);
         setMuadzin(k.muadzin || ''); setTheme(k.theme || '');
         setNotes(k.notes || ''); setLoading(false);
       });
@@ -33,6 +33,7 @@ export default function EditKhutbahPage() {
     try {
       const res = await fetch(`/api/admin/khutbah/${id}`, {
         method: 'PUT', headers: { 'Content-Type': 'application/json' }, credentials: 'include',
+        cache: 'no-store',
         body: JSON.stringify({ schedule_date: scheduleDate, khatib, muadzin: muadzin || null, theme: theme || null, notes: notes || null }),
       });
       if (!res.ok) throw new Error((await res.json()).error || 'Gagal');

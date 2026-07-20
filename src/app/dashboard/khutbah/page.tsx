@@ -16,7 +16,7 @@ export default function KhutbahPage() {
   const [generating, setGenerating] = useState(false);
 
   const load = async () => {
-    const res = await fetch('/api/admin/khutbah', { credentials: 'include' });
+    const res = await fetch('/api/admin/khutbah', { credentials: 'include', cache: 'no-store' });
     if (res.ok) setItems(await res.json());
     setLoading(false);
   };
@@ -24,7 +24,7 @@ export default function KhutbahPage() {
 
   const handleDelete = async (id: string, khatib: string) => {
     if (!confirm(`Hapus jadwal khutbah "${khatib}"?`)) return;
-    await fetch(`/api/admin/khutbah/${id}`, { method: 'DELETE', credentials: 'include' });
+    await fetch(`/api/admin/khutbah/${id}`, { method: 'DELETE', credentials: 'include', cache: 'no-store' });
     load();
   };
 
@@ -32,7 +32,7 @@ export default function KhutbahPage() {
     if (!confirm('Generate jadwal kosong untuk 4 Jumat ke depan? Yang sudah ada akan dilewati.')) return;
     setGenerating(true);
     try {
-      const res = await fetch('/api/admin/khutbah/generate', { method: 'POST', credentials: 'include' });
+      const res = await fetch('/api/admin/khutbah/generate', { method: 'POST', credentials: 'include', cache: 'no-store' });
       const data = await res.json();
       alert(`Generate selesai: ${data.created} dibuat, ${data.skipped} dilewati (sudah ada)`);
       await load();

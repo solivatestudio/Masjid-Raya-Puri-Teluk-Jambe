@@ -26,7 +26,7 @@ export default function ArticlesPage() {
 
   const fetchData = async () => {
     try {
-      const res = await fetch('/api/admin/articles', { credentials: 'include' });
+      const res = await fetch('/api/admin/articles', { credentials: 'include', cache: 'no-store' });
       if (res.ok) setArticles(await res.json());
     } finally {
       setLoading(false);
@@ -39,7 +39,7 @@ export default function ArticlesPage() {
 
   const handleDelete = async (id: string, title: string) => {
     if (!confirm(`Hapus artikel "${title}"? Tindakan ini tidak dapat dibatalkan.`)) return;
-    const res = await fetch(`/api/admin/articles/${id}`, { method: 'DELETE', credentials: 'include' });
+    const res = await fetch(`/api/admin/articles/${id}`, { method: 'DELETE', credentials: 'include', cache: 'no-store' });
     if (res.ok) fetchData();
     else alert('Gagal menghapus');
   };

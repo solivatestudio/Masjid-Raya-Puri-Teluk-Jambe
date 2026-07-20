@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { revalidatePath } from 'next/cache';
 import { getSql, ensureSeeded } from '@/db';
 import { requireCmsAuth, authErrorResponse } from '@/lib/rbac';
 
@@ -29,7 +30,9 @@ export async function GET(req: NextRequest) {
       `SELECT a.*, u.name as pic_name FROM aula_availability a LEFT JOIN users u ON u.id = a.pic_id ${where} ORDER BY a.date ASC, a.time_start ASC`,
       params
     )) as any[];
-    return NextResponse.json(rows);
+    return NextResponse.json(rows, {
+      headers: { 'Cache-Control': 'no-store, max-age=0, must-revalidate' },
+    });
   } catch (error) {
     return authErrorResponse(error);
   }
@@ -51,6 +54,7 @@ export async function POST(req: NextRequest) {
        RETURNING *`,
       [date, time_start, time_end, is_available !== false, block_reason || null]
     )) as any[];
+    revalidatePath('/', 'page');
     return NextResponse.json(rows[0], { status: 201 });
   } catch (error) {
     return authErrorResponse(error);

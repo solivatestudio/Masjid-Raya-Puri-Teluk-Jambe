@@ -27,11 +27,11 @@ export default function EditKajianPage() {
   const [isPublished, setIsPublished] = useState(true);
 
   useEffect(() => {
-    fetch(`/api/admin/kajian/${id}`, { credentials: 'include' })
+    fetch(`/api/admin/kajian/${id}`, { credentials: 'include', cache: 'no-store' })
       .then((r) => r.json())
       .then((k) => {
         setTitle(k.title); setCategory(k.category); setDateLabel(k.date_label);
-        setDateStart(k.date_start || ''); setTimeLabel(k.time_label);
+        setDateStart(k.date_start ? String(k.date_start).slice(0, 10) : ''); setTimeLabel(k.time_label);
         setSpeaker(k.speaker || ''); setLocation(k.location || '');
         setDescription(k.description || ''); setImageUrl(k.image_url || '');
         setCapacity(k.capacity || ''); setIsRecurring(k.is_recurring);
@@ -45,6 +45,7 @@ export default function EditKajianPage() {
     try {
       const res = await fetch(`/api/admin/kajian/${id}`, {
         method: 'PUT', headers: { 'Content-Type': 'application/json' }, credentials: 'include',
+        cache: 'no-store',
         body: JSON.stringify({ title, category, date_label: dateLabel, date_start: dateStart || null, time_label: timeLabel,
           speaker: speaker || null, location, description: description || null, image_url: imageUrl || null,
           capacity: capacity ? parseInt(capacity) : null, is_recurring: isRecurring, recurring_day: recurringDay || null,

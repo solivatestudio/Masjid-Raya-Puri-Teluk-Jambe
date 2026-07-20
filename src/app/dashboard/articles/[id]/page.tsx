@@ -28,7 +28,7 @@ export default function EditArticlePage() {
   const [saving, setSaving] = useState(false);
 
   useEffect(() => {
-    fetch(`/api/admin/articles/${id}`, { credentials: 'include' })
+    fetch(`/api/admin/articles/${id}`, { credentials: 'include', cache: 'no-store' })
       .then((r) => r.json())
       .then((a) => {
         setTitle(a.title);
@@ -53,6 +53,7 @@ export default function EditArticlePage() {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',
+        cache: 'no-store',
         body: JSON.stringify({
           slug, title, excerpt, content_html: contentHtml, content_json: contentJson,
           featured_image_url: featuredImageUrl || null, featured_image_alt: featuredImageAlt || null,
