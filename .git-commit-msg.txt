@@ -1,43 +1,41 @@
-QC fixes batch: realtime data, IDR formatter, date readable, bukti transfer, RBAC, mobile layout, no 404, remove admin navbar link
+Replace all dashboard charts with Chart.js line charts
 
-Backend:
-- bookings table: add payment_proof_url TEXT + payment_proof_uploaded_at TIMESTAMPTZ columns (with ALTER TABLE for existing DBs)
-- /api/bookings POST: accept payment_proof_url field, auto-set uploaded_at
-- /api/admin/revalidate/route.ts: new endpoint to manually revalidate cache
+Dependencies:
+- Add chart.js ^4.4.4
+- Add react-chartjs-2 ^5.2.0
 
-Utilities:
-- src/lib/revalidate.ts: helper to call revalidate API from client
-- src/lib/utils.ts: add formatDateIDN (Senin, 19 Juli 2026), formatDateTime, formatRupiahInput, parseRupiahInput (handles "1.000.000" -> 1000000)
+New component:
+- src/components/dashboard/LineChart.tsx: reusable line chart wrapper with:
+  - Configurable series (multi-line support: Pemasukan + Pengeluaran, etc.)
+  - Color themes: emerald (Pemasukan/Trafik), amber (Pengeluaran), blue, rose
+  - Customizable yFormatter (auto-format IDR with thousand separator)
+  - Responsive, smooth bezier curves (tension 0.4)
+  - Dark tooltip + clean legend
 
-Fixes:
+Charts replaced (3 total):
 
-1. Keuangan realtime + IDR input + readable date:
-- /dashboard/keuangan: use parseRupiahInput on amount, auto-format with thousand separator (Rp 1.000.000)
-- Table date column: use formatDateIDN instead of raw ISO
-- All refreshMsg auto-show after add/delete
-- Status badge shows real timestamp
+1. /dashboard (Overview) - "Trafik 7 Hari":
+   Before: sparkline bars (custom divs, height: 80/100px each)
+   After: LineChart single series "Page Views", labels formatted as Indonesian weekday + day
 
-2. Booking realtime + bukti transfer:
-- /dashboard/booking: ImageUploader component for payment proof in form
-- Modal preview bukti transfer (click "Lihat" button in table)
-- Date format readable in table + summary
-- "Generate 4 Jumat" button revalidates after action
-- Calendar navigation uses ChevronLeft/ChevronRight icons instead of ‹/› unicode
+2. /dashboard/keuangan - "Tren Keuangan 6 Bulan":
+   Before: stacked bars (custom divs, manual height calculation)
+   After: LineChart dual series with custom yFormatter (IDR with separator):
+   - Series 1: Pemasukan (emerald)
+   - Series 2: Pengeluaran (amber)
+   - Labels: Indonesian month name + 2-digit year (e.g., "Jan '26")
 
-3. Landing page icons: ganti chevron text ‹/› di booking dengan ChevronLeft/Right icon
+3. /dashboard/trafik - "Trafik 7 Hari Terakhir":
+   Before: custom bars (h-32 each)
+   After: LineChart single series "Page Views"
 
-4. Data articles & kajian tidak update realtime:
-- All CMS CRUD pages (articles, kajian, khutbah) now call revalidateCMS() after create/update/delete
-- Public landing revalidate: 300 -> 30 seconds
-- /blog revalidate: 300 -> 30 seconds
-
-5. FridaySermonSection mobile: grid-cols-1 md:grid-cols-2 -> grid-cols-2 md:grid-cols-2 (always 2 col, 4 cards = 2 baris)
-
-6. RBAC: role enforcement di /dashboard/users (admin only):
-- /dashboard/users/page.tsx: client-side guard, show "Akses Ditolak" UI for non-admin (Lock icon + redirect to /dashboard)
-- /dashboard/users/[id]/page.tsx: same guard + custom "User Tidak Ditemukan" 404 page (UserX icon + "← Kembali ke Daftar User" button)
-- Fixed path /dashboard/pic -> /dashboard/users in Link href
-
-7. Hapus link "🔐 Admin" di top navbar landing (sesuai request: pindah ke footer only, navbar lebih rapi)
+Improvements over custom SVG/divs:
+- Tooltip with value on hover
+- Smooth line curves (tension 0.4)
+- Multi-series with shared tooltip
+- Consistent typography & spacing
+- Responsive auto-resize
+- Loading state handled by Chart.js animations
+- Color-coded legend in top-right
 
 Co-authored-by: Hammad <email1.hammad@gmail.com>

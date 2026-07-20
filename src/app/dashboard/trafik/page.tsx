@@ -5,6 +5,7 @@ import { getRelativeTime, fillDailyViews } from '@/lib/utils';
 import SummaryCard from '@/components/dashboard/SummaryCard';
 import StatusBadge from '@/components/dashboard/StatusBadge';
 import ProgressRing from '@/components/dashboard/ProgressRing';
+import LineChart from '@/components/dashboard/LineChart';
 import { Eye, Users, Activity, Globe, Link as LinkIcon } from 'lucide-react';
 import type { PageviewSummary } from '@/types';
 
@@ -74,20 +75,16 @@ export default function TrafikPage() {
           <div className="bg-white rounded-3xl border border-slate-100 card-shadow p-5">
             <h3 className="text-sm font-bold text-slate-800 mb-4">Trafik 7 Hari Terakhir</h3>
             {data.daily7Days.some((d) => d.views > 0) ? (
-              <div className="flex items-end gap-2 h-32">
-                {data.daily7Days.map((d) => {
-                  const maxVal = Math.max(...data.daily7Days.map((x) => x.views), 1);
-                  const h = (d.views / maxVal) * 100;
-                  return (
-                    <div key={d.date} className="flex-1 flex flex-col items-center gap-1">
-                      <div className="w-full bg-emerald-500 rounded-t transition-all" style={{ height: `${Math.max(h, 4)}px` }} title={`${d.views} views`} />
-                      <span className="text-[8px] text-slate-400 font-mono">{d.date.slice(5)}</span>
-                    </div>
-                  );
+              <LineChart
+                labels={data.daily7Days.map((d) => {
+                  const date = new Date(d.date);
+                  return date.toLocaleDateString('id-ID', { weekday: 'short', day: 'numeric' });
                 })}
-              </div>
+                series={[{ label: 'Page Views', data: data.daily7Days.map((d) => d.views), color: 'emerald' }]}
+                height={220}
+              />
             ) : (
-              <p className="text-xs text-slate-400 text-center py-8">Belum ada data trafik 7 hari</p>
+              <p className="text-xs text-slate-400 text-center py-12">Belum ada data trafik 7 hari</p>
             )}
           </div>
         )}

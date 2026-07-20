@@ -28,3 +28,6 @@
 # navbar
 - Place admin menu items in the footer section, not in the main navbar. Confidence: 0.70
 
+# chart
+- Use Chart.js with line charts for all chart visualizations. Confidence: 0.65
+

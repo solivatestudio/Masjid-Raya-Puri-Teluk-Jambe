@@ -4,6 +4,7 @@ import { transactionsApi } from '@/lib/api';
 import { formatRupiah, formatRupiahInput, parseRupiahInput, formatDateIDN, formatTimestamp } from '@/lib/utils';
 import SummaryCard from '@/components/dashboard/SummaryCard';
 import StatusBadge from '@/components/dashboard/StatusBadge';
+import LineChart from '@/components/dashboard/LineChart';
 import { Wallet, ArrowUpRight, ArrowDownLeft, Plus, X, Check, Calendar, Tag, FileText, TrendingUp, TrendingDown } from 'lucide-react';
 import type { TransactionSummary, MonthlyTransaction } from '@/types';
 
@@ -147,27 +148,26 @@ export default function KeuanganPage() {
 
       {monthlyData.length > 0 && (
         <div className="bg-white rounded-3xl border border-slate-100 card-shadow p-6">
-          <h3 className="text-sm font-bold text-slate-800 mb-4">Tren Keuangan 6 Bulan</h3>
-          <div className="flex items-end gap-3 h-40">
-            {monthlyData.map((m) => {
-              const maxVal = Math.max(...monthlyData.map((x) => Math.max(x.pemasukan, x.pengeluaran)), 1);
-              const pH = (m.pemasukan / maxVal) * 120;
-              const eH = (m.pengeluaran / maxVal) * 120;
-              return (
-                <div key={m.month} className="flex-1 flex flex-col items-center gap-1">
-                  <div className="w-full h-32 flex flex-col-reverse items-stretch gap-0.5">
-                    <div className="w-full bg-amber-100 rounded-t" style={{ height: `${eH}px` }} title={`Pengeluaran: ${formatRupiah(m.pengeluaran)}`} />
-                    <div className="w-full bg-emerald-500 rounded-t" style={{ height: `${pH}px` }} title={`Pemasukan: ${formatRupiah(m.pemasukan)}`} />
-                  </div>
-                  <span className="text-[9px] text-slate-500 font-mono">{m.month.slice(5)}</span>
-                </div>
-              );
+          <div className="flex items-center justify-between mb-4">
+            <h3 className="text-sm font-bold text-slate-800">Tren Keuangan 6 Bulan</h3>
+            <div className="flex items-center gap-4 text-[10px] text-slate-500">
+              <span className="flex items-center gap-1.5"><span className="w-2.5 h-2.5 rounded-full bg-emerald-500" /> Pemasukan</span>
+              <span className="flex items-center gap-1.5"><span className="w-2.5 h-2.5 rounded-full bg-amber-500" /> Pengeluaran</span>
+            </div>
+          </div>
+          <LineChart
+            labels={monthlyData.map((m) => {
+              const [y, mm] = m.month.split('-');
+              const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'];
+              return `${monthNames[parseInt(mm, 10) - 1]} '${y.slice(2)}`;
             })}
-          </div>
-          <div className="flex items-center gap-4 mt-3 text-[10px] text-slate-500">
-            <span className="flex items-center gap-1"><span className="w-2.5 h-2.5 rounded bg-emerald-500" /> Pemasukan</span>
-            <span className="flex items-center gap-1"><span className="w-2.5 h-2.5 rounded bg-amber-100" /> Pengeluaran</span>
-          </div>
+            series={[
+              { label: 'Pemasukan', data: monthlyData.map((m) => m.pemasukan), color: 'emerald' },
+              { label: 'Pengeluaran', data: monthlyData.map((m) => m.pengeluaran), color: 'amber' },
+            ]}
+            height={280}
+            yFormatter={(v) => formatRupiah(v)}
+          />
         </div>
       )}
 

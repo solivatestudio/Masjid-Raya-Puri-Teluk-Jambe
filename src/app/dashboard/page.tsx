@@ -5,6 +5,7 @@ import { transactionsApi, bookingsApi, pageviewsApi } from '@/lib/api';
 import { formatRupiah, fillDailyViews } from '@/lib/utils';
 import SummaryCard from '@/components/dashboard/SummaryCard';
 import StatusBadge from '@/components/dashboard/StatusBadge';
+import LineChart, { LineSeries } from '@/components/dashboard/LineChart';
 import { Wallet, CalendarCheck, Eye, ArrowRight, TrendingUp } from 'lucide-react';
 import type { TransactionSummary, BookingSummary } from '@/types';
 
@@ -138,19 +139,17 @@ export default function OverviewPage() {
             <TrendingUp className="w-4 h-4 text-emerald-600" /> Trafik 7 Hari
           </h3>
           {dailyViews.some((d) => d.views > 0) ? (
-            <div className="flex items-end gap-2 h-24">
-              {dailyViews.map((d) => {
-                const maxVal = Math.max(...dailyViews.map((x) => x.views), 1);
-                return (
-                  <div key={d.date} className="flex-1 flex flex-col items-center gap-1">
-                    <div className="w-full bg-emerald-500 rounded-t" style={{ height: `${(d.views / maxVal) * 80}px`, minHeight: '4px' }} title={`${d.views} views`} />
-                    <span className="text-[8px] text-slate-400 font-mono">{d.date.slice(5)}</span>
-                  </div>
-                );
+            <LineChart
+              labels={dailyViews.map((d) => {
+                const date = new Date(d.date);
+                return date.toLocaleDateString('id-ID', { weekday: 'short', day: 'numeric' });
               })}
-            </div>
+              series={[{ label: 'Page Views', data: dailyViews.map((d) => d.views), color: 'emerald' }]}
+              height={220}
+              showGrid={true}
+            />
           ) : (
-            <p className="text-xs text-slate-400">Belum ada data trafik</p>
+            <p className="text-xs text-slate-400 text-center py-12">Belum ada data trafik</p>
           )}
         </div>
         <div className="bg-white rounded-3xl border border-slate-100 card-shadow p-5">
