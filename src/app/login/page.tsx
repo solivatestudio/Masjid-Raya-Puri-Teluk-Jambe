@@ -111,11 +111,6 @@ function LoginForm() {
             )}
           </button>
         </form>
-
-        <div className="mt-6 pt-4 border-t border-gray-100 text-center text-xs text-slate-500">
-          <p>Default admin: <span className="font-mono">admin@masjidraya.id / admin123</span></p>
-          <p className="mt-1 text-rose-500 flex items-center justify-center gap-1"><AlertTriangle className="w-3.5 h-3.5 inline" /> Segera ganti password setelah login pertama</p>
-        </div>
       </div>
     </div>
   );
