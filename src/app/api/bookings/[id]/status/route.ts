@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getSql, ensureSeeded } from '@/db';
+import { revalidatePath } from 'next/cache';
+import { getSql } from '@/db';
 import { requireCmsAuth, authErrorResponse } from '@/lib/rbac';
 
 export const dynamic = 'force-dynamic';
@@ -21,6 +22,7 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
     )) as any[];
     const row = rows[0];
     if (!row) return NextResponse.json({ error: 'Booking tidak ditemukan' }, { status: 404 });
+    revalidatePath('/', 'page');
     return NextResponse.json(row);
   } catch (error) {
     return authErrorResponse(error);

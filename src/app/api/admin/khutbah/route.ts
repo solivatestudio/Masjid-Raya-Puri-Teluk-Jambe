@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { revalidatePath } from 'next/cache';
 import { getSql, ensureSeeded } from '@/db';
 import { requireCmsAuth, authErrorResponse } from '@/lib/rbac';
 
@@ -40,6 +41,7 @@ export async function POST(req: NextRequest) {
       `INSERT INTO khutbah_schedule (schedule_date, khatib, muadzin, theme, notes) VALUES ($1, $2, $3, $4, $5) RETURNING *`,
       [schedule_date, khatib, muadzin || null, theme || null, notes || null]
     )) as any[];
+    revalidatePath('/', 'page');
     return NextResponse.json(rows[0], { status: 201 });
   } catch (error) {
     return authErrorResponse(error);

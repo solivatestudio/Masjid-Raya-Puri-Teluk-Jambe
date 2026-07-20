@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { revalidatePath } from 'next/cache';
 import { getSql, ensureSeeded } from '@/db';
 import { requireCmsRole, authErrorResponse } from '@/lib/rbac';
 
@@ -49,6 +50,7 @@ export async function POST(req: NextRequest) {
       [name, whatsapp, date, timeStart, timeEnd, purpose, packageId || null, needOrganizer || false, notes || '', payment_proof_url || null, payment_proof_url ? new Date().toISOString() : null]
     )) as any[];
 
+    revalidatePath('/', 'page');
     return NextResponse.json(rows[0], { status: 201 });
   } catch (error: any) {
     return authErrorResponse(error);

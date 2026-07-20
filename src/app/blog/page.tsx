@@ -5,10 +5,11 @@ import { ArrowRight, Calendar, Eye, BookOpen, ArrowLeft, Search } from 'lucide-r
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
 
-export default async function BlogListPage({ searchParams }: { searchParams: { page?: string; category?: string; search?: string } }) {
-  const page = parseInt(searchParams.page || '1');
-  const category = searchParams.category || 'Semua';
-  const search = searchParams.search || '';
+export default async function BlogListPage({ searchParams }: { searchParams: Promise<{ page?: string; category?: string; search?: string }> }) {
+  const resolvedSearchParams = await searchParams;
+  const page = parseInt(resolvedSearchParams.page || '1');
+  const category = resolvedSearchParams.category || 'Semua';
+  const search = resolvedSearchParams.search || '';
 
   let data;
   try {
@@ -22,25 +23,27 @@ export default async function BlogListPage({ searchParams }: { searchParams: { p
 
   return (
     <div className="min-h-screen bg-gray-50 font-sans">
-      <header className="bg-emerald-950 text-white py-6 px-4">
-        <div className="max-w-6xl mx-auto flex items-center justify-between">
+      <header className="bg-emerald-950 text-white px-4 py-4 sm:py-6">
+        <div className="max-w-6xl mx-auto flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
           <Link href="/" className="flex items-center gap-2">
-            <img className="w-10" src="/images/logo.svg" alt="logo" />
-            <div>
-              <p className="font-black text-xs">Masjid Raya Puri Telukjambe</p>
+            <img className="w-10 h-10 shrink-0" src="/images/logo.svg" alt="logo" />
+            <div className="min-w-0">
+              <p className="font-black text-sm leading-tight">Masjid Raya Puri Telukjambe</p>
               <p className="text-[10px] text-emerald-300 font-bold uppercase tracking-wider">Blog & Artikel</p>
             </div>
           </Link>
-          <Link href="/" className="text-xs uppercase font-bold text-emerald-300 hover:text-white"><ArrowLeft className="w-4 h-4 inline mr-1" /> Kembali ke Beranda</Link>
+          <Link href="/" className="inline-flex w-fit items-center gap-1 rounded-lg border border-emerald-800 px-3 py-2 text-[11px] uppercase font-bold text-emerald-300 hover:text-white">
+            <ArrowLeft className="w-4 h-4" /> Kembali
+          </Link>
         </div>
       </header>
 
-      <main className="max-w-6xl mx-auto px-4 py-12">
-        <div className="text-center mb-12">
+      <main className="max-w-6xl mx-auto px-4 py-8 sm:py-12">
+        <div className="text-center mb-8 sm:mb-12">
           <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-emerald-100 text-emerald-800 rounded-full text-xs font-bold uppercase tracking-wider mb-3">
             <BookOpen className="w-3.5 h-3.5" /> Blog DKM
           </div>
-          <h1 className="text-3xl md:text-4xl font-extrabold text-slate-900 tracking-tight">Artikel & Berita Terbaru</h1>
+          <h1 className="text-2xl md:text-4xl font-extrabold text-slate-900 tracking-tight">Artikel & Berita Terbaru</h1>
           <p className="mt-3 text-slate-600 max-w-2xl mx-auto">
             Kumpulan tulisan dakwah, berita kegiatan, dan opini dari DKM Masjid Raya Puri Telukjambe.
           </p>
@@ -75,7 +78,7 @@ export default async function BlogListPage({ searchParams }: { searchParams: { p
               <Link
                 key={a.id}
                 href={`/blog/${a.slug}`}
-                className="bg-white rounded-3xl overflow-hidden border border-slate-100 card-shadow hover:-translate-y-1 transition group flex flex-col"
+                className="bg-white rounded-2xl overflow-hidden border border-slate-100 card-shadow hover:-translate-y-1 transition group flex flex-col"
               >
                 <div className="relative h-44 bg-slate-100 overflow-hidden">
                   {a.featured_image_url ? (

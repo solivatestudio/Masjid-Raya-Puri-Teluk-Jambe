@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import { revalidatePath } from 'next/cache';
 import { getSql, ensureSeeded } from '@/db';
 import { requireCmsAuth, authErrorResponse } from '@/lib/rbac';
 
@@ -47,6 +48,7 @@ export async function POST() {
       created++;
     }
 
+    revalidatePath('/', 'page');
     return NextResponse.json({ created, skipped, dates: fridays });
   } catch (error) {
     return authErrorResponse(error);

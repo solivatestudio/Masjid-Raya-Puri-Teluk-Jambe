@@ -1,12 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getSql, ensureSeeded } from '@/db';
+import { getSql } from '@/db';
 
 export const dynamic = 'force-dynamic';
 export const runtime = 'nodejs';
 
 export async function GET(req: NextRequest) {
   try {
-    await ensureSeeded();
     const sql = getSql();
     const { searchParams } = new URL(req.url);
     const category = searchParams.get('category');
@@ -25,7 +24,9 @@ export async function GET(req: NextRequest) {
        LIMIT 50`,
       params
     )) as any[];
-    return NextResponse.json(rows);
+    return NextResponse.json(rows, {
+      headers: { 'Cache-Control': 'no-store, max-age=0, must-revalidate' },
+    });
   } catch (error: any) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }

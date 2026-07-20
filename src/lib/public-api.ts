@@ -118,7 +118,11 @@ export async function getPublicArticleBySlug(slug: string): Promise<(PublicArtic
       [slug]
     )) as any[];
     if (!rows[0]) return null;
-    await (sql as any).query(`UPDATE articles SET views_count = views_count + 1 WHERE id = $1`, [rows[0].id]);
+    try {
+      await (sql as any).query(`UPDATE articles SET views_count = views_count + 1 WHERE id = $1`, [rows[0].id]);
+    } catch {
+      // View counting must never prevent the public article from rendering.
+    }
     return rows[0];
   } catch {
     return null;

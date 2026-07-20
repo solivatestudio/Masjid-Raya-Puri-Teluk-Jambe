@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { revalidatePath } from 'next/cache';
 import { getSql } from '@/db';
 import { requireCmsAuth, authErrorResponse } from '@/lib/rbac';
 
@@ -42,6 +43,7 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: 
       values
     )) as any[];
     if (!rows[0]) return NextResponse.json({ error: 'Khutbah tidak ditemukan' }, { status: 404 });
+    revalidatePath('/', 'page');
     return NextResponse.json(rows[0]);
   } catch (error) {
     return authErrorResponse(error);
@@ -55,6 +57,7 @@ export async function DELETE(_req: NextRequest, { params }: { params: Promise<{ 
     const { id } = await params;
     const rows = (await (sql as any).query(`DELETE FROM khutbah_schedule WHERE id = $1 RETURNING id`, [id])) as any[];
     if (!rows[0]) return NextResponse.json({ error: 'Khutbah tidak ditemukan' }, { status: 404 });
+    revalidatePath('/', 'page');
     return NextResponse.json({ message: 'Jadwal khutbah berhasil dihapus' });
   } catch (error) {
     return authErrorResponse(error);

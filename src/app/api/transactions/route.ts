@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { revalidatePath } from 'next/cache';
 import { getSql, ensureSeeded } from '@/db';
 import { requireCmsRole, authErrorResponse } from '@/lib/rbac';
 
@@ -65,6 +66,7 @@ export async function POST(req: NextRequest) {
       `INSERT INTO transactions (date, description, type, category, amount) VALUES ($1, $2, $3, $4, $5) RETURNING *`,
       [date, description, type, category, amount]
     )) as any[];
+    revalidatePath('/', 'page');
     return NextResponse.json(rows[0], { status: 201 });
   } catch (error: any) {
     return authErrorResponse(error);

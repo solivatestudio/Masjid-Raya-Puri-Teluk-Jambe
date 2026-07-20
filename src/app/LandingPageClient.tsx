@@ -1,7 +1,7 @@
 'use client';
 import { useState, useEffect, Suspense } from 'react';
 import Link from 'next/link';
-import { INITIAL_EVENTS, INITIAL_FINANCEDATA } from '@/data';
+import { INITIAL_EVENTS } from '@/data';
 import HeroSection from '@/components/HeroSection';
 import PrayerTimes from '@/components/PrayerTimes';
 import EventSection from '@/components/EventSection';
@@ -63,37 +63,37 @@ function LandingContent({ events, sermons }: Props) {
         <MessageCircle className="w-5 h-5 font-bold" />
       </a>
 
-      <div className="bg-emerald-900 border-b border-emerald-800 text-emerald-100 py-2.5 px-4 text-center text-xs font-semibold relative z-50">
-        <div className="max-w-7xl mx-auto flex items-center justify-center gap-1.5 flex-wrap">
-          <span className="bg-amber-400 text-emerald-950 px-1.5 py-0.5 rounded text-[10px] uppercase font-bold tracking-widest mr-1.5 animate-pulse">Pemberitahuan</span>
-          <span>Yayasan Masjid Raya Puri Telukjambe membuka pendaftaran Kelas Tahsin Al-Quran Semester Ganjil 2026.</span>
-          <button onClick={() => scrollToSection('kegiatan')} className="underline hover:text-white font-bold ml-1 cursor-pointer">
+      <div className="bg-emerald-900 border-b border-emerald-800 text-emerald-100 px-3 py-2 text-center text-[11px] sm:text-xs font-semibold relative z-50">
+        <div className="max-w-7xl mx-auto flex items-center justify-center gap-1.5">
+          <span className="hidden sm:inline bg-amber-400 text-emerald-950 px-1.5 py-0.5 rounded text-[10px] uppercase font-bold tracking-widest mr-1.5 animate-pulse">Pemberitahuan</span>
+          <span className="min-w-0 truncate">Pendaftaran Kelas Tahsin Al-Quran Semester Ganjil 2026 dibuka.</span>
+          <button onClick={() => scrollToSection('kegiatan')} className="shrink-0 underline hover:text-white font-bold cursor-pointer">
             Lihat Jadwal
           </button>
         </div>
       </div>
 
-      <header className="sticky top-0 z-40 bg-emerald-950/90 border-b border-emerald-900/60 backdrop-blur-sm text-white card-shadow">
-        <div className="max-w-7xl mx-auto px-4 md:px-6 h-18 flex items-center justify-between">
-          <div onClick={() => scrollToSection('hero')} className="flex items-center gap-2.5 cursor-pointer group">
-            <img className="w-15" src="/images/logo.svg" alt="logo" />
-            <div>
-              <span className="block font-black text-base text-white tracking-tight leading-none">Masjid Raya Puri Telukjambe</span>
-              <span className="block text-[10px] text-emerald-300 font-bold uppercase tracking-wider mt-0.5">Portal Resmi</span>
+      <header className="sticky top-0 z-40 bg-emerald-950/95 border-b border-emerald-900/70 backdrop-blur-sm text-white card-shadow">
+        <div className="max-w-7xl mx-auto px-3 sm:px-4 md:px-6 h-16 lg:h-[72px] flex items-center justify-between gap-3">
+          <button onClick={() => scrollToSection('hero')} className="min-w-0 flex items-center gap-2.5 cursor-pointer group text-left">
+            <img className="w-10 h-10 sm:w-12 sm:h-12 shrink-0" src="/images/logo.svg" alt="logo" />
+            <div className="min-w-0">
+              <span className="block font-black text-sm sm:text-base text-white tracking-tight leading-tight truncate">Masjid Raya Puri Telukjambe</span>
+              <span className="block text-[10px] text-emerald-300 font-bold uppercase tracking-wider mt-0.5 truncate">Portal Resmi DKM</span>
             </div>
-          </div>
+          </button>
 
-          <nav className="hidden lg:flex items-center gap-6" aria-label="Menu utama">
+          <nav className="hidden xl:flex items-center gap-5" aria-label="Menu utama">
             <button onClick={() => scrollToSection('hero')} className="text-xs uppercase font-extrabold tracking-wider text-emerald-100 hover:text-amber-400 transition cursor-pointer">Beranda</button>
             <button onClick={() => scrollToSection('kegiatan')} className="text-xs uppercase font-extrabold tracking-wider text-emerald-100 hover:text-amber-400 transition cursor-pointer">Program Masjid</button>
             <button onClick={() => scrollToSection('khutbah')} className="text-xs uppercase font-extrabold tracking-wider text-emerald-100 hover:text-amber-400 transition cursor-pointer">Khatib Jumat</button>
             <button onClick={() => scrollToSection('audio-visual-hall')} className="text-xs uppercase font-extrabold tracking-wider text-emerald-100 hover:text-amber-400 transition cursor-pointer">Sewa Aula</button>
             <button onClick={() => scrollToSection('transparansi-keuangan')} className="text-xs uppercase font-extrabold tracking-wider text-emerald-100 hover:text-amber-400 transition cursor-pointer">Keuangan</button>
             <button onClick={() => scrollToSection('galeri')} className="text-xs uppercase font-extrabold tracking-wider text-emerald-100 hover:text-amber-400 transition cursor-pointer">Galeri</button>
-            <a href="/blog" className="text-xs uppercase font-extrabold tracking-wider text-emerald-100 hover:text-amber-400 transition cursor-pointer">Blog</a>
+            <Link href="/blog" className="text-xs uppercase font-extrabold tracking-wider text-emerald-100 hover:text-amber-400 transition cursor-pointer">Blog</Link>
           </nav>
 
-          <div className="hidden lg:flex items-center gap-4">
+          <div className="hidden xl:flex items-center gap-4">
             <div className="flex items-center gap-3 mr-2 border-r border-emerald-800 pr-5">
               <a href="https://instagram.com/masjidrayapuritelukjambe" target="_blank" rel="noopener noreferrer" className="text-emerald-200 hover:text-amber-400 transition hover:-translate-y-1" aria-label="Instagram">
                 <Instagram className="w-5 h-5" />
@@ -114,13 +114,11 @@ function LandingContent({ events, sermons }: Props) {
             </button>
           </div>
 
-          <div className="flex lg:hidden items-center gap-2">
-            <div className="flex items-center gap-3 mr-1">
-              <a href="https://instagram.com/masjidrayapuritelukjambe" target="_blank" rel="noopener noreferrer" className="text-emerald-200 hover:text-amber-400 transition" aria-label="Instagram"><Instagram className="w-5 h-5" /></a>
-              <a href="https://web.facebook.com/pages/Aula%20Masjid%20Raya%20Puri%20Teluk%20Jambe%20(PERURI)%20Karawang/732935826736923/" target="_blank" rel="noopener noreferrer" className="text-emerald-200 hover:text-amber-400 transition" aria-label="Facebook"><Facebook className="w-5 h-5" /></a>
-              <a href="https://www.youtube.com/@masjidrayapuritelukjambe_TV" target="_blank" rel="noopener noreferrer" className="text-emerald-200 hover:text-amber-400 transition" aria-label="YouTube"><Youtube className="w-5 h-5" /></a>
-            </div>
-            <button onClick={() => setMobileMenuOpen(!mobileMenuOpen)} className="p-2 text-emerald-100 hover:text-white hover:bg-emerald-900 rounded-lg transition cursor-pointer">
+          <div className="flex xl:hidden items-center gap-2 shrink-0">
+            <button onClick={() => scrollToSection('donasi')} className="hidden sm:inline-flex bg-amber-400 text-emerald-950 font-black text-xs px-3 py-2 rounded-lg shadow-sm">
+              Donasi
+            </button>
+            <button onClick={() => setMobileMenuOpen(!mobileMenuOpen)} className="p-2.5 text-emerald-100 hover:text-white hover:bg-emerald-900 rounded-xl transition cursor-pointer border border-emerald-800" aria-expanded={mobileMenuOpen} aria-label="Buka menu">
               {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
             </button>
           </div>
@@ -128,30 +126,37 @@ function LandingContent({ events, sermons }: Props) {
       </header>
 
       {mobileMenuOpen && (
-        <div className="fixed inset-y-0 right-0 w-64 bg-emerald-950 border-l border-emerald-900 z-50 p-6 flex flex-col justify-between text-white shadow-2xl lg:hidden">
-          <div className="space-y-6">
-            <div className="flex items-center justify-between pb-4 border-b border-emerald-900">
-              <span className="font-extrabold text-sm tracking-wider text-amber-300 uppercase">Navigasi DKM</span>
-              <button onClick={() => setMobileMenuOpen(false)} className="text-gray-400 hover:text-white font-extrabold text-lg cursor-pointer">✕</button>
+        <div className="fixed inset-0 z-50 bg-emerald-950/70 backdrop-blur-sm xl:hidden" onClick={() => setMobileMenuOpen(false)}>
+          <div className="absolute left-3 right-3 top-[76px] rounded-2xl bg-emerald-950 border border-emerald-800 text-white shadow-2xl overflow-hidden" onClick={(e) => e.stopPropagation()}>
+            <div className="flex items-center justify-between px-4 py-4 border-b border-emerald-900">
+              <span className="font-extrabold text-xs tracking-widest text-amber-300 uppercase">Navigasi DKM</span>
+              <button onClick={() => setMobileMenuOpen(false)} className="p-2 text-emerald-200 hover:text-white hover:bg-emerald-900 rounded-lg cursor-pointer" aria-label="Tutup menu">
+                <X className="w-5 h-5" />
+              </button>
             </div>
-            <div className="flex flex-col gap-4">
-              <button onClick={() => scrollToSection('hero')} className="text-left py-2 text-sm font-bold text-emerald-100 hover:text-amber-400">Beranda</button>
-              <button onClick={() => scrollToSection('kegiatan')} className="text-left py-2 text-sm font-bold text-emerald-100 hover:text-amber-400">Program Dakwah & Sosial</button>
-              <button onClick={() => scrollToSection('khutbah')} className="text-left py-2 text-sm font-bold text-emerald-100 hover:text-amber-400">Jadwal Khatib Jumat</button>
-              <button onClick={() => scrollToSection('audio-visual-hall')} className="text-left py-2 text-sm font-bold text-emerald-100 hover:text-amber-400">Booking Aula Serbaguna</button>
-              <button onClick={() => scrollToSection('transparansi-keuangan')} className="text-left py-2 text-sm font-bold text-emerald-100 hover:text-amber-400">Transparansi Keuangan</button>
-              <button onClick={() => scrollToSection('galeri')} className="text-left py-2 text-sm font-bold text-emerald-100 hover:text-amber-400">Galeri Kebersamaan</button>
-              <a href="/blog" className="text-left py-2 text-sm font-bold text-emerald-100 hover:text-amber-400">Blog & Artikel</a>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 p-4">
+              <button onClick={() => scrollToSection('hero')} className="text-left px-4 py-3 text-sm font-bold text-emerald-100 bg-emerald-900/50 hover:bg-emerald-900 rounded-xl">Beranda</button>
+              <button onClick={() => scrollToSection('kegiatan')} className="text-left px-4 py-3 text-sm font-bold text-emerald-100 bg-emerald-900/50 hover:bg-emerald-900 rounded-xl">Program Dakwah</button>
+              <button onClick={() => scrollToSection('khutbah')} className="text-left px-4 py-3 text-sm font-bold text-emerald-100 bg-emerald-900/50 hover:bg-emerald-900 rounded-xl">Khatib Jumat</button>
+              <button onClick={() => scrollToSection('audio-visual-hall')} className="text-left px-4 py-3 text-sm font-bold text-emerald-100 bg-emerald-900/50 hover:bg-emerald-900 rounded-xl">Booking Aula</button>
+              <button onClick={() => scrollToSection('transparansi-keuangan')} className="text-left px-4 py-3 text-sm font-bold text-emerald-100 bg-emerald-900/50 hover:bg-emerald-900 rounded-xl">Keuangan</button>
+              <button onClick={() => scrollToSection('galeri')} className="text-left px-4 py-3 text-sm font-bold text-emerald-100 bg-emerald-900/50 hover:bg-emerald-900 rounded-xl">Galeri</button>
+              <Link href="/blog" onClick={() => setMobileMenuOpen(false)} className="sm:col-span-2 text-left px-4 py-3 text-sm font-bold text-emerald-100 bg-emerald-900/50 hover:bg-emerald-900 rounded-xl">Blog & Artikel</Link>
             </div>
-          </div>
-          <div className="space-y-4 pt-6 border-t border-emerald-900">
-            <button onClick={() => scrollToSection('donasi')} className="w-full bg-amber-400 text-emerald-950 font-black py-3 rounded-xl text-center text-xs flex items-center justify-center gap-1.5 shadow">
-              <Heart className="w-4 h-4 fill-emerald-900" />
-              <span>Infaq Sekarang (QRIS)</span>
-            </button>
-            <button onClick={handleShare} className="w-full bg-emerald-900 hover:bg-emerald-800 text-xs text-emerald-200 py-2.5 rounded-xl border border-emerald-800">
-              Bagikan Link Portal
-            </button>
+            <div className="p-4 pt-0 grid grid-cols-2 gap-2">
+              <button onClick={() => scrollToSection('donasi')} className="bg-amber-400 text-emerald-950 font-black py-3 rounded-xl text-center text-xs flex items-center justify-center gap-1.5 shadow">
+                <Heart className="w-4 h-4 fill-emerald-900" />
+                <span>Infaq</span>
+              </button>
+              <button onClick={handleShare} className="bg-emerald-900 hover:bg-emerald-800 text-xs font-bold text-emerald-200 py-3 rounded-xl border border-emerald-800">
+                Bagikan
+              </button>
+            </div>
+            <div className="flex items-center justify-center gap-5 px-4 py-4 border-t border-emerald-900 text-emerald-200">
+              <a href="https://instagram.com/masjidrayapuritelukjambe" target="_blank" rel="noopener noreferrer" className="hover:text-amber-400 transition" aria-label="Instagram"><Instagram className="w-5 h-5" /></a>
+              <a href="https://web.facebook.com/pages/Aula%20Masjid%20Raya%20Puri%20Teluk%20Jambe%20(PERURI)%20Karawang/732935826736923/" target="_blank" rel="noopener noreferrer" className="hover:text-amber-400 transition" aria-label="Facebook"><Facebook className="w-5 h-5" /></a>
+              <a href="https://www.youtube.com/@masjidrayapuritelukjambe_TV" target="_blank" rel="noopener noreferrer" className="hover:text-amber-400 transition" aria-label="YouTube"><Youtube className="w-5 h-5" /></a>
+            </div>
           </div>
         </div>
       )}

@@ -1,12 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getSql, ensureSeeded } from '@/db';
+import { getSql } from '@/db';
 
 export const dynamic = 'force-dynamic';
 export const runtime = 'nodejs';
 
 export async function GET(req: NextRequest) {
   try {
-    await ensureSeeded();
     const sql = getSql();
     const { searchParams } = new URL(req.url);
     const category = searchParams.get('category');
@@ -35,7 +34,10 @@ export async function GET(req: NextRequest) {
       [...params, limit, offset]
     )) as any[];
     const countRows = (await (sql as any).query(`SELECT COUNT(*)::int as c FROM articles a ${where}`, params)) as any[];
-    return NextResponse.json({ articles: rows, total: countRows[0]?.c || 0, page, limit });
+    return NextResponse.json(
+      { articles: rows, total: countRows[0]?.c || 0, page, limit },
+      { headers: { 'Cache-Control': 'no-store, max-age=0, must-revalidate' } }
+    );
   } catch (error: any) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
