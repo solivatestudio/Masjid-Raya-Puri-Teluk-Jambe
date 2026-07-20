@@ -1,4 +1,5 @@
 import { getSql } from '@/db';
+import { getPublicKhutbahSchedule, type PublicKhutbah } from '@/lib/khutbah';
 
 export interface PublicKajian {
   id: string;
@@ -16,13 +17,6 @@ export interface PublicKajian {
   is_recurring: boolean;
 }
 
-export interface PublicKhutbah {
-  id: string;
-  schedule_date: string;
-  khatib: string;
-  muadzin: string | null;
-  theme: string | null;
-}
 
 export interface PublicArticle {
   id: string;
@@ -63,11 +57,7 @@ export async function getPublicKajian(category?: string): Promise<PublicKajian[]
 export async function getPublicKhutbah(limit = 4): Promise<PublicKhutbah[]> {
   try {
     const sql = getSql();
-    const rows = (await (sql as any).query(
-      `SELECT id, schedule_date, khatib, muadzin, theme FROM khutbah_schedule WHERE schedule_date >= CURRENT_DATE ORDER BY schedule_date ASC LIMIT $1`,
-      [limit]
-    )) as any[];
-    return rows;
+    return await getPublicKhutbahSchedule(sql, limit);
   } catch {
     return [];
   }
@@ -128,4 +118,5 @@ export async function getPublicArticleBySlug(slug: string): Promise<(PublicArtic
     return null;
   }
 }
+
 
