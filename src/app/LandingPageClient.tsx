@@ -1,7 +1,6 @@
 'use client';
 import { useState, useEffect, Suspense } from 'react';
 import Link from 'next/link';
-import { INITIAL_EVENTS } from '@/data';
 import HeroSection from '@/components/HeroSection';
 import PrayerTimes from '@/components/PrayerTimes';
 import EventSection from '@/components/EventSection';
@@ -22,15 +21,78 @@ interface Props {
 function LandingContent({ events, sermons }: Props) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [showBackToTop, setShowBackToTop] = useState(false);
+  const [liveEvents, setLiveEvents] = useState<EventActivity[]>(events);
+  const [liveSermons, setLiveSermons] = useState<FridaySermon[]>(sermons);
 
-  // Fallback ke data statis jika DB kosong
-  const finalEvents = events.length > 0 ? events : INITIAL_EVENTS;
-  const finalSermons = sermons.length > 0 ? sermons : [];
+  const finalEvents = liveEvents;
+  const finalSermons = liveSermons;
+
+  useEffect(() => {
+    setLiveEvents(events);
+  }, [events]);
+
+  useEffect(() => {
+    setLiveSermons(sermons);
+  }, [sermons]);
 
   useEffect(() => {
     const handleScroll = () => setShowBackToTop(window.scrollY > 400);
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  useEffect(() => {
+    let active = true;
+    const days = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
+    const months = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+
+    const formatKhutbahDate = (value: string) => {
+      const d = new Date(value);
+      return `${days[d.getUTCDay()]}, ${d.getUTCDate()} ${months[d.getUTCMonth()]} ${d.getUTCFullYear()}`;
+    };
+
+    const refreshPublicData = async () => {
+      try {
+        const [kajianRes, khutbahRes] = await Promise.all([
+          fetch('/api/public/kajian', { cache: 'no-store' }),
+          fetch('/api/public/khutbah?limit=4', { cache: 'no-store' }),
+        ]);
+        if (!kajianRes.ok || !khutbahRes.ok) return;
+        const [kajianRows, khutbahRows] = await Promise.all([kajianRes.json(), khutbahRes.json()]);
+        if (!active) return;
+        setLiveEvents(kajianRows.map((k: any) => ({
+          id: k.id,
+          title: k.title,
+          category: k.category,
+          date: k.date_label,
+          time: k.time_label,
+          speaker: k.speaker,
+          location: k.location,
+          description: k.description || '',
+          image: k.image_url || '/images/sholat_tarawih.webp',
+          capacity: k.capacity,
+          registeredCount: k.registered_count,
+        })));
+        setLiveSermons(khutbahRows.map((s: any) => ({
+          id: s.id,
+          date: formatKhutbahDate(s.schedule_date),
+          khatib: s.khatib,
+          muadzin: s.muadzin || '',
+          theme: s.theme || '',
+        })));
+      } catch {
+        // Keep the last good payload on transient network/database errors.
+      }
+    };
+
+    refreshPublicData();
+    const interval = window.setInterval(refreshPublicData, 15000);
+    window.addEventListener('focus', refreshPublicData);
+    return () => {
+      active = false;
+      window.clearInterval(interval);
+      window.removeEventListener('focus', refreshPublicData);
+    };
   }, []);
 
   const scrollToSection = (id: string) => {

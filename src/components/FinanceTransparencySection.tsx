@@ -16,6 +16,9 @@ type FinancePayload = {
     saldo: number;
     totalPemasukan: number;
     totalPengeluaran: number;
+    pemasukanBulanIni: number;
+    pengeluaranBulanIni: number;
+    selisihBulanIni: number;
     updatedAt: string | null;
   };
   latest: FinanceRow[];
@@ -40,22 +43,33 @@ export default function FinanceTransparencySection() {
 
   useEffect(() => {
     let active = true;
-    fetch('/api/public/finance', { cache: 'no-store' })
-      .then((res) => {
-        if (!res.ok) throw new Error('Gagal memuat data keuangan');
-        return res.json();
-      })
-      .then((payload) => {
-        if (active) setData(payload);
-      })
-      .catch((err) => {
-        if (active) setError(err.message);
-      })
-      .finally(() => {
-        if (active) setLoading(false);
-      });
+    const refreshFinance = () => {
+      fetch('/api/public/finance', { cache: 'no-store' })
+        .then((res) => {
+          if (!res.ok) throw new Error('Gagal memuat data keuangan');
+          return res.json();
+        })
+        .then((payload) => {
+          if (active) {
+            setData(payload);
+            setError('');
+          }
+        })
+        .catch((err) => {
+          if (active) setError(err.message);
+        })
+        .finally(() => {
+          if (active) setLoading(false);
+        });
+    };
+
+    refreshFinance();
+    const interval = window.setInterval(refreshFinance, 15000);
+    window.addEventListener('focus', refreshFinance);
     return () => {
       active = false;
+      window.clearInterval(interval);
+      window.removeEventListener('focus', refreshFinance);
     };
   }, []);
 
@@ -95,17 +109,26 @@ export default function FinanceTransparencySection() {
                 <Wallet className="w-6 h-6" />
               </div>
             </div>
-            <div className="grid grid-cols-2 gap-3 mt-8">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mt-8">
               <div className="bg-white/8 border border-white/10 rounded-xl p-4">
                 <ArrowUpRight className="w-4 h-4 text-emerald-300 mb-2" />
-                <p className="text-[10px] uppercase tracking-widest text-emerald-300 font-bold">Total Pemasukan</p>
-                <p className="text-sm font-black font-mono mt-1">{formatRupiah(data?.summary.totalPemasukan || 0)}</p>
+                <p className="text-[10px] uppercase tracking-widest text-emerald-300 font-bold">Pemasukan Bulan Ini</p>
+                <p className="text-sm font-black font-mono mt-1">{formatRupiah(data?.summary.pemasukanBulanIni || 0)}</p>
               </div>
               <div className="bg-white/8 border border-white/10 rounded-xl p-4">
                 <ArrowDownLeft className="w-4 h-4 text-amber-300 mb-2" />
-                <p className="text-[10px] uppercase tracking-widest text-emerald-300 font-bold">Total Pengeluaran</p>
-                <p className="text-sm font-black font-mono mt-1">{formatRupiah(data?.summary.totalPengeluaran || 0)}</p>
+                <p className="text-[10px] uppercase tracking-widest text-emerald-300 font-bold">Pengeluaran Bulan Ini</p>
+                <p className="text-sm font-black font-mono mt-1">{formatRupiah(data?.summary.pengeluaranBulanIni || 0)}</p>
               </div>
+              <div className="bg-white/8 border border-white/10 rounded-xl p-4">
+                <Wallet className="w-4 h-4 text-amber-300 mb-2" />
+                <p className="text-[10px] uppercase tracking-widest text-emerald-300 font-bold">Selisih Bulan Ini</p>
+                <p className="text-sm font-black font-mono mt-1">{formatRupiah(data?.summary.selisihBulanIni || 0)}</p>
+              </div>
+            </div>
+            <div className="mt-3 grid grid-cols-2 gap-3 text-[10px] text-emerald-200">
+              <p>Total pemasukan: <span className="font-bold text-white">{formatRupiah(data?.summary.totalPemasukan || 0)}</span></p>
+              <p>Total pengeluaran: <span className="font-bold text-white">{formatRupiah(data?.summary.totalPengeluaran || 0)}</span></p>
             </div>
             <div className="mt-6 rounded-xl bg-emerald-900/70 border border-emerald-800 p-4 flex items-start gap-3">
               <FileSpreadsheet className="w-5 h-5 text-amber-400 shrink-0 mt-0.5" />

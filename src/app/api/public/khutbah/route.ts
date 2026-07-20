@@ -10,7 +10,7 @@ export async function GET(req: NextRequest) {
     const { searchParams } = new URL(req.url);
     const limit = Math.min(parseInt(searchParams.get('limit') || '4'), 20);
     const rows = (await (sql as any).query(
-      `SELECT id, schedule_date, khatib, muadzin, theme FROM khutbah_schedule WHERE schedule_date >= (CURRENT_DATE - INTERVAL '14 days') ORDER BY schedule_date ASC LIMIT $1`,
+      `SELECT id, schedule_date, khatib, muadzin, theme FROM khutbah_schedule WHERE schedule_date >= CURRENT_DATE ORDER BY schedule_date ASC LIMIT $1`,
       [limit]
     )) as any[];
     return NextResponse.json(rows, {
