@@ -2,7 +2,7 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { transactionsApi, bookingsApi, pageviewsApi } from '@/lib/api';
-import { formatRupiah, fillDailyViews } from '@/lib/utils';
+import { formatRupiah, fillDailyViews, formatDateIDN } from '@/lib/utils';
 import SummaryCard from '@/components/dashboard/SummaryCard';
 import StatusBadge from '@/components/dashboard/StatusBadge';
 import LineChart, { LineSeries } from '@/components/dashboard/LineChart';
@@ -97,7 +97,7 @@ export default function OverviewPage() {
                 <div key={tx.id} className="flex items-center justify-between py-2 border-b border-gray-50 last:border-0">
                   <div className="min-w-0">
                     <p className="text-xs font-semibold text-slate-800 truncate">{tx.description}</p>
-                    <p className="text-[9px] text-slate-400">{tx.date} — {tx.category}</p>
+                    <p className="text-[9px] text-slate-400">{formatDateIDN(tx.date)} — {tx.category}</p>
                   </div>
                   <span className={`text-xs font-bold font-mono ${tx.type === 'Pemasukan' ? 'text-emerald-700' : 'text-rose-600'}`}>
                     {tx.type === 'Pemasukan' ? '+' : '-'}{formatRupiah(tx.amount)}
@@ -123,7 +123,7 @@ export default function OverviewPage() {
                 <div key={b.id} className="flex items-center justify-between py-2 border-b border-gray-50 last:border-0">
                   <div className="min-w-0">
                     <p className="text-xs font-semibold text-slate-800">{b.name}</p>
-                    <p className="text-[9px] text-slate-400">{b.date} — {b.purpose?.slice(0, 30)}</p>
+                    <p className="text-[9px] text-slate-400">{formatDateIDN(b.date)} — {b.purpose?.slice(0, 30)}</p>
                   </div>
                   <StatusBadge status={b.status} />
                 </div>
