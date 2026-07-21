@@ -6,6 +6,12 @@ import { requireCmsAuth, authErrorResponse } from '@/lib/rbac';
 export const dynamic = 'force-dynamic';
 export const runtime = 'nodejs';
 
+function isFridayDate(value: string): boolean {
+  const [year, month, day] = value.split('-').map(Number);
+  if (!year || !month || !day) return false;
+  return new Date(Date.UTC(year, month - 1, day)).getUTCDay() === 5;
+}
+
 export async function GET(_req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
     await requireCmsAuth();
@@ -25,6 +31,9 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: 
     const sql = getSql();
     const { id } = await params;
     const body = await req.json();
+    if (body.schedule_date !== undefined && !isFridayDate(body.schedule_date)) {
+      return NextResponse.json({ error: 'Jadwal khutbah hanya bisa diisi untuk hari Jumat' }, { status: 400 });
+    }
     const fields = ['schedule_date', 'khatib', 'muadzin', 'theme', 'notes'];
     const updates: string[] = [];
     const values: any[] = [];
@@ -63,3 +72,4 @@ export async function DELETE(_req: NextRequest, { params }: { params: Promise<{ 
     return authErrorResponse(error);
   }
 }
+
