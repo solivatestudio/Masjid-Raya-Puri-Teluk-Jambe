@@ -12,7 +12,6 @@ import {
   ListOrdered,
   Quote,
   Link as LinkIcon,
-  Image as ImageIcon,
   Undo,
   Redo,
   Code,
@@ -210,20 +209,6 @@ export default function ArticleEditor({
           title="Link"
         >
           <LinkIcon className="w-4 h-4" />
-        </button>
-        <button
-          type="button"
-          onClick={async () => {
-            const url = await showPrompt("Masukkan Image URL:", {
-              title: "Tambahkan Gambar",
-              placeholder: "/images/...",
-            });
-            if (url) editor.chain().focus().setImage({ src: url }).run();
-          }}
-          className={btn(false)}
-          title="Image URL"
-        >
-          <ImageIcon className="w-4 h-4" />
         </button>
         <span className="w-px h-5 bg-slate-300 mx-1" />
         <button

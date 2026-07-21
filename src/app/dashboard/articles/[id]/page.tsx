@@ -1,6 +1,5 @@
 "use client";
 import { useEffect, useState } from "react";
-import { showPrompt } from "@/lib/dialog";
 import { useRouter, useParams } from "next/navigation";
 import Link from "next/link";
 import ArticleEditor from "@/components/cms/ArticleEditor";
@@ -240,27 +239,6 @@ export default function EditArticlePage() {
               💡 Gambar otomatis dikonversi ke{" "}
               <span className="font-bold">WebP</span> oleh CDN UploadThing untuk
               loading lebih cepat.
-              {!featuredImageUrl && (
-                <>
-                  {" "}
-                  Atau{" "}
-                  <button
-                    type="button"
-                    className="text-emerald-700 font-bold underline"
-                    onClick={async () => {
-                      const url = await showPrompt("Masukkan Image URL:", {
-                        title: "Featured Image Manual",
-                        placeholder: "/images/...",
-                        defaultValue: "/images/",
-                      });
-                      if (url) setFeaturedImageUrl(url);
-                    }}
-                  >
-                    paste URL manual
-                  </button>
-                  .
-                </>
-              )}
             </div>
           </div>
         </div>
