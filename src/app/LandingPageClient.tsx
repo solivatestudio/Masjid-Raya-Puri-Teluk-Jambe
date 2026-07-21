@@ -136,27 +136,27 @@ function LandingContent({ events, sermons }: Props) {
       </div>
 
       <header className="sticky top-0 z-40 bg-emerald-950/95 border-b border-emerald-900/70 backdrop-blur-sm text-white card-shadow">
-        <div className="max-w-7xl mx-auto px-3 sm:px-4 md:px-6 h-16 lg:h-[72px] flex items-center justify-between gap-3">
-          <button onClick={() => scrollToSection('hero')} className="min-w-0 flex items-center gap-2.5 cursor-pointer group text-left">
-            <img className="w-10 h-10 sm:w-12 sm:h-12 shrink-0" src="/images/logo.svg" alt="logo" />
+        <div className="max-w-7xl mx-auto px-3 sm:px-4 md:px-6 h-16 lg:h-[68px] flex items-center justify-between gap-3">
+          <button onClick={() => scrollToSection('hero')} className="min-w-0 flex items-center gap-2.5 cursor-pointer group text-left shrink">
+            <img className="w-10 h-10 sm:w-11 sm:h-11 shrink-0" src="/images/logo.svg" alt="logo" />
             <div className="min-w-0">
-              <span className="block font-black text-sm sm:text-base text-white tracking-tight leading-tight truncate">Masjid Raya Puri Telukjambe</span>
+              <span className="block font-black text-sm lg:text-base text-white tracking-tight leading-tight truncate max-w-[190px] sm:max-w-[260px] lg:max-w-[310px]">Masjid Raya Puri Telukjambe</span>
               <span className="block text-[10px] text-emerald-300 font-bold uppercase tracking-wider mt-0.5 truncate">Portal Resmi DKM</span>
             </div>
           </button>
 
-          <nav className="hidden xl:flex items-center gap-5" aria-label="Menu utama">
+          <nav className="hidden lg:flex items-center justify-center gap-1.5 xl:gap-2" aria-label="Menu utama">
             <button onClick={() => scrollToSection('hero')} className="text-xs uppercase font-extrabold tracking-wider text-emerald-100 hover:text-amber-400 transition cursor-pointer">Beranda</button>
-            <button onClick={() => scrollToSection('kegiatan')} className="text-xs uppercase font-extrabold tracking-wider text-emerald-100 hover:text-amber-400 transition cursor-pointer">Program Masjid</button>
-            <button onClick={() => scrollToSection('khutbah')} className="text-xs uppercase font-extrabold tracking-wider text-emerald-100 hover:text-amber-400 transition cursor-pointer">Khatib Jumat</button>
-            <button onClick={() => scrollToSection('audio-visual-hall')} className="text-xs uppercase font-extrabold tracking-wider text-emerald-100 hover:text-amber-400 transition cursor-pointer">Sewa Aula</button>
-            <button onClick={() => scrollToSection('transparansi-keuangan')} className="text-xs uppercase font-extrabold tracking-wider text-emerald-100 hover:text-amber-400 transition cursor-pointer">Keuangan</button>
-            <button onClick={() => scrollToSection('galeri')} className="text-xs uppercase font-extrabold tracking-wider text-emerald-100 hover:text-amber-400 transition cursor-pointer">Galeri</button>
-            <Link href="/blog" className="text-xs uppercase font-extrabold tracking-wider text-emerald-100 hover:text-amber-400 transition cursor-pointer">Blog</Link>
+            <button onClick={() => scrollToSection('kegiatan')} className="text-xs uppercase font-extrabold tracking-wider text-emerald-100 hover:text-amber-400 transition cursor-pointer px-2 py-2">Program</button>
+            <button onClick={() => scrollToSection('khutbah')} className="text-xs uppercase font-extrabold tracking-wider text-emerald-100 hover:text-amber-400 transition cursor-pointer px-2 py-2">Khutbah</button>
+            <button onClick={() => scrollToSection('audio-visual-hall')} className="text-xs uppercase font-extrabold tracking-wider text-emerald-100 hover:text-amber-400 transition cursor-pointer px-2 py-2">Aula</button>
+            <button onClick={() => scrollToSection('transparansi-keuangan')} className="text-xs uppercase font-extrabold tracking-wider text-emerald-100 hover:text-amber-400 transition cursor-pointer px-2 py-2">Keuangan</button>
+            <button onClick={() => scrollToSection('galeri')} className="hidden xl:inline-flex text-xs uppercase font-extrabold tracking-wider text-emerald-100 hover:text-amber-400 transition cursor-pointer px-2 py-2">Galeri</button>
+            <Link href="/blog" className="text-xs uppercase font-extrabold tracking-wider text-emerald-100 hover:text-amber-400 transition cursor-pointer px-2 py-2">Blog</Link>
           </nav>
 
-          <div className="hidden xl:flex items-center gap-4">
-            <div className="flex items-center gap-3 mr-2 border-r border-emerald-800 pr-5">
+          <div className="hidden lg:flex items-center gap-2 shrink-0">
+            <div className="hidden xl:flex items-center gap-2 border-r border-emerald-800 pr-3 mr-1">
               <a href="https://instagram.com/masjidrayapuritelukjambe" target="_blank" rel="noopener noreferrer" className="text-emerald-200 hover:text-amber-400 transition hover:-translate-y-1" aria-label="Instagram">
                 <Instagram className="w-5 h-5" />
               </a>
@@ -167,18 +167,18 @@ function LandingContent({ events, sermons }: Props) {
                 <Youtube className="w-5 h-5" />
               </a>
             </div>
-            <button onClick={handleShare} className="p-2 border border-emerald-800 bg-emerald-900/50 hover:bg-emerald-900 text-emerald-200 hover:text-white rounded-xl transition cursor-pointer" title="Bagikan Tautan Web">
+            <button onClick={handleShare} className="hidden xl:flex p-2 border border-emerald-800 bg-emerald-900/50 hover:bg-emerald-900 text-emerald-200 hover:text-white rounded-xl transition cursor-pointer" title="Bagikan Tautan Web">
               <Share2 className="w-4 h-4" />
             </button>
-            <button onClick={() => scrollToSection('donasi')} className="bg-amber-400 hover:bg-amber-500 text-emerald-950 font-black text-xs px-5 py-2.5 rounded-xl transition cursor-pointer shadow-md flex items-center gap-1.5">
+            <button onClick={() => scrollToSection('audio-visual-hall')} className="bg-amber-400 hover:bg-amber-500 text-emerald-950 font-black text-xs px-4 py-2.5 rounded-xl transition cursor-pointer shadow-md flex items-center gap-1.5 whitespace-nowrap">
               <Heart className="w-4 h-4 fill-emerald-950" />
-              <span>Donasi (QRIS)</span>
+              <span>Booking Aula</span>
             </button>
           </div>
 
-          <div className="flex xl:hidden items-center gap-2 shrink-0">
-            <button onClick={() => scrollToSection('donasi')} className="hidden sm:inline-flex bg-amber-400 text-emerald-950 font-black text-xs px-3 py-2 rounded-lg shadow-sm">
-              Donasi
+          <div className="flex lg:hidden items-center gap-2 shrink-0">
+            <button onClick={() => scrollToSection('audio-visual-hall')} className="hidden sm:inline-flex bg-amber-400 text-emerald-950 font-black text-xs px-3 py-2 rounded-lg shadow-sm">
+              Booking
             </button>
             <button onClick={() => setMobileMenuOpen(!mobileMenuOpen)} className="p-2.5 text-emerald-100 hover:text-white hover:bg-emerald-900 rounded-xl transition cursor-pointer border border-emerald-800" aria-expanded={mobileMenuOpen} aria-label="Buka menu">
               {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}

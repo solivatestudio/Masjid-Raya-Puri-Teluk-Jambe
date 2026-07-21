@@ -60,13 +60,41 @@ export default function BookingPage() {
     fetchData();
   }, [filterStatus]);
 
-  const handleStatus = async (id: string, status: string) => {
+  const normalizeWhatsapp = (value: string) => {
+    const digits = value.replace(/\D/g, '');
+    if (digits.startsWith('0')) return `62${digits.slice(1)}`;
+    if (digits.startsWith('62')) return digits;
+    return digits;
+  };
+
+  const buildStatusMessage = (booking: BookingRecord, status: string, notes: string) => {
+    const isApproved = status === 'approved';
+    return [
+      `Assalamualaikum ${booking.name}.`,
+      '',
+      `Permohonan booking Aula Masjid Raya Puri Telukjambe untuk tanggal ${formatDateIDN(booking.date)} pukul ${booking.time_start.slice(0, 5)} - ${booking.time_end.slice(0, 5)} telah ${isApproved ? 'DISETUJUI' : 'DITOLAK'}.`,
+      `Keperluan: ${booking.purpose}`,
+      notes ? `Catatan admin: ${notes}` : '',
+      '',
+      isApproved
+        ? 'Silakan lanjut koordinasi teknis dan pembayaran dengan admin aula.'
+        : 'Silakan hubungi admin aula untuk pilihan tanggal atau informasi lanjutan.',
+      '',
+      'Terima kasih.',
+    ].filter(Boolean).join('\n');
+  };
+
+  const handleStatus = async (booking: BookingRecord, status: string) => {
     const notes = status === 'rejected' ? prompt('Alasan penolakan (opsional):') || '' : '';
     try {
-      await bookingsApi.updateStatus(id, status, notes);
+      const updated = await bookingsApi.updateStatus(booking.id, status, notes);
       await fetchData();
       setSuccessMsg(`Booking berhasil di-${status === 'approved' ? 'setujui' : 'tolak'}!`);
       setTimeout(() => setSuccessMsg(''), 3000);
+      const target = normalizeWhatsapp(updated.whatsapp || booking.whatsapp);
+      if (target) {
+        window.open(`https://wa.me/${target}?text=${encodeURIComponent(buildStatusMessage(updated, status, notes))}`, '_blank', 'noopener,noreferrer');
+      }
     } catch (e: any) {
       setError(e.message);
     }
@@ -287,10 +315,10 @@ export default function BookingPage() {
                       <td className="px-4 py-3">
                         {b.status === 'pending' ? (
                           <div className="flex items-center gap-1.5 justify-center">
-                            <button onClick={() => handleStatus(b.id, 'approved')} className="p-1.5 bg-emerald-100 hover:bg-emerald-200 text-emerald-700 rounded-lg transition cursor-pointer" title="Approve">
+                            <button onClick={() => handleStatus(b, 'approved')} className="p-1.5 bg-emerald-100 hover:bg-emerald-200 text-emerald-700 rounded-lg transition cursor-pointer" title="Approve dan kirim WhatsApp">
                               <CheckCircle className="w-4 h-4" />
                             </button>
-                            <button onClick={() => handleStatus(b.id, 'rejected')} className="p-1.5 bg-rose-100 hover:bg-rose-200 text-rose-700 rounded-lg transition cursor-pointer" title="Reject">
+                            <button onClick={() => handleStatus(b, 'rejected')} className="p-1.5 bg-rose-100 hover:bg-rose-200 text-rose-700 rounded-lg transition cursor-pointer" title="Reject dan kirim WhatsApp">
                               <XCircle className="w-4 h-4" />
                             </button>
                           </div>

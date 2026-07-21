@@ -1,13 +1,16 @@
 'use client';
-import { useState, useEffect } from 'react';
+import { FormEvent, useEffect, useState } from 'react';
 import { HALL_INFO, BOOKING_PACKAGES } from '@/data';
-import { ArrowRight, CheckCircle2, ShieldCheck, ChevronLeft, ChevronRight } from 'lucide-react';
+import { ArrowRight, CheckCircle2, ShieldCheck, ChevronLeft, ChevronRight, Loader2, Send } from 'lucide-react';
 import { WA_NUMBERS } from '@/constants';
 
 const hallBackground = '/images/aula.webp';
 const ADMIN_WA = WA_NUMBERS.ADMIN_AULA;
 
 export default function BookingSection() {
+  const [selectedPackage, setSelectedPackage] = useState(BOOKING_PACKAGES[0]?.id || '');
+  const [selectedDate, setSelectedDate] = useState('');
+
   return (
     <section id="audio-visual-hall" className="py-20 bg-white">
       <div className="max-w-7xl mx-auto px-4 md:px-6">
@@ -71,7 +74,7 @@ export default function BookingSection() {
           </div>
         </div>
 
-        <div className="space-y-8 mb-16">
+        <div className="space-y-8 mb-12">
           <div className="text-center">
             <h3 className="text-2xl font-bold text-gray-900">Pilihan Paket Sewa Aula</h3>
             <p className="text-sm text-gray-500 mt-1">Kami menyediakan paket fleksibel sesuai anggaran dan format acara Anda.</p>
@@ -106,16 +109,24 @@ export default function BookingSection() {
                 </div>
                 <div className="pt-6 mt-6 border-t border-gray-100">
                   <a
-                    href={`https://wa.me/${ADMIN_WA}?text=Assalamualaikum%20Admin%2C%20saya%20ingin%20booking%20${encodeURIComponent(pkg.name)}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
+                    href="#booking-aula-form"
+                    onClick={() => setSelectedPackage(pkg.id)}
                     className="block w-full py-2.5 rounded-xl font-bold text-xs md:text-sm text-center transition cursor-pointer bg-emerald-50 hover:bg-emerald-100 text-emerald-800"
                   >
-                    Booking dan Tanya Detail
+                    Pilih Paket Ini
                   </a>
                 </div>
               </div>
             ))}
+          </div>
+        </div>
+
+        <div id="booking-aula-form" className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+          <div className="lg:col-span-5">
+            <AvailabilityCalendar selectedDate={selectedDate} onSelectDate={setSelectedDate} />
+          </div>
+          <div className="lg:col-span-7">
+            <BookingRequestForm selectedDate={selectedDate} selectedPackage={selectedPackage} onPackageChange={setSelectedPackage} />
           </div>
         </div>
 
@@ -135,13 +146,147 @@ export default function BookingSection() {
           </a>
         </div>
 
-        <AvailabilityCalendar />
       </div>
     </section>
   );
 }
 
-function AvailabilityCalendar() {
+function BookingRequestForm({
+  selectedDate,
+  selectedPackage,
+  onPackageChange,
+}: {
+  selectedDate: string;
+  selectedPackage: string;
+  onPackageChange: (value: string) => void;
+}) {
+  const [name, setName] = useState('');
+  const [whatsapp, setWhatsapp] = useState('');
+  const [date, setDate] = useState(selectedDate);
+  const [timeStart, setTimeStart] = useState('08:00');
+  const [timeEnd, setTimeEnd] = useState('14:00');
+  const [purpose, setPurpose] = useState('');
+  const [notes, setNotes] = useState('');
+  const [submitting, setSubmitting] = useState(false);
+  const [message, setMessage] = useState('');
+  const [error, setError] = useState('');
+
+  useEffect(() => {
+    if (selectedDate) setDate(selectedDate);
+  }, [selectedDate]);
+
+  const selectedPackageData = BOOKING_PACKAGES.find((pkg) => pkg.id === selectedPackage) || BOOKING_PACKAGES[0];
+
+  const buildWhatsappTemplate = () => {
+    return [
+      'Assalamualaikum Admin Aula Masjid Raya Puri Telukjambe.',
+      '',
+      'Saya sudah mengirim permohonan booking aula melalui website dengan data:',
+      `Nama: ${name}`,
+      `No. WhatsApp: ${whatsapp}`,
+      `Tanggal: ${date}`,
+      `Waktu: ${timeStart} - ${timeEnd}`,
+      `Paket: ${selectedPackageData?.name || '-'}`,
+      `Keperluan: ${purpose}`,
+      notes ? `Catatan: ${notes}` : '',
+      '',
+      'Mohon konfirmasi ketersediaan dan proses selanjutnya. Terima kasih.',
+    ].filter(Boolean).join('\n');
+  };
+
+  const handleSubmit = async (event: FormEvent) => {
+    event.preventDefault();
+    setError('');
+    setMessage('');
+    if (!name || !whatsapp || !date || !timeStart || !timeEnd || !purpose) {
+      setError('Nama, WhatsApp, tanggal, waktu, dan keperluan wajib diisi.');
+      return;
+    }
+    setSubmitting(true);
+    try {
+      const res = await fetch('/api/bookings', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name,
+          whatsapp,
+          date,
+          timeStart,
+          timeEnd,
+          purpose,
+          packageId: selectedPackage,
+          needOrganizer: false,
+          notes,
+        }),
+      });
+      const payload = await res.json().catch(() => ({}));
+      if (!res.ok) throw new Error(payload.error || 'Gagal mengirim booking');
+      setMessage('Permohonan booking tersimpan dengan status pending. WhatsApp admin akan terbuka untuk konfirmasi.');
+      window.open(`https://wa.me/${ADMIN_WA}?text=${encodeURIComponent(buildWhatsappTemplate())}`, '_blank', 'noopener,noreferrer');
+      setName('');
+      setWhatsapp('');
+      setPurpose('');
+      setNotes('');
+    } catch (err: any) {
+      setError(err.message);
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  return (
+    <form onSubmit={handleSubmit} className="bg-white rounded-3xl p-6 border border-gray-100 shadow-sm space-y-4">
+      <div>
+        <h3 className="text-xl font-bold text-gray-900">Form Booking Aula</h3>
+        <p className="mt-1 text-xs text-gray-500">Data masuk ke dashboard admin sebagai pending, lalu lanjut konfirmasi melalui WhatsApp.</p>
+      </div>
+      {error && <div className="rounded-xl border border-rose-200 bg-rose-50 p-3 text-xs font-semibold text-rose-700">{error}</div>}
+      {message && <div className="rounded-xl border border-emerald-200 bg-emerald-50 p-3 text-xs font-semibold text-emerald-700">{message}</div>}
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div>
+          <label className="block text-[10px] font-bold uppercase tracking-wider text-gray-600 mb-1">Nama Pemesan</label>
+          <input value={name} onChange={(e) => setName(e.target.value)} className="w-full rounded-xl border border-gray-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-600" placeholder="Nama lengkap" />
+        </div>
+        <div>
+          <label className="block text-[10px] font-bold uppercase tracking-wider text-gray-600 mb-1">No. WhatsApp</label>
+          <input value={whatsapp} onChange={(e) => setWhatsapp(e.target.value.replace(/[^\d+]/g, ''))} className="w-full rounded-xl border border-gray-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-600" placeholder="08xxxxxxxxxx" />
+        </div>
+        <div>
+          <label className="block text-[10px] font-bold uppercase tracking-wider text-gray-600 mb-1">Tanggal</label>
+          <input type="date" value={date} onChange={(e) => setDate(e.target.value)} className="w-full rounded-xl border border-gray-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-600" />
+        </div>
+        <div>
+          <label className="block text-[10px] font-bold uppercase tracking-wider text-gray-600 mb-1">Paket</label>
+          <select value={selectedPackage} onChange={(e) => onPackageChange(e.target.value)} className="w-full rounded-xl border border-gray-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-600 bg-white">
+            {BOOKING_PACKAGES.map((pkg) => <option key={pkg.id} value={pkg.id}>{pkg.name} - {pkg.price}</option>)}
+          </select>
+        </div>
+        <div>
+          <label className="block text-[10px] font-bold uppercase tracking-wider text-gray-600 mb-1">Jam Mulai</label>
+          <input type="time" value={timeStart} onChange={(e) => setTimeStart(e.target.value)} className="w-full rounded-xl border border-gray-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-600" />
+        </div>
+        <div>
+          <label className="block text-[10px] font-bold uppercase tracking-wider text-gray-600 mb-1">Jam Selesai</label>
+          <input type="time" value={timeEnd} onChange={(e) => setTimeEnd(e.target.value)} className="w-full rounded-xl border border-gray-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-600" />
+        </div>
+        <div className="sm:col-span-2">
+          <label className="block text-[10px] font-bold uppercase tracking-wider text-gray-600 mb-1">Keperluan</label>
+          <input value={purpose} onChange={(e) => setPurpose(e.target.value)} className="w-full rounded-xl border border-gray-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-600" placeholder="Contoh: Walimah, seminar, rapat keluarga" />
+        </div>
+        <div className="sm:col-span-2">
+          <label className="block text-[10px] font-bold uppercase tracking-wider text-gray-600 mb-1">Catatan</label>
+          <textarea value={notes} onChange={(e) => setNotes(e.target.value)} rows={3} className="w-full rounded-xl border border-gray-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-600" placeholder="Opsional: detail acara, jumlah tamu, kebutuhan tambahan" />
+        </div>
+      </div>
+      <button type="submit" disabled={submitting} className="w-full rounded-xl bg-emerald-700 hover:bg-emerald-800 disabled:opacity-60 text-white font-bold text-sm py-3 flex items-center justify-center gap-2">
+        {submitting ? <Loader2 className="w-4 h-4 animate-spin" /> : <Send className="w-4 h-4" />}
+        Kirim Booking & Konfirmasi WhatsApp
+      </button>
+    </form>
+  );
+}
+
+function AvailabilityCalendar({ selectedDate, onSelectDate }: { selectedDate: string; onSelectDate: (date: string) => void }) {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [bookedDates, setBookedDates] = useState<string[]>([]);
 
@@ -194,18 +339,24 @@ function AvailabilityCalendar() {
   for (let i = 1; i <= daysInMonth; i++) {
     const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(i).padStart(2, '0')}`;
     const isBooked = bookedDates.includes(dateStr);
+    const isSelected = selectedDate === dateStr;
 
     days.push(
-      <div key={i} className={`p-2 border rounded-lg text-center text-sm font-medium ${isBooked ? 'bg-rose-100 text-rose-800 border-rose-200' : 'bg-white text-gray-700 border-gray-100'}`}>
+      <button type="button" key={i} disabled={isBooked} onClick={() => onSelectDate(dateStr)} className={`p-2 border rounded-lg text-center text-sm font-medium transition ${
+        isBooked ? 'bg-rose-100 text-rose-800 border-rose-200 cursor-not-allowed' : isSelected ? 'bg-emerald-700 text-white border-emerald-700' : 'bg-white text-gray-700 border-gray-100 hover:border-emerald-500 hover:text-emerald-700'
+      }`}>
         {i}
-      </div>
+      </button>
     );
   }
 
   return (
-    <div className="bg-white rounded-3xl p-6 border border-gray-100 shadow-sm mt-14 relative overflow-hidden">
+    <div className="bg-white rounded-3xl p-6 border border-gray-100 shadow-sm relative overflow-hidden">
       <div className="flex items-center justify-between mb-6">
-        <h3 className="text-xl font-bold text-gray-900">Ketersediaan Aula</h3>
+        <div>
+          <h3 className="text-xl font-bold text-gray-900">Kalender Booking Aula</h3>
+          <p className="mt-1 text-xs text-gray-500">Pilih tanggal tersedia untuk mengisi form booking.</p>
+        </div>
         <div className="flex items-center gap-4">
           <button onClick={prevMonth} className="p-2 hover:bg-gray-100 rounded-full transition cursor-pointer"><ChevronLeft className="w-5 h-5" /></button>
           <span className="font-semibold text-gray-800 w-32 text-center">{monthNames[month]} {year}</span>
