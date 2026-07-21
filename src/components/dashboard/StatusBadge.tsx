@@ -7,6 +7,7 @@ const statusConfig: Record<string, { bg: string; text: string; dot: string; labe
   pending: { bg: 'bg-amber-100', text: 'text-amber-800', dot: 'bg-amber-500', label: 'Pending' },
   approved: { bg: 'bg-emerald-100', text: 'text-emerald-800', dot: 'bg-emerald-500', label: 'Approved' },
   rejected: { bg: 'bg-rose-100', text: 'text-rose-800', dot: 'bg-rose-500', label: 'Rejected' },
+  cancelled: { bg: 'bg-slate-100', text: 'text-slate-700', dot: 'bg-slate-400', label: 'Cancelled' },
   active: { bg: 'bg-emerald-100', text: 'text-emerald-800', dot: 'bg-emerald-500', label: 'Online' },
 };
 

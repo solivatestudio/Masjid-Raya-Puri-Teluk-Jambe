@@ -13,8 +13,8 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
     const { id } = await params;
     const body = await req.json();
     const { status, adminNotes } = body;
-    if (!status || !['approved', 'rejected'].includes(status)) {
-      return NextResponse.json({ error: 'Status harus approved atau rejected' }, { status: 400 });
+    if (!status || !['approved', 'rejected', 'cancelled'].includes(status)) {
+      return NextResponse.json({ error: 'Status harus approved, rejected, atau cancelled' }, { status: 400 });
     }
     const rows = (await (sql as any).query(
       `UPDATE bookings SET status = $1, admin_notes = $2, updated_at = NOW() WHERE id = $3 RETURNING *`,
