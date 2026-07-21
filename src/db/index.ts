@@ -95,7 +95,7 @@ export async function ensureSchema() {
       package_id VARCHAR(20),
       need_organizer BOOLEAN NOT NULL DEFAULT FALSE,
       notes TEXT DEFAULT '',
-      status VARCHAR(20) NOT NULL DEFAULT 'pending' CHECK (status IN ('pending', 'approved', 'rejected')),
+      status VARCHAR(20) NOT NULL DEFAULT 'pending' CHECK (status IN ('pending', 'approved', 'rejected', 'cancelled')),
       admin_notes TEXT DEFAULT '',
       payment_proof_url TEXT,
       payment_proof_uploaded_at TIMESTAMPTZ,

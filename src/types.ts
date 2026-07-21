@@ -66,7 +66,7 @@ export interface BookingRecord {
   package_id?: string;
   need_organizer: boolean;
   notes: string;
-  status: 'pending' | 'approved' | 'rejected';
+  status: 'pending' | 'approved' | 'rejected' | 'cancelled';
   admin_notes: string;
   payment_proof_url: string | null;
   payment_proof_uploaded_at: string | null;

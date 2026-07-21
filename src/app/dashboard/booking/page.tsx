@@ -5,7 +5,7 @@ import { formatDateIDN, formatDateShort, formatRupiah } from '@/lib/utils';
 import SummaryCard from '@/components/dashboard/SummaryCard';
 import StatusBadge from '@/components/dashboard/StatusBadge';
 import ImageUploader from '@/components/cms/ImageUploader';
-import { CalendarCheck, Clock, Users, CheckCircle, XCircle, Plus, X, Check, Receipt, ExternalLink, Image as ImageIcon, ChevronLeft, ChevronRight } from 'lucide-react';
+import { CalendarCheck, Clock, Users, CheckCircle, XCircle, Plus, X, Check, Receipt, ExternalLink, Image as ImageIcon, ChevronLeft, ChevronRight, Ban } from 'lucide-react';
 import type { BookingSummary, BookingRecord } from '@/types';
 
 import { BOOKING_PACKAGES as PACKAGES_DATA } from '@/data';
@@ -69,27 +69,30 @@ export default function BookingPage() {
 
   const buildStatusMessage = (booking: BookingRecord, status: string, notes: string) => {
     const isApproved = status === 'approved';
+    const statusText = status === 'approved' ? 'DISETUJUI' : status === 'rejected' ? 'DITOLAK' : 'DIBATALKAN';
     return [
       `Assalamualaikum ${booking.name}.`,
       '',
-      `Permohonan booking Aula Masjid Raya Puri Telukjambe untuk tanggal ${formatDateIDN(booking.date)} pukul ${booking.time_start.slice(0, 5)} - ${booking.time_end.slice(0, 5)} telah ${isApproved ? 'DISETUJUI' : 'DITOLAK'}.`,
+      `Permohonan booking Aula Masjid Raya Puri Telukjambe untuk tanggal ${formatDateIDN(booking.date)} pukul ${booking.time_start.slice(0, 5)} - ${booking.time_end.slice(0, 5)} telah ${statusText}.`,
       `Keperluan: ${booking.purpose}`,
       notes ? `Catatan admin: ${notes}` : '',
       '',
       isApproved
         ? 'Silakan lanjut koordinasi teknis dan pembayaran dengan admin aula.'
-        : 'Silakan hubungi admin aula untuk pilihan tanggal atau informasi lanjutan.',
+        : status === 'rejected'
+          ? 'Silakan hubungi admin aula untuk pilihan tanggal atau informasi lanjutan.'
+          : 'Booking Anda telah dibatalkan. Silakan hubungi admin aula untuk informasi lebih lanjut.',
       '',
       'Terima kasih.',
     ].filter(Boolean).join('\n');
   };
 
   const handleStatus = async (booking: BookingRecord, status: string) => {
-    const notes = status === 'rejected' ? prompt('Alasan penolakan (opsional):') || '' : '';
+    const notes = status === 'rejected' || status === 'cancelled' ? prompt(`Alasan ${status === 'cancelled' ? 'pembatalan' : 'penolakan'} (opsional):`) || '' : '';
     try {
       const updated = await bookingsApi.updateStatus(booking.id, status, notes);
       await fetchData();
-      setSuccessMsg(`Booking berhasil di-${status === 'approved' ? 'setujui' : 'tolak'}!`);
+      setSuccessMsg(`Booking berhasil di-${status === 'approved' ? 'setujui' : status === 'rejected' ? 'tolak' : 'batalkan'}!`);
       setTimeout(() => setSuccessMsg(''), 3000);
       const target = normalizeWhatsapp(updated.whatsapp || booking.whatsapp);
       if (target) {
@@ -263,7 +266,7 @@ export default function BookingPage() {
 
         <div className="lg:col-span-2 bg-white rounded-3xl border border-slate-100 card-shadow overflow-hidden">
           <div className="px-5 pt-4 pb-2 flex gap-1 bg-gray-50/40">
-            {['Semua', 'pending', 'approved', 'rejected'].map((s) => (
+            {['Semua', 'pending', 'approved', 'rejected', 'cancelled'].map((s) => (
               <button key={s} onClick={() => setFilterStatus(s)} className={`px-3 py-1.5 rounded-lg text-[10px] font-bold transition cursor-pointer ${filterStatus === s ? 'bg-emerald-600 text-white shadow-sm' : 'text-gray-600 hover:text-emerald-700'}`}>
                 {s === 'Semua' ? 'Semua' : s.charAt(0).toUpperCase() + s.slice(1)}
               </button>
@@ -313,24 +316,28 @@ export default function BookingPage() {
                       </td>
                       <td className="px-4 py-3"><StatusBadge status={b.status} /></td>
                       <td className="px-4 py-3">
-                        {b.status === 'pending' ? (
-                          <div className="flex items-center gap-1.5 justify-center">
-                            <button onClick={() => handleStatus(b, 'approved')} className="p-1.5 bg-emerald-100 hover:bg-emerald-200 text-emerald-700 rounded-lg transition cursor-pointer" title="Approve dan kirim WhatsApp">
-                              <CheckCircle className="w-4 h-4" />
+                        <div className="flex items-center gap-1.5 justify-center">
+                          {b.status === 'pending' && (
+                            <>
+                              <button onClick={() => handleStatus(b, 'approved')} className="p-1.5 bg-emerald-100 hover:bg-emerald-200 text-emerald-700 rounded-lg transition cursor-pointer" title="Approve dan kirim WhatsApp">
+                                <CheckCircle className="w-4 h-4" />
+                              </button>
+                              <button onClick={() => handleStatus(b, 'rejected')} className="p-1.5 bg-rose-100 hover:bg-rose-200 text-rose-700 rounded-lg transition cursor-pointer" title="Reject dan kirim WhatsApp">
+                                <XCircle className="w-4 h-4" />
+                              </button>
+                            </>
+                          )}
+                          {(b.status === 'pending' || b.status === 'approved') && (
+                            <button onClick={() => handleStatus(b, 'cancelled')} className="p-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg transition cursor-pointer" title="Batalkan booking">
+                              <Ban className="w-4 h-4" />
                             </button>
-                            <button onClick={() => handleStatus(b, 'rejected')} className="p-1.5 bg-rose-100 hover:bg-rose-200 text-rose-700 rounded-lg transition cursor-pointer" title="Reject dan kirim WhatsApp">
-                              <XCircle className="w-4 h-4" />
-                            </button>
-                          </div>
-                        ) : (
-                          <div className="flex items-center gap-1.5 justify-center">
-                            {b.admin_notes && (
-                              <span className="text-[9px] text-slate-400 italic max-w-[100px] truncate" title={b.admin_notes}>
-                                {b.admin_notes}
-                              </span>
-                            )}
-                          </div>
-                        )}
+                          )}
+                          {b.status !== 'pending' && b.admin_notes && (
+                            <span className="text-[9px] text-slate-400 italic max-w-[100px] truncate" title={b.admin_notes}>
+                              {b.admin_notes}
+                            </span>
+                          )}
+                        </div>
                       </td>
                     </tr>
                   ))
