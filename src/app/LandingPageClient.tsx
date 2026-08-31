@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect, Suspense } from "react";
+import { useState, useEffect, useRef, Suspense } from "react";
 import { showAlert } from "@/lib/dialog";
 import Link from "next/link";
 import HeroSection from "@/components/HeroSection";
@@ -19,6 +19,8 @@ import {
   MapPin,
   Heart,
   ChevronUp,
+  ChevronDown,
+  ExternalLink,
   Share2,
   Instagram,
   Facebook,
@@ -32,8 +34,23 @@ interface Props {
   sermons: FridaySermon[];
 }
 
+type NavigationItem = {
+  label: string;
+  href?: string;
+  section?: string;
+  external?: boolean;
+};
+
+type NavigationGroup = {
+  label: string;
+  items: NavigationItem[];
+};
+
 function LandingContent({ events, sermons }: Props) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [openMobileGroup, setOpenMobileGroup] = useState<string | null>(null);
+  const [openDesktopGroup, setOpenDesktopGroup] = useState<string | null>(null);
+  const desktopNavigationRef = useRef<HTMLElement>(null);
   const [showBackToTop, setShowBackToTop] = useState(false);
   const [liveEvents, setLiveEvents] = useState<EventActivity[]>(events);
   const [liveSermons, setLiveSermons] = useState<FridaySermon[]>(sermons);
@@ -53,6 +70,16 @@ function LandingContent({ events, sermons }: Props) {
     const handleScroll = () => setShowBackToTop(window.scrollY > 400);
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  useEffect(() => {
+    const closeOnOutsideClick = (event: PointerEvent) => {
+      if (!desktopNavigationRef.current?.contains(event.target as Node)) {
+        setOpenDesktopGroup(null);
+      }
+    };
+    document.addEventListener("pointerdown", closeOnOutsideClick);
+    return () => document.removeEventListener("pointerdown", closeOnOutsideClick);
   }, []);
 
   useEffect(() => {
@@ -139,9 +166,49 @@ function LandingContent({ events, sermons }: Props) {
 
   const scrollToSection = (id: string) => {
     setMobileMenuOpen(false);
+    setOpenMobileGroup(null);
+    setOpenDesktopGroup(null);
     const el = document.getElementById(id);
     if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
   };
+
+  const closeNavigation = () => {
+    setMobileMenuOpen(false);
+    setOpenMobileGroup(null);
+    setOpenDesktopGroup(null);
+  };
+
+  const navigationGroups: NavigationGroup[] = [
+    {
+      label: "Tentang Kami",
+      items: [
+        { label: "Profil Yayasan & DKM", href: "/profile-yayasan-dkm" },
+        { label: "Visi & Misi", href: "/profile-yayasan-dkm#visi-misi" },
+        { label: "Struktur Pengurus", href: "/profile-yayasan-dkm#struktur-pengurus" },
+      ],
+    },
+    {
+      label: "Program",
+      items: [
+        { label: "Program Yayasan / DKM", section: "kegiatan" },
+        { label: "Baabussalam", href: "https://baabussalam.masjidrayapuritelukjambe.com/", external: true },
+      ],
+    },
+    {
+      label: "Kegiatan",
+      items: [
+        { label: "Khutbah", section: "khutbah" },
+        { label: "Aula", section: "audio-visual-hall" },
+      ],
+    },
+    {
+      label: "Informasi",
+      items: [
+        { label: "Blog / Berita", href: "/blog" },
+        { label: "Keuangan", section: "transparansi-keuangan" },
+      ],
+    },
+  ];
 
   const handleShare = () => {
     if (navigator.share) {
@@ -222,66 +289,73 @@ function LandingContent({ events, sermons }: Props) {
           </button>
 
           <nav
-            className="hidden lg:flex items-center justify-center gap-1.5 xl:gap-2"
+            ref={desktopNavigationRef}
+            className="hidden xl:flex items-center justify-center gap-1 xl:gap-1.5"
             aria-label="Menu utama"
           >
             <button
               onClick={() => scrollToSection("hero")}
-              className="text-xs uppercase font-extrabold tracking-wider text-emerald-100 hover:text-amber-400 transition cursor-pointer"
+              className="px-2 py-2 text-xs uppercase font-extrabold tracking-wider text-emerald-100 hover:text-amber-400 transition cursor-pointer"
             >
               Beranda
             </button>
-            <Link
-              href="/profile-yayasan-dkm"
-              className="text-xs uppercase font-extrabold tracking-wider text-emerald-100 hover:text-amber-400 transition cursor-pointer px-2 py-2"
-            >
-              Profile
-            </Link>
-            <button
-              onClick={() => scrollToSection("kegiatan")}
-              className="text-xs uppercase font-extrabold tracking-wider text-emerald-100 hover:text-amber-400 transition cursor-pointer px-2 py-2"
-            >
-              Program
-            </button>
-            <a
-              href="https://baabussalam.masjidrayapuritelukjambe.com/"
-              className="text-xs uppercase font-extrabold tracking-wider text-emerald-100 hover:text-amber-400 transition cursor-pointer px-2 py-2"
-            >
-              Baabussalam
-            </a>
-            <button
-              onClick={() => scrollToSection("khutbah")}
-              className="text-xs uppercase font-extrabold tracking-wider text-emerald-100 hover:text-amber-400 transition cursor-pointer px-2 py-2"
-            >
-              Khutbah
-            </button>
-            <button
-              onClick={() => scrollToSection("audio-visual-hall")}
-              className="text-xs uppercase font-extrabold tracking-wider text-emerald-100 hover:text-amber-400 transition cursor-pointer px-2 py-2"
-            >
-              Aula
-            </button>
-            <button
-              onClick={() => scrollToSection("transparansi-keuangan")}
-              className="text-xs uppercase font-extrabold tracking-wider text-emerald-100 hover:text-amber-400 transition cursor-pointer px-2 py-2"
-            >
-              Keuangan
-            </button>
+            {navigationGroups.map((group) => (
+              <div
+                key={group.label}
+                className="relative"
+                onMouseEnter={() => setOpenDesktopGroup(group.label)}
+                onMouseLeave={() => setOpenDesktopGroup(null)}
+              >
+                <button
+                  onClick={() => setOpenDesktopGroup(openDesktopGroup === group.label ? null : group.label)}
+                  className="inline-flex items-center gap-1 rounded-lg px-2 py-2 text-xs uppercase font-extrabold tracking-wider text-emerald-100 hover:bg-emerald-900/70 hover:text-amber-400 transition cursor-pointer"
+                  aria-expanded={openDesktopGroup === group.label}
+                  aria-haspopup="menu"
+                >
+                  {group.label}
+                  <ChevronDown className={`h-3.5 w-3.5 transition-transform duration-150 ${openDesktopGroup === group.label ? "rotate-180" : ""}`} />
+                </button>
+                <div
+                  className={`absolute left-0 top-full w-60 origin-top-left pt-2 transition duration-150 ${openDesktopGroup === group.label ? "visible translate-y-0 opacity-100" : "invisible -translate-y-1 opacity-0"}`}
+                  role="menu"
+                >
+                  <div className="rounded-xl border border-emerald-800 bg-emerald-950 p-1.5 shadow-2xl">
+                    {group.items.map((item) => item.section ? (
+                      <button
+                        key={item.label}
+                        onClick={() => scrollToSection(item.section!)}
+                        className="flex w-full items-center justify-between rounded-lg px-3 py-2.5 text-left text-sm font-semibold text-emerald-100 hover:bg-emerald-900 hover:text-amber-300 transition cursor-pointer"
+                        role="menuitem"
+                      >
+                        {item.label}
+                      </button>
+                    ) : (
+                      <Link
+                        key={item.label}
+                        href={item.href!}
+                        target={item.external ? "_blank" : undefined}
+                        rel={item.external ? "noopener noreferrer" : undefined}
+                        onClick={closeNavigation}
+                        className="flex items-center justify-between rounded-lg px-3 py-2.5 text-sm font-semibold text-emerald-100 hover:bg-emerald-900 hover:text-amber-300 transition"
+                        role="menuitem"
+                      >
+                        {item.label}
+                        {item.external && <ExternalLink className="h-3.5 w-3.5" aria-label="Tautan eksternal" />}
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            ))}
             <button
               onClick={() => scrollToSection("galeri")}
-              className="hidden xl:inline-flex text-xs uppercase font-extrabold tracking-wider text-emerald-100 hover:text-amber-400 transition cursor-pointer px-2 py-2"
+              className="px-2 py-2 text-xs uppercase font-extrabold tracking-wider text-emerald-100 hover:text-amber-400 transition cursor-pointer"
             >
               Galeri
             </button>
-            <Link
-              href="/blog"
-              className="text-xs uppercase font-extrabold tracking-wider text-emerald-100 hover:text-amber-400 transition cursor-pointer px-2 py-2"
-            >
-              Blog
-            </Link>
           </nav>
 
-          <div className="hidden lg:flex items-center gap-2 shrink-0">
+          <div className="hidden xl:flex items-center gap-2 shrink-0">
             <div className="hidden xl:flex items-center gap-2 border-r border-emerald-800 pr-3 mr-1">
               <a
                 href="https://instagram.com/masjidrayapuritelukjambe"
@@ -327,7 +401,7 @@ function LandingContent({ events, sermons }: Props) {
             </button>
           </div>
 
-          <div className="flex lg:hidden items-center gap-2 shrink-0">
+          <div className="flex xl:hidden items-center gap-2 shrink-0">
             <button
               onClick={() => scrollToSection("audio-visual-hall")}
               className="hidden sm:inline-flex bg-amber-400 text-emerald-950 font-black text-xs px-3 py-2 rounded-lg shadow-sm"
@@ -371,63 +445,58 @@ function LandingContent({ events, sermons }: Props) {
                 <X className="w-5 h-5" />
               </button>
             </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 p-4">
+            <div className="space-y-1.5 p-3">
               <button
                 onClick={() => scrollToSection("hero")}
-                className="text-left px-4 py-3 text-sm font-bold text-emerald-100 bg-emerald-900/50 hover:bg-emerald-900 rounded-xl"
+                className="w-full text-left px-4 py-3 text-sm font-bold text-emerald-100 hover:bg-emerald-900 rounded-xl transition"
               >
                 Beranda
               </button>
-              <Link
-                href="/profile-yayasan-dkm"
-                onClick={() => setMobileMenuOpen(false)}
-                className="text-left px-4 py-3 text-sm font-bold text-emerald-100 bg-emerald-900/50 hover:bg-emerald-900 rounded-xl"
-              >
-                Profile Yayasan / DKM
-              </Link>
-              <button
-                onClick={() => scrollToSection("kegiatan")}
-                className="text-left px-4 py-3 text-sm font-bold text-emerald-100 bg-emerald-900/50 hover:bg-emerald-900 rounded-xl"
-              >
-                Program Dakwah
-              </button>
-              <a
-                href="https://baabussalam.masjidrayapuritelukjambe.com/"
-                className="text-left px-4 py-3 text-sm font-bold text-emerald-100 bg-emerald-900/50 hover:bg-emerald-900 rounded-xl"
-              >
-                Baabussalam
-              </a>
-              <button
-                onClick={() => scrollToSection("khutbah")}
-                className="text-left px-4 py-3 text-sm font-bold text-emerald-100 bg-emerald-900/50 hover:bg-emerald-900 rounded-xl"
-              >
-                Khatib Jumat
-              </button>
-              <button
-                onClick={() => scrollToSection("audio-visual-hall")}
-                className="text-left px-4 py-3 text-sm font-bold text-emerald-100 bg-emerald-900/50 hover:bg-emerald-900 rounded-xl"
-              >
-                Booking Aula
-              </button>
-              <button
-                onClick={() => scrollToSection("transparansi-keuangan")}
-                className="text-left px-4 py-3 text-sm font-bold text-emerald-100 bg-emerald-900/50 hover:bg-emerald-900 rounded-xl"
-              >
-                Keuangan
-              </button>
+              {navigationGroups.map((group) => (
+                <div key={group.label} className="overflow-hidden rounded-xl bg-emerald-900/50">
+                  <button
+                    onClick={() => setOpenMobileGroup(openMobileGroup === group.label ? null : group.label)}
+                    className="flex w-full items-center justify-between px-4 py-3 text-left text-sm font-bold text-emerald-100 hover:bg-emerald-900 transition cursor-pointer"
+                    aria-expanded={openMobileGroup === group.label}
+                  >
+                    {group.label}
+                    <ChevronDown className={`h-4 w-4 text-amber-300 transition-transform duration-150 ${openMobileGroup === group.label ? "rotate-180" : ""}`} />
+                  </button>
+                  <div className={`grid transition-[grid-template-rows] duration-200 ease-out ${openMobileGroup === group.label ? "grid-rows-[1fr]" : "grid-rows-[0fr]"}`}>
+                    <div className="min-h-0 overflow-hidden">
+                      <div className="border-t border-emerald-800/70 px-2 py-1.5">
+                        {group.items.map((item) => item.section ? (
+                          <button
+                            key={item.label}
+                            onClick={() => scrollToSection(item.section!)}
+                            className="flex w-full items-center justify-between rounded-lg px-3 py-2.5 text-left text-sm font-medium text-emerald-200 hover:bg-emerald-800 hover:text-white transition cursor-pointer"
+                          >
+                            {item.label}
+                          </button>
+                        ) : (
+                          <Link
+                            key={item.label}
+                            href={item.href!}
+                            target={item.external ? "_blank" : undefined}
+                            rel={item.external ? "noopener noreferrer" : undefined}
+                            onClick={closeNavigation}
+                            className="flex items-center justify-between rounded-lg px-3 py-2.5 text-sm font-medium text-emerald-200 hover:bg-emerald-800 hover:text-white transition"
+                          >
+                            {item.label}
+                            {item.external && <ExternalLink className="h-3.5 w-3.5" aria-label="Tautan eksternal" />}
+                          </Link>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ))}
               <button
                 onClick={() => scrollToSection("galeri")}
-                className="text-left px-4 py-3 text-sm font-bold text-emerald-100 bg-emerald-900/50 hover:bg-emerald-900 rounded-xl"
+                className="w-full text-left px-4 py-3 text-sm font-bold text-emerald-100 hover:bg-emerald-900 rounded-xl transition"
               >
                 Galeri
               </button>
-              <Link
-                href="/blog"
-                onClick={() => setMobileMenuOpen(false)}
-                className="sm:col-span-2 text-left px-4 py-3 text-sm font-bold text-emerald-100 bg-emerald-900/50 hover:bg-emerald-900 rounded-xl"
-              >
-                Blog & Artikel
-              </Link>
             </div>
             <div className="p-4 pt-0 grid grid-cols-2 gap-2">
               <button
