@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Footer from "@/components/Footer";
 import {
   ArrowLeft,
   BadgeCheck,
@@ -269,6 +270,7 @@ export default function ProfileYayasanDkmPage() {
           ))}
         </div>
       </section>
+      <Footer />
     </main>
   );
 }

@@ -1,5 +1,6 @@
 import { getPublicArticleBySlug } from '@/lib/public-api';
 import Link from 'next/link';
+import Footer from '@/components/Footer';
 import { notFound } from 'next/navigation';
 import { Calendar, Eye, User, ArrowLeft, BookOpen } from 'lucide-react';
 
@@ -102,6 +103,7 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
           </Link>
         </div>
       </article>
+      <Footer />
     </div>
   );
 }
