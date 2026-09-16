@@ -226,13 +226,26 @@ export default function EditArticlePage() {
             </div>
           </div>
           <div className="bg-white rounded-2xl border border-slate-100 card-shadow p-5 space-y-3">
-            <h3 className="text-sm font-bold text-slate-800">Featured Image</h3>
+            <div>
+              <h3 className="text-sm font-bold text-slate-800">
+                Gambar Sampul (Featured Image)
+              </h3>
+              <p className="text-[11px] text-slate-500 mt-0.5">
+                Ditampilkan di header artikel & thumbnail daftar blog
+              </p>
+            </div>
             <ImageUploader
               endpoint="featuredImage"
               value={featuredImageUrl}
               onChange={setFeaturedImageUrl}
               alt={featuredImageAlt}
               onAltChange={setFeaturedImageAlt}
+              label="Upload Cover / Thumbnail"
+              description="Pilih gambar sampul untuk artikel ini."
+              onInsertToArticle={(url, alt) => {
+                const imgTag = `<img src="${url}" alt="${alt || title || 'Gambar artikel'}" class="rounded-xl my-6 max-w-full shadow-sm mx-auto block" />`;
+                setContentHtml((prev) => (prev ? `${prev}<p></p>${imgTag}<p></p>` : imgTag));
+              }}
               maxSizeMB={4}
             />
             <div className="text-[10px] text-slate-500 bg-emerald-50 border border-emerald-100 rounded-lg p-2 leading-relaxed">

@@ -3,6 +3,9 @@ import Link from 'next/link';
 import Footer from '@/components/Footer';
 import { notFound } from 'next/navigation';
 import { Calendar, Eye, User, ArrowLeft, BookOpen } from 'lucide-react';
+import sanitizeHtml from 'sanitize-html';
+import { SANITIZE_CONFIG } from '@/lib/tiptap';
+import styles from '@/styles/article-content.module.css';
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
@@ -78,8 +81,10 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
         )}
 
         <div
-          className="prose prose-slate max-w-none prose-headings:text-slate-900 prose-a:text-emerald-700 prose-a:no-underline hover:prose-a:underline"
-          dangerouslySetInnerHTML={{ __html: article.content_html }}
+          className={styles.articleContent}
+          dangerouslySetInnerHTML={{
+            __html: sanitizeHtml(article.content_html || '', SANITIZE_CONFIG),
+          }}
         />
 
         {article.tags && article.tags.length > 0 && (

@@ -13,6 +13,11 @@ export const uploadRouter = {
   }).onUploadComplete(async ({ file }) => {
     return { url: file.ufsUrl || file.url };
   }),
+  articleImage: f({
+    image: { maxFileSize: "4MB", maxFileCount: 1 },
+  }).onUploadComplete(async ({ file }) => {
+    return { url: file.ufsUrl || file.url };
+  }),
 } satisfies FileRouter;
 
 export type UploadRouter = typeof uploadRouter;
