@@ -1,5 +1,4 @@
 import { useState, FormEvent } from "react";
-import { showAlert } from "@/lib/dialog";
 import {
   QrCode,
   CreditCard,
@@ -14,7 +13,8 @@ import { WA_NUMBERS } from "@/constants";
 export default function DonationSection() {
   const [customAmount, setCustomAmount] = useState("");
   const [copiedBank, setCopiedBank] = useState<string | null>(null);
-  const [donorName, setDonorName] = useState("Hamba Allah");
+  const [donorName, setDonorName] = useState("");
+  const [error, setError] = useState("");
 
   const formatRupiah = (val: number) =>
     new Intl.NumberFormat("id-ID", {
@@ -33,19 +33,19 @@ export default function DonationSection() {
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
+    setError("");
+    const trimmedName = donorName.trim();
     const finalAmount = parseFloat(customAmount) || 0;
-    if (finalAmount <= 0) {
-      await showAlert("Mohon tentukan jumlah nominal donasi terlebih dahulu.", {
-        title: "Nominal Donasi Belum Diisi",
-      });
+    if (!trimmedName || finalAmount <= 0) {
+      setError("Nama dan nominal donasi wajib diisi.");
       return;
     }
     const phoneNumber = WA_NUMBERS.HUMAS_DKM;
-    const message = `Assalamualaikum Admin Masjid Raya Puri Telukjambe \u{1F44B}\nSaya ingin mengonfirmasi bahwa saya telah/akan menyalurkan infaq.\n*Detail Donatur:*\n\u2022 Nama: ${donorName}\n\u2022 Nominal: *${formatRupiah(finalAmount)}*\n- Metode: QRIS / Transfer Bank\nMohon bantuannya untuk diverifikasi. Terima kasih, Jazakumullah Khairan Katsiran.`;
+    const message = `Assalamualaikum Admin Masjid Raya Puri Telukjambe \u{1F44B}\nSaya ingin mengonfirmasi bahwa saya telah/akan menyalurkan infaq.\n*Detail Donatur:*\n\u2022 Nama: ${trimmedName}\n\u2022 Nominal: *${formatRupiah(finalAmount)}*\n- Metode: QRIS / Transfer Bank\nMohon bantuannya untuk diverifikasi. Terima kasih, Jazakumullah Khairan Katsiran.`;
     const url = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
     window.open(url, "_blank", "noopener,noreferrer");
     setCustomAmount("");
-    setDonorName("Hamba Allah");
+    setDonorName("");
   };
 
   return (
@@ -114,12 +114,18 @@ export default function DonationSection() {
           <div className="lg:col-span-7 space-y-8">
             <form
               onSubmit={handleSubmit}
+              noValidate
               className="bg-emerald-900/30 border border-emerald-800 rounded-2xl p-6 space-y-6"
             >
               <h3 className="text-lg font-bold flex items-center gap-2">
                 <Heart className="w-5 h-5 text-amber-400 animate-pulse" />
-                <span>Simulasi Kalkulator Donasi Instan</span>
+                <span>Salurkan Donasi Anda</span>
               </h3>
+              {error && (
+                <div className="rounded-xl border border-rose-500/30 bg-rose-500/10 p-3 text-xs font-semibold text-rose-200">
+                  {error}
+                </div>
+              )}
               <div className="space-y-4">
                 <div>
                   <label className="block text-[11px] font-bold text-emerald-300 uppercase tracking-wider mb-1">
