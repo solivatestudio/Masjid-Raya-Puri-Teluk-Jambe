@@ -55,7 +55,15 @@ export default function Footer() {
             <div className="space-y-2.5 text-xs text-emerald-300">
               <div className="flex items-start gap-2.5">
                 <MapPin className="w-4 h-4 text-amber-400 shrink-0 mt-0.5" />
-                <span className="leading-relaxed">Jl. Telukjambe Timur No. 23, Karawang</span>
+                <a
+                  href="https://maps.app.goo.gl/FYwtVTDUv6j4o5Zt5"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="leading-relaxed hover:text-amber-400 transition"
+                >
+                  Perumahan Puri Telukjambe Blok B1 No. 1 Ds. Sirnabaya, Kec.
+                  Teluk Jambe Timur - Karawang
+                </a>
               </div>
               <div className="flex items-center gap-2.5">
                 <Phone className="w-4 h-4 text-emerald-400 shrink-0" />

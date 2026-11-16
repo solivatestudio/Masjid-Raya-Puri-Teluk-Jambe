@@ -95,8 +95,8 @@ const mosqueJsonLd = {
   email: 'puritelukjambemasjidraya@gmail.com',
   address: {
     '@type': 'PostalAddress',
-    streetAddress: 'Jl. Telukjambe Timur No. 23',
-    addressLocality: 'Karawang',
+    streetAddress: 'Perumahan Puri Telukjambe Blok B1 No. 1',
+    addressLocality: 'Ds. Sirnabaya, Kec. Teluk Jambe Timur, Karawang',
     addressRegion: 'Jawa Barat',
     postalCode: '41361',
     addressCountry: 'ID',

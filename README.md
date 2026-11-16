@@ -164,7 +164,7 @@ public/
 
 ## 📞 Kontak DKM
 
-- **Alamat:** Jl. Telukjambe Timur No. 23, Karawang, Jawa Barat 41361
+- **Alamat:** Perumahan Puri Telukjambe Blok B1 No. 1 Ds. Sirnabaya, Kec. Teluk Jambe Timur - Karawang
 - **WhatsApp:** +62 895-4142-83161 (Humas DKM)
 - **Email:** puritelukjambemasjidraya@gmail.com
 - **Instagram:** @masjidrayapuritelukjambe
